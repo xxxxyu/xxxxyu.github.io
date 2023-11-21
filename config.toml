@@ -94,7 +94,7 @@ stylesheets = []
 # Remote repository for your Zola site.
 # Used for `show_remote_changes` and `show_remote_source` (see below).
 # Supports GitHub, GitLab, Gitea, and Codeberg.
-remote_repository_url = "https://github.com/xxxxxyu/xxxxyu.github.io"
+remote_repository_url = "https://github.com/xxxxyu/xxxxyu.github.io"
 # Set this to "auto" to try and auto-detect the platform based on the repository URL.
 # Accepted values are "github", "gitlab", "gitea", and "codeberg".
 remote_repository_git_platform = "auto" # Defaults to "auto".
@@ -183,7 +183,7 @@ encode_plaintext_email = true # Setting is ignored if email is already encoded.
 
 # The icons available can be found in "social_icons" in the "static" folder.
 socials = [
-    { name = "github", url = "https://github.com/welpo/", icon = "github" },
+    { name = "github", url = "https://github.com/xxxxyu/", icon = "github" },
     { name = "bilibili", url = "https://space.bilibili.com/244315926/", icon = "bilibili" },
 ]
 
