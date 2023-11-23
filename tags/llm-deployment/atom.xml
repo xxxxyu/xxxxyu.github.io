@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="https://xxxxyu.github.io/feed_style.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:base="http://purl.org/atompub/base/1.0/" xml:lang="en" xml:base="https:&#x2F;&#x2F;xxxxyu.github.io">
+    <str:translations xmlns:str="https://github.com/welpo/tabi">
+        <str:about_feeds>This is a web feed, also known as an Atom feed. Subscribe by copying the URL from the address bar into your newsreader. Visit About Feeds to learn more and get started. It's free.</str:about_feeds>
+        <str:visit_the_site>Visit website</str:visit_the_site>
+        <str:recent_posts>Recent posts</str:recent_posts>
+    </str:translations><title>Xyu's Blog - LLM Deployment</title>
+    <link href="https://xxxxyu.github.io/tags/llm-deployment/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://xxxxyu.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-11-21T00:00:00+00:00</updated>
+    <id>https://xxxxyu.github.io/tags/llm-deployment/atom.xml</id>
+    <entry xml:lang="en">
+        <title>“口袋里的 GPT”，离我们还有多远？</title>
+        <published>2023-11-21T00:00:00+00:00</published>
+        <updated>2023-11-21T00:00:00+00:00</updated>
+        <author>
+            <name>xxxxyu</name>
+        </author>
+        <link rel="alternate" href="https://xxxxyu.github.io/blog/gpt-in-your-pocket-weekly/" type="text/html"/>
+        <id>https://xxxxyu.github.io/blog/gpt-in-your-pocket-weekly/</id>
+        <summary type="html">唠一唠端侧大模型部署那些事。</summary>
+        </entry>
+</feed>
