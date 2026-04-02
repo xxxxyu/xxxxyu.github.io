@@ -1,0 +1,7 @@
+{% if src %}
+{% set img_path = src %}
+{% if not src is starting_with("/") and not src is starting_with("http") %}
+  {% set img_path = get_url(path=page.colocated_path ~ src) %}
+{% endif %}
+<img src="{{ img_path }}" alt="{{ alt | default(value='') }}" class="dimmable-image{% if full_width | default(value=false) %} full-width{% endif %}" loading="lazy"{% if width %} width="{{ width }}"{% endif %}{% if height %} height="{{ height }}"{% endif %}>
+{% endif %}

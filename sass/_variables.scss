@@ -1,0 +1,121 @@
+// Design System — CSS Custom Properties, Typography, Spacing
+// ==========================================================
+
+// ---------- Font Face Declarations ----------
+@font-face {
+  font-family: "Noto Serif SC";
+  src: url("/fonts/NotoSerifSC-VariableFont_wght.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("/fonts/NotoSansSC-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+// ---------- Color Palette ----------
+:root {
+  // Neutral
+  --c-bg:          #fafaf8;
+  --c-bg-alt:      #f0efeb;
+  --c-surface:     #ffffff;
+  --c-text:        #2c2c2c;
+  --c-text-muted:  #6b6b6b;
+  --c-border:      #e0ddd8;
+
+  // Accent
+  --c-accent:      #1a5276;
+  --c-accent-hover:#154360;
+  --c-link:        #1a5276;
+  --c-link-hover:  #154360;
+
+  // Code
+  --c-code-bg:     #f5f4f0;
+  --c-code-text:   #3c3836;
+
+  // ---------- Typography ----------
+  --f-serif:       "Libre Baskerville", "Noto Serif SC", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-sans:        "Dobra", "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --f-mono:        "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+
+  --fs-xs:   0.75rem;   // 12px
+  --fs-sm:   0.875rem;  // 14px
+  --fs-base: 1rem;      // 16px
+  --fs-md:   1.125rem;  // 18px
+  --fs-lg:   1.25rem;   // 20px
+  --fs-xl:   1.5rem;    // 24px
+  --fs-2xl:  1.875rem;  // 30px
+  --fs-3xl:  2.25rem;   // 36px
+
+  --lh-tight:  1.3;
+  --lh-normal: 1.7;
+  --lh-loose:  1.9;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-bold:   700;
+
+  // ---------- Spacing ----------
+  --sp-1:  0.25rem;  // 4px
+  --sp-2:  0.5rem;   // 8px
+  --sp-3:  0.75rem;  // 12px
+  --sp-4:  1rem;     // 16px
+  --sp-5:  1.5rem;   // 24px
+  --sp-6:  2rem;     // 32px
+  --sp-8:  3rem;     // 48px
+  --sp-10: 4rem;     // 64px
+  --sp-12: 5rem;     // 80px
+
+  // ---------- Layout ----------
+  --w-content:  720px;
+  --w-wide:     960px;
+  --w-max:      1200px;
+  --nav-height: 3.5rem;
+
+  // ---------- Misc ----------
+  --radius:     4px;
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:  0 2px 8px rgba(0,0,0,0.08);
+  --transition: 0.2s ease;
+}
+
+// ---------- Dark Mode (explicit toggle) ----------
+html[data-theme="dark"] {
+  --c-bg:          #1a1a1a;
+  --c-bg-alt:      #242424;
+  --c-surface:     #2a2a2a;
+  --c-text:        #e0ddd8;
+  --c-text-muted:  #9a9a9a;
+  --c-border:      #3a3a3a;
+
+  --c-accent:      #5dade2;
+  --c-accent-hover:#85c1e9;
+  --c-link:        #5dade2;
+  --c-link-hover:  #85c1e9;
+
+  --c-code-bg:     #2d2d2d;
+  --c-code-text:   #e0ddd8;
+}
+
+// ---------- Dark Mode (system preference fallback) ----------
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --c-bg:          #1a1a1a;
+    --c-bg-alt:      #242424;
+    --c-surface:     #2a2a2a;
+    --c-text:        #e0ddd8;
+    --c-text-muted:  #9a9a9a;
+    --c-border:      #3a3a3a;
+
+    --c-accent:      #5dade2;
+    --c-accent-hover:#85c1e9;
+    --c-link:        #5dade2;
+    --c-link-hover:  #85c1e9;
+
+    --c-code-bg:     #2d2d2d;
+    --c-code-text:   #e0ddd8;
+  }
+}

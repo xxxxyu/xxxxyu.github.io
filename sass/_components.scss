@@ -1,0 +1,196 @@
+// Publications & Homepage Components
+// ====================================
+
+// ---------- Publication Cards ----------
+.pub-card {
+  display: flex;
+  gap: var(--sp-5);
+  padding: var(--sp-5) 0;
+  border-bottom: 1px solid var(--c-border);
+
+  &__img {
+    flex-shrink: 0;
+    width: 180px;
+
+    img {
+      width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--c-border);
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    margin-bottom: var(--sp-1);
+    line-height: var(--lh-tight);
+  }
+
+  &__authors {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-1);
+  }
+
+  &__venue {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-2);
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+
+    a {
+      font-family: var(--f-sans);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-medium);
+      padding: var(--sp-1) var(--sp-2);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius);
+      color: var(--c-accent);
+      transition: all var(--transition);
+
+      &:hover {
+        background: var(--c-accent);
+        color: var(--c-surface);
+        border-color: var(--c-accent);
+        text-decoration: none;
+      }
+    }
+  }
+
+  &--compact {
+    .pub-card__img { display: none; }
+  }
+}
+
+// ---------- Profile Block (Homepage) ----------
+.profile {
+  display: flex;
+  gap: var(--sp-6);
+  align-items: flex-start;
+  margin-bottom: var(--sp-8);
+
+  &__photo {
+    flex-shrink: 0;
+    width: 180px;
+
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    font-size: var(--fs-2xl);
+    margin-bottom: var(--sp-1);
+  }
+
+  &__title {
+    font-size: var(--fs-md);
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-3);
+  }
+
+  &__bio {
+    margin-bottom: var(--sp-4);
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    a {
+      font-family: var(--f-sans);
+      font-size: var(--fs-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+    }
+
+    img, svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// ---------- News List ----------
+.news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--sp-5);
+
+  li {
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--c-border);
+    font-size: var(--fs-sm);
+    display: flex;
+    gap: var(--sp-3);
+  }
+
+  &__date {
+    flex-shrink: 0;
+    color: var(--c-text-muted);
+    font-family: var(--f-sans);
+    min-width: 5.5em;
+  }
+}
+
+// ---------- Post Preview (Homepage) ----------
+.post-preview {
+  padding: var(--sp-4) 0;
+  border-bottom: 1px solid var(--c-border);
+
+  h2 {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--sp-1);
+  }
+
+  time {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    font-family: var(--f-sans);
+  }
+
+  p {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    margin-top: var(--sp-2);
+    margin-bottom: 0;
+  }
+}
+
+// ---------- Responsive ----------
+@media (max-width: 768px) {
+  .profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &__photo { width: 140px; }
+    &__links { justify-content: center; }
+  }
+
+  .pub-card {
+    flex-direction: column;
+
+    &__img { width: 100%; }
+  }
+}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Publications — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<h1>Publications</h1>
+
+{% set pub_data = load_data(path="data/publications.toml") %}
+{% set pubs = pub_data.publications %}
+
+{% for pub in pubs %}
+<div class="pub-card{% if not pub.image %} pub-card--compact{% endif %}">
+  {% if pub.image %}
+  <div class="pub-card__img">
+    <img src="{{ pub.image }}" alt="{{ pub.title }}" loading="lazy">
+  </div>
+  {% endif %}
+  <div class="pub-card__body">
+    <h3 class="pub-card__title">{{ pub.title }}</h3>
+    <p class="pub-card__authors">{{ pub.authors | replace(from="Xiangyu Li", to="<strong><u>Xiangyu Li</u></strong>") | safe }}</p>
+    <p class="pub-card__venue">{{ pub.venue }}, {{ pub.year }}{% if pub.notes %} &middot; <em>{{ pub.notes }}</em>{% endif %}</p>
+    <div class="pub-card__links">
+      {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">Paper</a>{% endif %}
+      {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">Code</a>{% endif %}
+      {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+      {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">Page</a>{% endif %}
+      {% if pub.model_url %}<a href="{{ pub.model_url }}" target="_blank" rel="noopener">Model</a>{% endif %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock content %}

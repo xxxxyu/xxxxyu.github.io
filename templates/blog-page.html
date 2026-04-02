@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block head_extra %}
+{% if page.extra.katex | default(value=false) %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ber/4Z+OKdz/T2I" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRjXlZlJCg9S6FiI" crossorigin="anonymous"></script>
+{% endif %}
+{% if page.extra.mermaid | default(value=false) %}
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+{% endif %}
+{% endblock head_extra %}
+
+{% block main_class %}blog-post-layout{% endblock main_class %}
+
+{% block content %}
+{# ── Left: Table of Contents ── #}
+{% if page.toc %}
+<aside class="blog-post-layout__toc">
+  <nav class="toc" aria-label="Table of Contents">
+    <h2 class="toc__title">Contents</h2>
+    <ul class="toc__list">
+      {% for h2 in page.toc %}
+      <li>
+        <a href="#{{ h2.id }}">{{ h2.title }}</a>
+        {% if h2.children %}
+        <ul>
+          {% for h3 in h2.children %}
+          <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</aside>
+{% endif %}
+
+{# ── Center: Article ── #}
+<article class="blog-post-layout__article">
+  <header class="blog-post__header">
+    <h1>{{ page.title }}</h1>
+    <div class="blog-post__meta">
+      {% if page.date %}
+      <time datetime="{{ page.date }}">{{ page.date | date(format="%B %e, %Y") }}</time>
+      {% endif %}
+      {% if page.updated and page.updated != page.date %}
+      <span class="blog-post__updated">(updated {{ page.updated | date(format="%B %e, %Y") }})</span>
+      {% endif %}
+    </div>
+    {% if page.taxonomies.tags %}
+    <div class="blog-post__tags">
+      {% for tag in page.taxonomies.tags %}
+      <a href="/tags/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </header>
+
+  {# Mobile ToC (collapsed) #}
+  {% if page.toc %}
+  <details class="blog-post__mobile-toc">
+    <summary>Table of Contents</summary>
+    <ul>
+      {% for h2 in page.toc %}
+      <li>
+        <a href="#{{ h2.id }}">{{ h2.title }}</a>
+        {% if h2.children %}
+        <ul>
+          {% for h3 in h2.children %}
+          <li><a href="#{{ h3.id }}">{{ h3.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </details>
+  {% endif %}
+
+  <div class="blog-post__content">
+    {{ page.content | safe }}
+  </div>
+</article>
+
+{# ── Right: Footnotes panel ── #}
+<aside class="blog-post-layout__footnotes" id="footnotes-panel">
+  {# Populated by JS at runtime #}
+</aside>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+// Relocate footnote definitions to the right panel
+(function() {
+  var content = document.querySelector('.blog-post__content');
+  var panel = document.getElementById('footnotes-panel');
+  if (!content || !panel) return;
+
+  // Zola outputs <div class="footnote-definition"> elements at the end of content
+  var defs = content.querySelectorAll('.footnote-definition');
+  if (defs.length === 0) return;
+
+  var ol = document.createElement('ol');
+  ol.className = 'footnotes-list';
+  defs.forEach(function(def) {
+    var li = document.createElement('li');
+    li.id = def.id;
+    // Copy inner content (skip the <sup> label)
+    Array.from(def.childNodes).forEach(function(node) {
+      if (node.nodeName === 'SUP' && node.classList && node.classList.contains('footnote-definition-label')) return;
+      li.appendChild(node.cloneNode(true));
+    });
+    ol.appendChild(li);
+    def.remove();
+  });
+  panel.appendChild(ol);
+})();
+</script>
+{% if page.extra.katex | default(value=false) %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "\\[", right: "\\]", display: true},
+      {left: "$", right: "$", display: false},
+      {left: "\\(", right: "\\)", display: false}
+    ],
+    throwOnError: false
+  });
+});
+</script>
+{% endif %}
+{% if page.extra.mermaid | default(value=false) %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default' });
+});
+</script>
+{% endif %}
+{% endblock scripts %}

@@ -1,0 +1,313 @@
+// Blog Post — Three-Column Layout
+// =================================
+
+// The layout: [ToC (sticky)] [Article (center)] [Footnotes (right)]
+// On narrow screens: single column, ToC as <details>, footnotes at bottom.
+
+.blog-post-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, var(--w-content)) 220px;
+  gap: var(--sp-5);
+  max-width: calc(220px + var(--w-content) + 220px + var(--sp-5) * 2);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-4);
+  align-items: start;
+
+  // ── Left: ToC ──
+  &__toc {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--sp-5));
+    max-height: calc(100vh - var(--nav-height) - var(--sp-8));
+    overflow-y: auto;
+  }
+
+  // ── Center: Article ──
+  &__article {
+    min-width: 0; // prevent overflow
+  }
+
+  // ── Right: Footnotes ──
+  &__footnotes {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--sp-5));
+    max-height: calc(100vh - var(--nav-height) - var(--sp-8));
+    overflow-y: auto;
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+
+    .footnotes-list {
+      padding-left: var(--sp-4);
+      margin: 0;
+
+      li {
+        margin-bottom: var(--sp-3);
+        line-height: var(--lh-normal);
+      }
+
+      p { margin-bottom: var(--sp-1); }
+    }
+  }
+}
+
+// ── ToC Styling ──
+.toc {
+  &__title {
+    font-size: var(--fs-sm);
+    font-family: var(--f-sans);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-3);
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--fs-sm);
+    font-family: var(--f-sans);
+
+    li {
+      margin-bottom: var(--sp-1);
+    }
+
+    a {
+      color: var(--c-text-muted);
+      text-decoration: none;
+      line-height: var(--lh-tight);
+      display: block;
+      padding: var(--sp-1) 0;
+
+      &:hover {
+        color: var(--c-accent);
+      }
+    }
+
+    ul {
+      padding-left: var(--sp-3);
+      margin: 0;
+      list-style: none;
+    }
+  }
+}
+
+// ── Blog Post Header ──
+.blog-post {
+  &__header {
+    margin-bottom: var(--sp-6);
+
+    h1 {
+      margin-bottom: var(--sp-2);
+    }
+  }
+
+  &__meta {
+    font-family: var(--f-sans);
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-2);
+  }
+
+  &__updated {
+    color: var(--c-text-muted);
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+  }
+
+  &__content {
+    line-height: var(--lh-loose);
+
+    // Footnote references
+    .footnote-reference {
+      font-size: var(--fs-xs);
+      vertical-align: super;
+      line-height: 0;
+
+      a {
+        color: var(--c-accent);
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
+      }
+    }
+
+    img {
+      margin: var(--sp-4) 0;
+      border-radius: var(--radius);
+    }
+  }
+
+  // Mobile ToC
+  &__mobile-toc {
+    display: none;
+    margin-bottom: var(--sp-5);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: var(--sp-3);
+    font-size: var(--fs-sm);
+    font-family: var(--f-sans);
+
+    summary {
+      cursor: pointer;
+      font-weight: var(--fw-medium);
+      color: var(--c-text-muted);
+    }
+
+    ul {
+      list-style: none;
+      padding-left: var(--sp-3);
+      margin: var(--sp-2) 0 0;
+    }
+
+    a {
+      color: var(--c-text-muted);
+      text-decoration: none;
+      &:hover { color: var(--c-accent); }
+    }
+  }
+}
+
+// ── Tag Badge ──
+.tag {
+  font-family: var(--f-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  color: var(--c-text-muted);
+  text-decoration: none;
+  transition: all var(--transition);
+
+  &:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+    text-decoration: none;
+  }
+}
+
+// ── Mermaid ──
+.mermaid-container {
+  margin: var(--sp-5) 0;
+  overflow-x: auto;
+}
+
+// ── Dimmable / Invertible Images ──
+.dimmable-image,
+.invertible-image {
+  max-width: 100%;
+  height: auto;
+}
+
+// Explicit dark toggle
+html[data-theme="dark"] {
+  .invertible-image {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  .dimmable-image {
+    filter: brightness(0.85);
+  }
+}
+
+// System preference fallback
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    .invertible-image {
+      filter: invert(1) hue-rotate(180deg);
+    }
+    .dimmable-image {
+      filter: brightness(0.85);
+    }
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+// ── Responsive: collapse to single column ──
+@media (max-width: 1100px) {
+  .blog-post-layout {
+    grid-template-columns: 1fr;
+    max-width: var(--w-content);
+    padding: var(--sp-6) var(--sp-4);
+
+    &__toc {
+      display: none;
+    }
+
+    &__footnotes {
+      position: static;
+      max-height: none;
+      border-top: 1px solid var(--c-border);
+      padding-top: var(--sp-5);
+      margin-top: var(--sp-5);
+    }
+  }
+
+  .blog-post__mobile-toc {
+    display: block;
+  }
+}
+
+// ── Archive Page ──
+.archive-year {
+  margin-bottom: var(--sp-6);
+
+  h2 {
+    font-size: var(--fs-xl);
+    border-bottom: 1px solid var(--c-border);
+    padding-bottom: var(--sp-2);
+  }
+}
+
+.archive-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  time {
+    flex-shrink: 0;
+    font-family: var(--f-sans);
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+    min-width: 5.5em;
+  }
+
+  a {
+    font-size: var(--fs-base);
+  }
+}
+
+// ── Tags Page ──
+.tags-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-5) 0;
+}
+
+// ── Pagination ──
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--c-border);
+  font-family: var(--f-sans);
+  font-size: var(--fs-sm);
+}

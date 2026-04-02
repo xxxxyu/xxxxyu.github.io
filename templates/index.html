@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ config.extra.author }} — {{ config.extra.position }}{% endblock title %}
+
+{% block content %}
+{# ── Profile Block ── #}
+<div class="profile">
+  <div class="profile__photo">
+    <img src="{{ config.extra.avatar }}" alt="{{ config.extra.author }}">
+  </div>
+  <div class="profile__info">
+    <h1 class="profile__name">{{ config.extra.author }}</h1>
+    <p class="profile__title">{{ config.extra.position }}, <a href="{{ config.extra.affiliation_link }}" target="_blank" rel="noopener">{{ config.extra.affiliation }}</a></p>
+    <div class="profile__bio">
+      {{ section.content | safe }}
+    </div>
+    <ul class="profile__links">
+      {% if config.extra.email %}<li><a href="mailto:{{ config.extra.email }}">Email</a></li>{% endif %}
+      {% if config.extra.github %}<li><a href="{{ config.extra.github }}" target="_blank" rel="noopener">GitHub</a></li>{% endif %}
+      {% if config.extra.google_scholar %}<li><a href="{{ config.extra.google_scholar }}" target="_blank" rel="noopener">Scholar</a></li>{% endif %}
+      {% if config.extra.cv %}<li><a href="{{ config.extra.cv }}" target="_blank" rel="noopener">CV</a></li>{% endif %}
+    </ul>
+  </div>
+</div>
+
+{# ── News (latest 3) ── #}
+<div class="section-heading">
+  <h2>News</h2>
+  <a class="section-heading__more" href="/about/#news">See all &rarr;</a>
+</div>
+<ul class="news-list">
+  <li>
+    <span class="news-list__date">[Mar. 2026]</span>
+    <span>Vec-LUT conditionally accepted to MobiSys 2026.
+      <a href="https://www.arxiv.org/abs/2512.06443" target="_blank" rel="noopener">Paper</a> /
+      <a href="https://github.com/Cipherxzc/vlut.cpp" target="_blank" rel="noopener">Code</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Aug. 2025]</span>
+    <span>"An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint" accepted to EMNLP 2025.
+      <a href="https://arxiv.org/pdf/2504.14350" target="_blank" rel="noopener">Paper</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Jul. 2025]</span>
+    <span>"Squeezer" accepted to TMC.
+      <a href="https://ieeexplore.ieee.org/document/11096018" target="_blank" rel="noopener">Paper</a>
+    </span>
+  </li>
+</ul>
+
+{# ── Selected Publications (featured) ── #}
+{% set pub_data = load_data(path="data/publications.toml") %}
+{% set pubs = pub_data.publications %}
+
+<div class="section-heading">
+  <h2>Selected Publications</h2>
+  <a class="section-heading__more" href="/publications/">See all &rarr;</a>
+</div>
+{% for pub in pubs %}
+{% if pub.featured %}
+<div class="pub-card">
+  {% if pub.image %}
+  <div class="pub-card__img">
+    <img src="{{ pub.image }}" alt="{{ pub.title }}" loading="lazy">
+  </div>
+  {% endif %}
+  <div class="pub-card__body">
+    <h3 class="pub-card__title">{{ pub.title }}</h3>
+    <p class="pub-card__authors">{{ pub.authors | replace(from="Xiangyu Li", to="<strong><u>Xiangyu Li</u></strong>") | safe }}</p>
+    <p class="pub-card__venue">{{ pub.venue }}, {{ pub.year }}{% if pub.notes %} &middot; <em>{{ pub.notes }}</em>{% endif %}</p>
+    <div class="pub-card__links">
+      {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">Paper</a>{% endif %}
+      {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">Code</a>{% endif %}
+      {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+      {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">Page</a>{% endif %}
+      {% if pub.model_url %}<a href="{{ pub.model_url }}" target="_blank" rel="noopener">Model</a>{% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+
+{# ── Latest Posts (latest 3) ── #}
+{% set blog = get_section(path="blog/_index.md") %}
+
+<div class="section-heading">
+  <h2>Latest Posts</h2>
+  <a class="section-heading__more" href="/blog/">See all &rarr;</a>
+</div>
+{% for page in blog.pages | slice(end=3) %}
+<div class="post-preview">
+  <h3><a href="{{ page.permalink }}">{{ page.title }}</a></h3>
+  {% if page.date %}
+  <time datetime="{{ page.date }}">{{ page.date | date(format="%B %e, %Y") }}</time>
+  {% endif %}
+  {% if page.description %}
+  <p>{{ page.description }}</p>
+  {% endif %}
+</div>
+{% endfor %}
+{% endblock content %}

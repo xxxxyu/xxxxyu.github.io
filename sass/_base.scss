@@ -1,0 +1,134 @@
+// Base Reset & Typography
+// =======================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--f-serif);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--f-serif);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--c-text);
+}
+
+h1 { font-size: var(--fs-3xl); margin-bottom: var(--sp-5); }
+h2 { font-size: var(--fs-2xl); margin-bottom: var(--sp-4); }
+h3 { font-size: var(--fs-xl);  margin-bottom: var(--sp-3); }
+h4 { font-size: var(--fs-lg);  margin-bottom: var(--sp-3); }
+
+// Body text
+p {
+  margin-bottom: var(--sp-4);
+}
+
+// Links
+a {
+  color: var(--c-link);
+  text-decoration: none;
+  transition: color var(--transition);
+
+  &:hover {
+    color: var(--c-link-hover);
+    text-decoration: underline;
+  }
+}
+
+// Lists
+ul, ol {
+  margin-bottom: var(--sp-4);
+  padding-left: var(--sp-5);
+}
+
+li {
+  margin-bottom: var(--sp-1);
+}
+
+// Code
+code {
+  font-family: var(--f-mono);
+  font-size: var(--fs-sm);
+  background: var(--c-code-bg);
+  color: var(--c-code-text);
+  padding: 0.15em 0.35em;
+  border-radius: var(--radius);
+}
+
+pre {
+  background: var(--c-code-bg);
+  color: var(--c-code-text);
+  padding: var(--sp-4);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin-bottom: var(--sp-5);
+  line-height: var(--lh-tight);
+
+  code {
+    background: none;
+    padding: 0;
+    font-size: var(--fs-sm);
+  }
+}
+
+// Blockquote
+blockquote {
+  border-left: 3px solid var(--c-accent);
+  padding-left: var(--sp-4);
+  margin: var(--sp-5) 0;
+  color: var(--c-text-muted);
+  font-style: italic;
+}
+
+// Horizontal rule
+hr {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  margin: var(--sp-6) 0;
+}
+
+// Images
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--sp-5);
+  font-size: var(--fs-sm);
+}
+
+th, td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--c-border);
+  text-align: left;
+}
+
+th {
+  font-weight: var(--fw-bold);
+  background: var(--c-bg-alt);
+}

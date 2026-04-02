@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default(value="en") }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+  <meta name="author" content="{{ config.extra.author }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{% block og_title %}{{ config.title }}{% endblock og_title %}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ config.base_url }}">
+
+  {% if config.extra.favicon %}
+  <link rel="icon" href="{{ config.extra.favicon }}">
+  {% endif %}
+
+  <link rel="stylesheet" href="/style.css">
+
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    })();
+  </script>
+
+  {% block head_extra %}{% endblock head_extra %}
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="/">{{ config.extra.author | default(value=config.title) }}</a>
+      <div class="nav__right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+        <ul class="nav__links">
+          <li><a class="nav__link{% if current_path is starting_with("/about") %} nav__link--active{% endif %}" href="/about/">About</a></li>
+          <li><a class="nav__link{% if current_path is starting_with("/publications") %} nav__link--active{% endif %}" href="/publications/">Publications</a></li>
+          <li><a class="nav__link{% if current_path is starting_with("/blog") %} nav__link--active{% endif %}" href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="{% block main_class %}content{% endblock main_class %}">
+    {% block content %}{% endblock content %}
+  </main>
+
+  <footer class="footer">
+    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }}. Built with <a href="https://www.getzola.org/" target="_blank" rel="noopener">Zola</a>.</p>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('theme-toggle');
+      var labels = { light: '☀️ Light', dark: '🌙 Dark', system: '⚙ System' };
+      var cycle = ['light', 'dark', 'system'];
+
+      function current() {
+        return localStorage.getItem('theme') || 'system';
+      }
+
+      function apply(mode) {
+        if (mode === 'system') {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', mode);
+          localStorage.setItem('theme', mode);
+        }
+        btn.textContent = labels[mode];
+      }
+
+      btn.addEventListener('click', function() {
+        var idx = cycle.indexOf(current());
+        apply(cycle[(idx + 1) % 3]);
+      });
+
+      apply(current());
+    })();
+  </script>
+  {% block scripts %}{% endblock scripts %}
+</body>
+</html>

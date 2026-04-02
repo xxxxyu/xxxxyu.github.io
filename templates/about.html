@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}About — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<h1>About</h1>
+
+{{ section.content | safe }}
+
+<h2 id="news">News</h2>
+<ul class="news-list">
+  <li>
+    <span class="news-list__date">[Mar. 2026]</span>
+    <span>Vec-LUT conditionally accepted to MobiSys 2026.
+      <a href="https://www.arxiv.org/abs/2512.06443" target="_blank" rel="noopener">Paper</a> /
+      <a href="https://github.com/Cipherxzc/vlut.cpp" target="_blank" rel="noopener">Code</a> /
+      <a href="https://huggingface.co/collections/XXXXyu/vlutcpp" target="_blank" rel="noopener">Model</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Aug. 2025]</span>
+    <span>"An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint" accepted to EMNLP 2025.
+      <a href="https://arxiv.org/pdf/2504.14350" target="_blank" rel="noopener">Paper</a> /
+      <a href="https://time-is-up.github.io" target="_blank" rel="noopener">Page</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Jul. 2025]</span>
+    <span>"Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling" accepted to TMC.
+      <a href="https://ieeexplore.ieee.org/document/11096018" target="_blank" rel="noopener">Paper</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Nov. 2024]</span>
+    <span>Presented FlexNN at MobiCom 2024, Washington D.C.
+      <a href="https://dl.acm.org/doi/pdf/10.1145/3636534.3649391" target="_blank" rel="noopener">Paper</a> /
+      <a href="https://github.com/xxxxyu/FlexNN" target="_blank" rel="noopener">Code</a> /
+      <a href="https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf" target="_blank" rel="noopener">Slides</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Apr. 2024]</span>
+    <span>FlexNN awarded 4 badges in artifact evaluation.
+      <a href="https://github.com/xxxxyu/FlexNN" target="_blank" rel="noopener">Code</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Jan. 2024]</span>
+    <span>"Personal LLM Agents" survey released.
+      <a href="https://arxiv.org/abs/2401.05459" target="_blank" rel="noopener">Paper</a> /
+      <a href="https://github.com/MobileLLM/Personal_LLM_Agents_Survey" target="_blank" rel="noopener">Page</a>
+    </span>
+  </li>
+  <li>
+    <span class="news-list__date">[Nov. 2023]</span>
+    <span>FlexNN accepted to MobiCom 2024.
+      <a href="https://dl.acm.org/doi/pdf/10.1145/3636534.3649391" target="_blank" rel="noopener">Paper</a>
+    </span>
+  </li>
+</ul>
+
+<h2>Experiences</h2>
+
+<h3>Awards</h3>
+<ul>
+  <li>清华之友-智能产业研究院清智奖学金, 2025.12</li>
+  <li>清华之友-济宁英才奖学金, 2024.11</li>
+</ul>
+
+<h3>Internship</h3>
+<ul>
+  <li>ByteDance, Big Data (Serverless/FaaS) Infrastructure Development, 2021.06–2021.09</li>
+</ul>
+
+<h3>Teaching Assistant</h3>
+<ul>
+  <li>Tsinghua University, Computer Program Design (undergraduate), 2025 Spring &amp; Summer</li>
+  <li>Tsinghua University, Basic Music Theory and Vocal Practice, 2023 Fall</li>
+</ul>
+
+<h3>Others</h3>
+<ul>
+  <li><a href="https://eesast.com" target="_blank" rel="noopener">EESAST</a> (清华大学电子工程系学生科协), 2019.07–2022.06</li>
+</ul>
+{% endblock content %}

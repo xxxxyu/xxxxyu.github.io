@@ -1,0 +1,37 @@
+base_url = "https://xxxxyu.github.io"
+title = "Xiangyu Li"
+description = "Xiangyu Li — Ph.D. student at AIR, Tsinghua University. Research on efficient inference systems and embodied AI."
+default_language = "en"
+
+compile_sass = true
+build_search_index = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+minify_html = false
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+extra_syntaxes_and_themes = []
+smart_punctuation = true
+
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+
+[extra]
+author = "Xiangyu Li"
+position = "Ph.D. Student"
+affiliation = "Institute for AI Industry Research (AIR), Tsinghua University"
+affiliation_link = "https://air.tsinghua.edu.cn/en/"
+avatar = "/img/xiangyu_1.png"
+favicon = "/img/xyu_logo.png"
+email = "lixiangy22@mails.tsinghua.edu.cn"
+github = "https://github.com/xxxxyu"
+google_scholar = "https://scholar.google.com/citations?user=IjoWeIMAAAAJ"
+cv = "/files/cv.pdf"
+
+[[taxonomies]]
+name = "tags"
+feed = true
