@@ -24,30 +24,23 @@
 </div>
 
 {# ── News (latest 3) ── #}
+{% set news_data = load_data(path="data/news.toml") %}
 <div class="section-heading">
   <h2>News</h2>
   <a class="section-heading__more" href="/about/#news">See all &rarr;</a>
 </div>
 <ul class="news-list">
+  {% for item in news_data.news | slice(end=3) %}
   <li>
-    <span class="news-list__date">[Mar. 2026]</span>
-    <span>Vec-LUT conditionally accepted to MobiSys 2026.
-      <a href="https://www.arxiv.org/abs/2512.06443" target="_blank" rel="noopener">Paper</a> /
-      <a href="https://github.com/Cipherxzc/vlut.cpp" target="_blank" rel="noopener">Code</a>
+    <span class="news-list__date">[{{ item.date }}]</span>
+    <span>{{ item.text }}
+      {% for link in item.links %}
+        {% if not loop.first %} / {% endif %}
+        <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+      {% endfor %}
     </span>
   </li>
-  <li>
-    <span class="news-list__date">[Aug. 2025]</span>
-    <span>"An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint" accepted to EMNLP 2025.
-      <a href="https://arxiv.org/pdf/2504.14350" target="_blank" rel="noopener">Paper</a>
-    </span>
-  </li>
-  <li>
-    <span class="news-list__date">[Jul. 2025]</span>
-    <span>"Squeezer" accepted to TMC.
-      <a href="https://ieeexplore.ieee.org/document/11096018" target="_blank" rel="noopener">Paper</a>
-    </span>
-  </li>
+  {% endfor %}
 </ul>
 
 {# ── Selected Publications (featured) ── #}

@@ -1,6 +1,6 @@
 base_url = "https://xxxxyu.github.io"
 title = "Xiangyu Li"
-description = "Xiangyu Li — Ph.D. student at AIR, Tsinghua University. Research on efficient inference systems and embodied AI."
+description = "Xiangyu Li (Ph.D. at AIR, THU)"
 default_language = "en"
 
 compile_sass = true

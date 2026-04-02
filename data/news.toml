@@ -1,0 +1,60 @@
+[[news]]
+date = "Mar. 2026"
+text = "\"OxyGen: Unified KV Cache Management for Vision-Language-Action Models under Multi-Task Parallelism\" released."
+links = [
+  { label = "Paper", url = "https://arxiv.org/abs/2603.14371" },
+  { label = "Code", url = "https://github.com/air-embodied-brain/OxyGen" },
+]
+
+[[news]]
+date = "Mar. 2026"
+text = "\"Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices\" accepted to MobiSys 2026."
+links = [
+  { label = "Paper", url = "https://www.arxiv.org/abs/2512.06443" },
+  { label = "Code", url = "https://github.com/OpenBitSys/vlut.cpp" },
+  { label = "Model", url = "https://huggingface.co/collections/XXXXyu/vlutcpp" },
+]
+
+[[news]]
+date = "Aug. 2025"
+text = "\"An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint\" accepted to EMNLP 2025."
+links = [
+  { label = "Paper", url = "https://arxiv.org/pdf/2504.14350" },
+  { label = "Page", url = "https://time-is-up.github.io" },
+]
+
+[[news]]
+date = "Jul. 2025"
+text = "\"Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling\" accepted to TMC."
+links = [
+  { label = "Paper", url = "https://ieeexplore.ieee.org/document/11096018" },
+]
+
+[[news]]
+date = "Nov. 2024"
+text = "Presented FlexNN at MobiCom 2024, Washington D.C."
+links = [
+  { label = "Paper", url = "https://dl.acm.org/doi/pdf/10.1145/3636534.3649391" },
+  { label = "Code", url = "https://github.com/xxxxyu/FlexNN" },
+  { label = "Slides", url = "https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf" },
+]
+
+[[news]]
+date = "Apr. 2024"
+text = "FlexNN awarded 4 badges in artifact evaluation."
+links = [{ label = "Code", url = "https://github.com/xxxxyu/FlexNN" }]
+
+[[news]]
+date = "Jan. 2024"
+text = "\"Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security\" released."
+links = [
+  { label = "Paper", url = "https://arxiv.org/abs/2401.05459" },
+  { label = "Page", url = "https://github.com/MobileLLM/Personal_LLM_Agents_Survey" },
+]
+
+[[news]]
+date = "Nov. 2023"
+text = "\"FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices\" accepted to MobiCom 2024."
+links = [
+  { label = "Paper", url = "https://dl.acm.org/doi/pdf/10.1145/3636534.3649391" },
+]

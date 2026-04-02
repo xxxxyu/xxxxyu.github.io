@@ -1,10 +1,19 @@
 [[publications]]
+title = "OxyGen: Unified KV Cache Management for Vision-Language-Action Models under Multi-Task Parallelism"
+authors = "Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu"
+venue = "ArXiv preprint"
+year = 2026
+paper_url = "https://www.arxiv.org/abs/2603.14371"
+code_url = "https://github.com/air-embodied-brain/OxyGen"
+featured = true
+
+[[publications]]
 title = "Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices"
 authors = "Xiangyu Li*, Chengyu Yin*, Weijun Wang, Jianyu Wei, Ting Cao, Yunxin Liu"
 venue = "ArXiv preprint"
 year = 2025
 paper_url = "https://www.arxiv.org/abs/2512.06443"
-code_url = "https://github.com/Cipherxzc/vlut.cpp"
+code_url = "https://github.com/OpenBitSys/vlut.cpp"
 model_url = "https://huggingface.co/collections/XXXXyu/vlutcpp"
 notes = "Conditionally Accepted to MobiSys 2026"
 featured = true
