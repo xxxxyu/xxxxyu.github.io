@@ -8,7 +8,7 @@ I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR)](ht
 **I am interested in on-device and physical AI**, and currently focused on algorithm-system co-design toward generalist embodied agents. My previous works are focused on inference system efficiency:
 
 - **[OxyGen](https://arxiv.org/abs/2603.14371):** unified KV cache management for multi-task VLA inference.
-- **[Vec-LUT](https://www.arxiv.org/abs/2512.06443) (MobiSys 2026):** LUT-based mpGeMM kernel for ultra-low-bit LLM inference.
+- **[Vec-LUT](https://www.arxiv.org/abs/2512.06443) (MobiSys 2026):** LUT-based kernel for ultra-low-bit LLM inference.
 - **[FlexNN](https://dl.acm.org/doi/pdf/10.1145/3636534.3649391) (MobiCom 2024):** memory-adaptive DNN inference on edge devices.
 
 I am looking for opportunities in Embodied AI & LLM Infra.

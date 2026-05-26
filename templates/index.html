@@ -33,7 +33,7 @@
   {% for item in news_data.news | slice(end=3) %}
   <li>
     <span class="news-list__date">[{{ item.date }}]</span>
-    <span>{{ item.text }}
+    <span>{{ item.text | markdown(inline=true) | safe }}
       {% for link in item.links %}
         {% if not loop.first %} / {% endif %}
         <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>

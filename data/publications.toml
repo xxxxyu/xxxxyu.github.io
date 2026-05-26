@@ -1,5 +1,13 @@
 [[publications]]
-title = "OxyGen: Unified KV Cache Management for Vision-Language-Action Models under Multi-Task Parallelism"
+title = "EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents"
+authors = "Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, Qianxi Zhang, Hao Wen, Xiangyu Li, Weijun Wang, Kun Li, Yunxin Liu, Haipeng Dai, Wei Wang, Ting Cao"
+venue = "ArXiv preprint"
+year = 2026
+paper_url = "https://www.arxiv.org/abs/2605.10332"
+featured = false
+
+[[publications]]
+title = "OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism"
 authors = "Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu"
 venue = "ArXiv preprint"
 year = 2026
@@ -10,12 +18,12 @@ featured = true
 [[publications]]
 title = "Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices"
 authors = "Xiangyu Li*, Chengyu Yin*, Weijun Wang, Jianyu Wei, Ting Cao, Yunxin Liu"
-venue = "ArXiv preprint"
-year = 2025
+venue = "ACM MobiSys 2026"
+year = 2026
 paper_url = "https://www.arxiv.org/abs/2512.06443"
 code_url = "https://github.com/OpenBitSys/vlut.cpp"
 model_url = "https://huggingface.co/collections/XXXXyu/vlutcpp"
-notes = "Conditionally Accepted to MobiSys 2026"
+notes = "Featured Paper (On-Device AI), Artifact Evaluated (Results Reproduced)"
 featured = true
 
 [[publications]]
@@ -23,7 +31,7 @@ title = "An Empirical Study of LLM Reasoning Ability Under Strict Output Length 
 authors = "Yi Sun, Han Wang, Jiaqiang Li, Jiacheng Liu, Xiangyu Li, Hao Wen, Yizhen Yuan, Huiwen Zheng, Yan Liang, Yuanchun Li, Yunxin Liu"
 venue = "EMNLP 2025"
 year = 2025
-paper_url = "https://arxiv.org/pdf/2504.14350"
+paper_url = "https://arxiv.org/abs/2504.14350"
 page_url = "https://time-is-up.github.io"
 featured = false
 
@@ -38,23 +46,23 @@ featured = false
 [[publications]]
 title = "FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices"
 authors = "Xiangyu Li, Yuanchun Li, Yuanzhe Li, Ting Cao, Yunxin Liu"
-venue = "MobiCom 2024"
+venue = "ACM MobiCom 2024"
 year = 2024
-paper_url = "https://dl.acm.org/doi/pdf/10.1145/3636534.3649391"
+paper_url = "https://dl.acm.org/doi/10.1145/3636534.3649391"
 slides_url = "https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf"
 code_url = "https://github.com/xxxxyu/FlexNN"
-notes = "Oral Presentation, Artifact Evaluated"
+notes = "Artifact Evaluated (Results Replicated)"
 image = "/img/publication/flexnn.png"
 featured = true
 
 [[publications]]
 title = "Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security"
-authors = "Yuanchun Li, Hao Wen, Weijun Wang, Xiangyu Li, Yizhen Yuan, Guohong Liu, Jiacheng Liu, Wenxing Xu, Xiang Wang, Yi Sun, Rui Kong, Yile Wang, Hanfei Geng, Jian Luan, Xuefeng Jin, Zilong Ye, Guanjing Xiong, Fan Zhang, Xiang Li, Mengwei Xu, Zhijun Li, Peng Li, Yang Liu, Ya-Qin Zhang, Yunxin Liu"
+authors = "Yuanchun Li†, Hao Wen‡, Weijun Wang‡, Xiangyu Li‡, Yizhen Yuan‡, Guohong Liu‡, Jiacheng Liu, Wenxing Xu, Xiang Wang, Yi Sun, Rui Kong, Yile Wang, Hanfei Geng, Jian Luan, Xuefeng Jin, Zilong Ye, Guanjing Xiong, Fan Zhang, Xiang Li, Mengwei Xu, Zhijun Li, Peng Li, Yang Liu, Ya-Qin Zhang, Yunxin Liu"
 venue = "ArXiv preprint"
 year = 2024
-paper_url = "https://arxiv.org/pdf/2401.05459"
+paper_url = "https://arxiv.org/abs/2401.05459"
 code_url = "https://github.com/MobileLLM/Personal_LLM_Agents_Survey"
-notes = 'Survey, "Efficiency" Section Lead'
+notes = 'Survey & Position, "Efficiency" Section Lead'
 image = "/img/publication/personal_llm_agents.png"
 featured = true
 
@@ -63,7 +71,7 @@ title = "ChainStream: An LLM-based Framework for Unified Synthetic Sensing"
 authors = "Jiacheng Liu, Yuanchun Li, Liangyan Li, Yi Sun, Hao Wen, Xiangyu Li, Yao Guo, Yunxin Liu"
 venue = "ArXiv preprint"
 year = 2024
-paper_url = "https://arxiv.org/pdf/2412.15240"
+paper_url = "https://arxiv.org/abs/2412.15240"
 code_url = "https://github.com/MobileLLM/ChainStream"
 page_url = "https://mobilellm.github.io/ChainStream"
 featured = false
@@ -73,5 +81,5 @@ title = "DIMMining: Pruning-Efficient and Parallel Graph Mining on Near-Memory-C
 authors = "Guohao Dai, Zhenhua Zhu, Tianyu Fu, Chiyue Wei, Bangyan Wang, Xiangyu Li, Yuan Xie, Huazhong Yang, Yu Wang"
 venue = "ISCA 2022"
 year = 2022
-paper_url = "https://dl.acm.org/doi/pdf/10.1145/3470496.3527388"
+paper_url = "https://dl.acm.org/doi/10.1145/3470496.3527388"
 featured = false

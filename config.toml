@@ -10,10 +10,11 @@ feed_filenames = ["atom.xml"]
 minify_html = false
 
 [markdown]
-highlight_code = true
-highlight_theme = "css"
-extra_syntaxes_and_themes = []
 smart_punctuation = true
+
+[markdown.highlighting]
+light_theme = "github-light-default"
+dark_theme = "github-dark-default"
 
 [slugify]
 paths = "on"
