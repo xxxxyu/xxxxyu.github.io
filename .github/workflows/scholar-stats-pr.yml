@@ -1,0 +1,45 @@
+name: Scholar Stats Refresh PR
+
+on:
+  schedule:
+    - cron: "13 9 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install scholarly
+        run: pip install scholarly
+
+      - name: Refresh Google Scholar stats
+        timeout-minutes: 2
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+        run: timeout 60 python -u scripts/update_scholar_stats.py
+
+      - name: Open or update PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/scholar-stats-refresh
+          title: "chore: refresh Google Scholar stats"
+          commit-message: "chore: refresh Google Scholar stats"
+          body: |
+            Automated monthly refresh of `static/gs/*.json` fallback values.
+
+            These files act as fallback citation counts for deploys that fail to fetch from Google Scholar in real time. Merging keeps the fallback baseline current.
+
+            Triggered by `.github/workflows/scholar-stats-pr.yml`.
+          add-paths: static/gs/**
+          delete-branch: true

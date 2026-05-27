@@ -47,6 +47,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--sp-2);
+    align-items: center;
 
     a {
       font-family: var(--f-sans);
@@ -63,6 +64,23 @@
         color: var(--c-surface);
         border-color: var(--c-accent);
         text-decoration: none;
+      }
+    }
+
+    a.pub-card__citations {
+      padding: 0;
+      border: none;
+      background: none;
+      display: inline-flex;
+      align-items: center;
+
+      &:hover {
+        background: none;
+      }
+
+      img {
+        display: block;
+        height: 20px;
       }
     }
   }

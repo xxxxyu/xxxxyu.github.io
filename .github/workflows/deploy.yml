@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "7 8 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -19,6 +21,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install scholarly (fallback when SERPAPI_KEY absent)
+        if: github.event_name != 'push'
+        run: pip install scholarly
+
+      - name: Refresh Google Scholar stats (best-effort)
+        if: github.event_name != 'push'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+        run: timeout 60 python -u scripts/update_scholar_stats.py || echo "Scholar fetch failed or timed out; using committed fallback values."
 
       - name: Install Zola
         run: |

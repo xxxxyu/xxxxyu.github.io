@@ -122,6 +122,9 @@
   --c-link:        #1a5276;
   --c-link-hover:  #154360;
 
+  // Highlight (for emphasizing words/phrases in body text)
+  --c-highlight:   #c0392b;
+
   // Code
   --c-code-bg:     #f5f4f0;
   --c-code-text:   #3c3836;
@@ -186,6 +189,8 @@ html[data-theme="dark"] {
   --c-link:        #5dade2;
   --c-link-hover:  #85c1e9;
 
+  --c-highlight:   #ff7b7b;
+
   --c-code-bg:     #2d2d2d;
   --c-code-text:   #e0ddd8;
 }
@@ -204,6 +209,8 @@ html[data-theme="dark"] {
     --c-accent-hover:#85c1e9;
     --c-link:        #5dade2;
     --c-link-hover:  #85c1e9;
+
+    --c-highlight:   #ff7b7b;
 
     --c-code-bg:     #2d2d2d;
     --c-code-text:   #e0ddd8;

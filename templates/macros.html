@@ -1,0 +1,46 @@
+{% macro pub_card(pub) %}
+{% set authors = pub.authors
+  | replace(from="*", to="<sup>*</sup>")
+  | replace(from="†", to="<sup>†</sup>")
+  | replace(from="‡", to="<sup>‡</sup>")
+  | replace(from="§", to="<sup>§</sup>")
+  | replace(from="Xiangyu Li", to="<strong><u>Xiangyu Li</u></strong>") %}
+<div class="pub-card{% if not pub.image %} pub-card--compact{% endif %}">
+  {% if pub.image %}
+  <div class="pub-card__img">
+    <img src="{{ pub.image }}" alt="{{ pub.title }}" loading="lazy">
+  </div>
+  {% endif %}
+  <div class="pub-card__body">
+    <h3 class="pub-card__title">{{ pub.title | markdown(inline=true) | safe }}</h3>
+    <p class="pub-card__authors">{{ authors | safe }}</p>
+    {%- set venue = pub.venue | default(value="") -%}
+    {%- set year = pub.year | default(value="") | as_str -%}
+    {%- set notes = pub.notes | default(value="") -%}
+    {%- set has_venue = venue != "" -%}
+    {%- set has_year = year != "" -%}
+    {%- set has_notes = notes != "" -%}
+    {% if has_venue or has_year or has_notes %}
+    <p class="pub-card__venue">
+      {%- if has_venue %}{{ venue | markdown(inline=true) | safe }}{% endif -%}
+      {%- if has_venue and has_year %}, {% endif -%}
+      {%- if has_year %}{{ year }}{% endif -%}
+      {%- if has_notes %}{% if has_venue or has_year %} &middot; {% endif %}<em>{{ notes | markdown(inline=true) | safe }}</em>{% endif -%}
+    </p>
+    {% endif %}
+    <div class="pub-card__links">
+      {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">Paper</a>{% endif %}
+      {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">Code</a>{% endif %}
+      {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+      {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">Page</a>{% endif %}
+      {% if pub.model_url %}<a href="{{ pub.model_url }}" target="_blank" rel="noopener">Model</a>{% endif %}
+      {% if pub.gs_id %}
+        {%- set gs_data = load_data(path="static/gs/" ~ pub.gs_id ~ ".json", required=false) -%}
+        {%- if gs_data -%}
+        <a class="pub-card__citations" href="https://scholar.google.com/scholar?q={{ pub.title | urlencode }}" target="_blank" rel="noopener" aria-label="Google Scholar citations"><img src="https://img.shields.io/badge/citations-{{ gs_data.message }}-1a5276?logo=Google%20Scholar&logoColor=white&style=flat" alt="Citations: {{ gs_data.message }}" loading="lazy"></a>
+        {%- endif -%}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endmacro pub_card %}

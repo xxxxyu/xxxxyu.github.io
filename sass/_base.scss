@@ -133,3 +133,10 @@ th {
   font-weight: var(--fw-bold);
   background: var(--c-bg-alt);
 }
+
+// Generic inline highlight — apply via <span class="highlight"> or
+// <strong class="highlight">. Color only; weight inherits from context
+// (e.g. wrap in <strong> for bold-red).
+.highlight {
+  color: var(--c-highlight);
+}
