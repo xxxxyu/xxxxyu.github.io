@@ -131,7 +131,7 @@
 
   // ---------- Typography ----------
   --f-serif:       "Libre Baskerville", "Noto Serif SC", "Source Serif 4", Georgia, "Times New Roman", serif;
-  --f-sans:        "Dobra", "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --f-sans:        "Dobra Book", "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --f-mono:        "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
 
   --fs-xs:   0.75rem;   // 12px
@@ -173,6 +173,10 @@
   --shadow-sm:  0 1px 2px rgba(0,0,0,0.06);
   --shadow-md:  0 2px 8px rgba(0,0,0,0.08);
   --transition: 0.2s ease;
+
+  // Unified spacing around bullet separators (used by .profile__links,
+  // .news-list, .pub-card, .nav__links). Tune here to scale all dots at once.
+  --bullet-gap: var(--sp-3);
 }
 
 // ---------- Dark Mode (explicit toggle) ----------

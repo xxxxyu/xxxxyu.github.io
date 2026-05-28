@@ -1,5 +1,5 @@
 [[news]]
-date = 'May 2026'
+date = '2026/05'
 text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
 links = [
   { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
@@ -8,7 +8,7 @@ links = [
 ]
 
 [[news]]
-date = 'May 2026'
+date = '2026/05'
 text = '**OxyGen** updated: released [ArXiv v2](https://arxiv.org/abs/2603.14371), and added PyTorch support (previously JAX-only) for on-board deployment (e.g., on Jetson AGX Thor).'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
@@ -16,19 +16,19 @@ links = [
 ]
 
 [[news]]
-date = 'May 2026'
+date = '2026/05'
 text = '*EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents* released.'
 links = [{ label = 'Paper', url = 'https://arxiv.org/abs/2605.10332' }]
 
 [[news]]
-date = 'Apr. 2026'
+date = '2026/04'
 text = '*Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment* (short paper) accepted to the **Rising Stars Forum of ACM MobiSys 2026**.'
 links = [
   # { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
 ]
 
 [[news]]
-date = 'Mar. 2026'
+date = '2026/03'
 text = '*OxyGen: Unified KV Cache Management for Vision-Language-Action Models under Multi-Task Parallelism* released.'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
@@ -36,7 +36,7 @@ links = [
 ]
 
 [[news]]
-date = 'Mar. 2026'
+date = '2026/03'
 text = '*Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices* accepted to **ACM MobiSys 2026**.'
 links = [
   { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
@@ -45,7 +45,7 @@ links = [
 ]
 
 [[news]]
-date = 'Aug. 2025'
+date = '2025/08'
 text = '*An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint* accepted to **EMNLP 2025**. Congrats to [Yi Sun](https://scholar.google.com/citations?user=8YHqdcMAAAAJ).'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2504.14350' },
@@ -53,14 +53,14 @@ links = [
 ]
 
 [[news]]
-date = 'Jul. 2025'
+date = '2025/07'
 text = '*Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling* accepted to **IEEE TMC**. Congrats to Xiang Wang.'
 links = [
   { label = 'Paper', url = 'https://ieeexplore.ieee.org/document/11096018' },
 ]
 
 # [[news]]
-# date = 'Nov. 2024'
+# date = '2024/11'
 # text = 'Presented FlexNN at **ACM MobiCom 2024**, Washington D.C.'
 # links = [
 #   { label = 'Paper', url = 'https://dl.acm.org/doi/pdf/10.1145/3636534.3649391' },
@@ -69,12 +69,12 @@ links = [
 # ]
 
 # [[news]]
-# date = 'Apr. 2024'
+# date = '2024/04'
 # text = 'FlexNN awarded **4 badges** in artifact evaluation.'
 # links = [{ label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' }]
 
 [[news]]
-date = 'Jan. 2024'
+date = '2024/01'
 text = '*Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security* (survey & position paper) released.'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2401.05459' },
@@ -83,7 +83,7 @@ links = [
 ]
 
 [[news]]
-date = 'Nov. 2023'
+date = '2023/11'
 text = '*FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices* accepted to **ACM MobiCom 2024**.'
 links = [
   { label = 'Paper', url = 'https://dl.acm.org/doi/pdf/10.1145/3636534.3649391' },

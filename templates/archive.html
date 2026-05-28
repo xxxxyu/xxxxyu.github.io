@@ -23,7 +23,7 @@
     {% for page in pages %}
     {% if page.date | date(format="%Y") == year %}
     <li>
-      <time datetime="{{ page.date }}">{{ page.date | date(format="%m-%d") }}</time>
+      <time datetime="{{ page.date }}">{{ page.date | date(format="%m/%d") }}</time>
       <a href="{{ page.permalink }}">{{ page.title }}</a>
     </li>
     {% endif %}

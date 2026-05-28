@@ -1,0 +1,13 @@
+// SCSS Placeholders & Mixins
+// ===========================
+
+// Reusable bullet separator dot. Extenders set their own margin to position it.
+// Pseudo-element extenders must also declare `content: ""`.
+%bullet-sep {
+  display: inline-block;
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
+  background: var(--c-text-muted);
+  vertical-align: middle;
+}

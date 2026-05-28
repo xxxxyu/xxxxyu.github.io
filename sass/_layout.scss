@@ -43,15 +43,21 @@
 
   &__links {
     display: flex;
-    gap: var(--sp-5);
+    gap: var(--bullet-gap);
     list-style: none;
     margin: 0;
     padding: 0;
+
+    li:not(:last-child)::after {
+      content: "";
+      @extend %bullet-sep;
+      margin-left: var(--bullet-gap);
+    }
   }
 
   &__link {
     font-family: var(--f-sans);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-md);
     font-weight: var(--fw-medium);
     color: var(--c-text-muted);
     text-decoration: none;
@@ -78,6 +84,60 @@
   max-width: var(--w-wide);
 }
 
+// ---------- Prose Rhythm ----------
+// Block-level spacing for rendered Markdown. `:where()` keeps specificity at 0
+// for the inner element so component classes (e.g. .post-preview h2,
+// .profile__name) still win without !important.
+:where(.content, .blog-post__content) {
+  h1 { margin-bottom: var(--sp-5); }
+  h2 { margin-bottom: var(--sp-4); }
+  h3 { margin-bottom: var(--sp-3); }
+  h4 { margin-bottom: var(--sp-3); }
+
+  p { margin-bottom: var(--sp-4); }
+
+  ul, ol {
+    margin-bottom: var(--sp-4);
+    padding-left: var(--sp-5);
+  }
+
+  li { margin-bottom: var(--sp-1); }
+
+  pre { margin-bottom: var(--sp-5); }
+
+  blockquote {
+    border-left: 3px solid var(--c-accent);
+    padding-left: var(--sp-4);
+    margin: var(--sp-5) 0;
+    color: var(--c-text-muted);
+    font-style: italic;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--c-border);
+    margin: var(--sp-6) 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--sp-5);
+    font-size: var(--fs-sm);
+  }
+
+  th, td {
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+  }
+
+  th {
+    font-weight: var(--fw-bold);
+    background: var(--c-bg-alt);
+  }
+}
+
 // ---------- Footer ----------
 .footer {
   border-top: 1px solid var(--c-border);
@@ -96,9 +156,10 @@
 // ---------- Section Headings ----------
 .section-heading {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--sp-5);
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-1);
 
   h2 {
     margin-bottom: 0;
@@ -106,7 +167,7 @@
 
   &__more {
     font-family: var(--f-sans);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-md);
     color: var(--c-text-muted);
     &:hover { color: var(--c-accent); }
   }
@@ -142,7 +203,7 @@
       gap: var(--sp-4);
     }
     &__links {
-      gap: var(--sp-4);
+      gap: var(--bullet-gap);
     }
     &__link {
       font-size: var(--fs-xs);

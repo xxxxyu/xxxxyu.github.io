@@ -46,10 +46,10 @@
     <h1>{{ page.title }}</h1>
     <div class="blog-post__meta">
       {% if page.date %}
-      <time datetime="{{ page.date }}">{{ page.date | date(format="%B %e, %Y") }}</time>
+      <time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>
       {% endif %}
       {% if page.updated and page.updated != page.date %}
-      <span class="blog-post__updated">(updated {{ page.updated | date(format="%B %e, %Y") }})</span>
+      <span class="blog-post__updated">(updated {{ page.updated | date(format="%Y/%m/%d") }})</span>
       {% endif %}
     </div>
     {% if page.taxonomies.tags %}

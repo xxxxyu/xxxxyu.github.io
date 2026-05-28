@@ -3,3 +3,4 @@ public/
 *.swp
 .claude
 .venv-scholar/
+__pycache__/
