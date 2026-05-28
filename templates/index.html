@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "macros.html" as pubmacros %}
 
-{% block title %}{{ config.extra.author }} — {{ config.extra.position }}{% endblock title %}
+{% block title %}{{ config.title }} — {{ config.description }}{% endblock title %}
 
 {% block content %}
 {# ── Profile Block ── #}
@@ -52,7 +52,7 @@
 {% set pubs = pub_data.publications %}
 
 <div class="section-heading">
-  <h2>Selected Publications</h2>
+  <h2>Selected Papers</h2>
   <a class="section-heading__more" href="/publications/">See all &rarr;</a>
 </div>
 {% for pub in pubs %}

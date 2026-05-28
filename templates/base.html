@@ -22,9 +22,11 @@
   <script>
     (function() {
       var t = localStorage.getItem('theme');
-      if (t === 'dark' || t === 'light') {
-        document.documentElement.setAttribute('data-theme', t);
+      var mode = (t === 'dark' || t === 'light') ? t : 'system';
+      if (mode !== 'system') {
+        document.documentElement.setAttribute('data-theme', mode);
       }
+      document.documentElement.setAttribute('data-theme-mode', mode);
     })();
   </script>
 
@@ -35,12 +37,35 @@
     <div class="nav__inner">
       <a class="nav__brand" href="/">{{ config.extra.author | default(value=config.title) }}</a>
       <div class="nav__right">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
         <ul class="nav__links">
           <li><a class="nav__link{% if current_path is starting_with("/about") %} nav__link--active{% endif %}" href="/about/">About</a></li>
-          <li><a class="nav__link{% if current_path is starting_with("/publications") %} nav__link--active{% endif %}" href="/publications/">Publications</a></li>
+          <li><a class="nav__link{% if current_path is starting_with("/publications") %} nav__link--active{% endif %}" href="/publications/">Papers</a></li>
           <li><a class="nav__link{% if current_path is starting_with("/blog") %} nav__link--active{% endif %}" href="/blog/">Blog</a></li>
         </ul>
+        <div class="nav__icons">
+          {% if config.build_search_index %}
+          <button class="icon-btn" id="search-button" type="button" aria-label="Search" title="Search (Ctrl/Cmd + K)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+          {% endif %}
+          <button class="icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+            <svg class="theme-icon theme-icon--light" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+            <svg class="theme-icon theme-icon--dark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="theme-icon theme-icon--system" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="13" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -49,14 +74,40 @@
     {% block content %}{% endblock content %}
   </main>
 
+  {% if config.build_search_index %}
+  <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" hidden>
+    <div class="search-modal__inner" role="document">
+      <div class="search-modal__bar">
+        <svg class="search-modal__icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search..." aria-label="Search query" aria-controls="search-results" />
+        <button class="search-modal__close" id="search-close" type="button" aria-label="Close search">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-modal__results" id="search-results" role="listbox" aria-label="Search results"></div>
+      <div class="search-modal__hint">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> open</span>
+        <span><kbd>Esc</kbd> close</span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <footer class="footer">
-    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }}. Built with <a href="https://www.getzola.org/" target="_blank" rel="noopener">Zola</a>.</p>
+    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }}. Migrated and vibed from <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">Minimal Light</a> and <a href="https://github.com/welpo/tabi" target="_blank" rel="noopener">Tabi</a>.
+    Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
   </footer>
 
   <script>
     (function() {
       var btn = document.getElementById('theme-toggle');
-      var labels = { light: '☀️ Light', dark: '🌙 Dark', system: '⚙ System' };
       var cycle = ['light', 'dark', 'system'];
 
       function current() {
@@ -71,17 +122,21 @@
           document.documentElement.setAttribute('data-theme', mode);
           localStorage.setItem('theme', mode);
         }
-        btn.textContent = labels[mode];
+        document.documentElement.setAttribute('data-theme-mode', mode);
+        btn.setAttribute('aria-label', 'Theme: ' + mode + ' (click to change)');
       }
 
       btn.addEventListener('click', function() {
         var idx = cycle.indexOf(current());
-        apply(cycle[(idx + 1) % 3]);
+        apply(cycle[(idx + 1) % cycle.length]);
       });
 
       apply(current());
     })();
   </script>
+  {% if config.build_search_index %}
+  <script defer src="{{ get_url(path='js/search.js') | safe }}"></script>
+  {% endif %}
   {% block scripts %}{% endblock scripts %}
 </body>
 </html>

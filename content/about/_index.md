@@ -11,6 +11,4 @@ I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR)](ht
 - **[Vec-LUT](https://www.arxiv.org/abs/2512.06443) (MobiSys 2026):** LUT-based kernel for ultra-low-bit LLM inference.
 - **[FlexNN](https://dl.acm.org/doi/pdf/10.1145/3636534.3649391) (MobiCom 2024):** memory-adaptive DNN inference on edge devices.
 
-I am looking for opportunities in Embodied AI & LLM Infra.
-
 Feel free to email me: [lixiangy22@mails.tsinghua.edu.cn](mailto:lixiangy22@mails.tsinghua.edu.cn).

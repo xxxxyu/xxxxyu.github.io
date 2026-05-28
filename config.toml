@@ -1,13 +1,20 @@
 base_url = "https://xxxxyu.github.io"
 title = "Xiangyu Li"
-description = "Xiangyu Li (Ph.D. at AIR, THU)"
+description = "Ph.D. at AIR, THU"
 default_language = "en"
 
 compile_sass = true
-build_search_index = false
+build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = false
+
+[search]
+index_format = "elasticlunr_json"
+include_title = true
+include_description = true
+include_path = true
+include_content = true
 
 [markdown]
 smart_punctuation = true
@@ -23,8 +30,8 @@ anchors = "on"
 
 [extra]
 author = "Xiangyu Li"
-position = "Ph.D. Student"
-affiliation = "Institute for AI Industry Research (AIR), Tsinghua University"
+position = "Ph.D. Candidate"
+affiliation = "AIR, Tsinghua University"
 affiliation_link = "https://air.tsinghua.edu.cn/en/"
 avatar = "/img/xiangyu_1.png"
 favicon = "/img/xyu_logo.png"

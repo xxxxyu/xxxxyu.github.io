@@ -1,4 +1,4 @@
 +++
-title = "Publications"
+title = "Papers"
 template = "publications.html"
 +++

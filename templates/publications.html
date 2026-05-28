@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% import "macros.html" as pubmacros %}
 
-{% block title %}Publications — {{ config.title }}{% endblock title %}
+{% block title %}Papers — {{ config.title }}{% endblock title %}
 
 {% block content %}
-<h1>Publications</h1>
+<h1>Papers</h1>
 
 {% set pub_data = load_data(path="data/publications.toml") %}
 {% set pubs = pub_data.publications %}

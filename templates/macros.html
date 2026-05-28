@@ -12,7 +12,7 @@
   </div>
   {% endif %}
   <div class="pub-card__body">
-    <h3 class="pub-card__title">{{ pub.title | markdown(inline=true) | safe }}{% if pub.gs_id %}
+    <h3 class="pub-card__title">{% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{{ pub.title | markdown(inline=true) | safe }}</a>{% else %}{{ pub.title | markdown(inline=true) | safe }}{% endif %}{% if pub.gs_id %}
       {%- set gs_data = load_data(path="static/gs/" ~ pub.gs_id ~ ".json", required=false) -%}
       {%- if gs_data -%}
       <a class="pub-card__citations" href="https://scholar.google.com/scholar?q={{ pub.title | urlencode }}" target="_blank" rel="noopener" aria-label="Google Scholar citations"><img src="https://img.shields.io/badge/citations-{{ gs_data.message }}-1a5276?logo=Google%20Scholar&logoColor=white&style=flat" alt="Citations: {{ gs_data.message }}" loading="lazy"></a>

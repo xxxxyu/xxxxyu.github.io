@@ -116,8 +116,29 @@
   &__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sp-2);
+    gap: var(--bullet-gap);
     margin-top: var(--sp-2);
+    font-family: var(--f-sans);
+    font-size: var(--fs-sm);
+
+    .tag {
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      font-size: inherit;
+      color: var(--c-text-muted);
+
+      &:hover {
+        color: var(--c-accent);
+        border-color: transparent;
+      }
+    }
+
+    .tag + .tag::before {
+      content: "";
+      @extend %bullet-sep;
+      margin-right: var(--bullet-gap);
+    }
   }
 
   &__content {
