@@ -2,7 +2,7 @@
 date = '2026/05'
 text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
 links = [
-  { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
   { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
   { label = 'Model', url = 'https://huggingface.co/collections/XXXXyu/vlutcpp' },
 ]
@@ -24,7 +24,7 @@ links = [{ label = 'Paper', url = 'https://arxiv.org/abs/2605.10332' }]
 date = '2026/04'
 text = '*Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment* (short paper) accepted to the **Rising Stars Forum of ACM MobiSys 2026**.'
 links = [
-  # { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
+  # { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
 ]
 
 [[news]]
@@ -39,7 +39,7 @@ links = [
 date = '2026/03'
 text = '*Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices* accepted to **ACM MobiSys 2026**.'
 links = [
-  { label = 'Paper', url = 'https://www.arxiv.org/abs/2512.06443' },
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
   { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
   { label = 'Model', url = 'https://huggingface.co/collections/XXXXyu/vlutcpp' },
 ]
@@ -63,7 +63,7 @@ links = [
 # date = '2024/11'
 # text = 'Presented FlexNN at **ACM MobiCom 2024**, Washington D.C.'
 # links = [
-#   { label = 'Paper', url = 'https://dl.acm.org/doi/pdf/10.1145/3636534.3649391' },
+#   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3636534.3649391' },
 #   { label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' },
 #   { label = 'Slides', url = 'https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf' },
 # ]
@@ -86,7 +86,7 @@ links = [
 date = '2023/11'
 text = '*FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices* accepted to **ACM MobiCom 2024**.'
 links = [
-  { label = 'Paper', url = 'https://dl.acm.org/doi/pdf/10.1145/3636534.3649391' },
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3636534.3649391' },
   { label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' },
   { label = 'Slides', url = 'https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf' },
 ]

@@ -3,7 +3,7 @@ title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
 authors = 'Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, Qianxi Zhang, Hao Wen, Xiangyu Li, Weijun Wang, Kun Li, Yunxin Liu, Haipeng Dai, Wei Wang, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
-paper_url = 'https://www.arxiv.org/abs/2605.10332'
+paper_url = 'https://arxiv.org/abs/2605.10332'
 featured = false
 
 [[publications]]
@@ -11,7 +11,7 @@ title = 'OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task 
 authors = 'Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu'
 venue = 'ArXiv preprint'
 year = 2026
-paper_url = 'https://www.arxiv.org/abs/2603.14371'
+paper_url = 'https://arxiv.org/abs/2603.14371'
 code_url = 'https://github.com/air-embodied-brain/OxyGen'
 featured = true
 
@@ -21,7 +21,7 @@ authors = 'Xiangyu Li*, Chengyu Yin*, Weijun Wang, Jianyu Wei, Ting Cao, Yunxin 
 venue = 'ACM MobiSys 2026'
 # year = 2026
 notes = '<strong class="highlight">Featured Paper</strong> [(On-Device AI)](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai), [Results Reproduced @AE](https://www.acm.org/publications/policies/artifact-review-and-badging-current)'
-paper_url = 'https://www.arxiv.org/abs/2512.06443'
+paper_url = 'https://dl.acm.org/doi/10.1145/3745756.3809200'
 code_url = 'https://github.com/OpenBitSys/vlut.cpp'
 model_url = 'https://huggingface.co/collections/XXXXyu/vlutcpp'
 featured = true
