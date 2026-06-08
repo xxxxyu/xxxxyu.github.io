@@ -66,7 +66,7 @@
     line-height: 1;
     font-family: var(--f-sans);
     font-size: var(--fs-md);
-    font-weight: var(--fw-medium);
+    font-weight: var(--fw-sans-medium);
     color: var(--c-text-muted);
     text-decoration: none;
     letter-spacing: 0.02em;
@@ -154,6 +154,7 @@
   color: var(--c-text-muted);
   font-size: var(--fs-sm);
   font-family: var(--f-sans);
+  font-weight: var(--fw-sans-normal);
 
   a {
     color: var(--c-text-muted);
@@ -176,6 +177,7 @@
   &__more {
     font-family: var(--f-sans);
     font-size: var(--fs-md);
+    font-weight: var(--fw-sans-normal);
     color: var(--c-text-muted);
     &:hover { color: var(--c-accent); }
   }
@@ -268,6 +270,7 @@ body.search-open { overflow: hidden; }
     background: transparent;
     font-family: var(--f-sans);
     font-size: var(--fs-md);
+    font-weight: var(--fw-sans-normal);
     color: var(--c-text);
     outline: none;
     padding: var(--sp-2) 0;
@@ -357,6 +360,7 @@ body.search-open { overflow: hidden; }
     background: var(--c-bg-alt);
     font-family: var(--f-sans);
     font-size: var(--fs-xs);
+    font-weight: var(--fw-sans-normal);
     color: var(--c-text-muted);
 
     kbd {

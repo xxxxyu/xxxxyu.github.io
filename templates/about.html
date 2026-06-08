@@ -26,7 +26,19 @@
   {% endfor %}
 </ul>
 
-<h2>Experiences</h2>
-{% set exp = load_data(path="data/experiences.md", format="plain") %}
-{{ exp | markdown | safe }}
+<section class="about-section" aria-labelledby="experiences">
+  <h2 id="experiences">Experiences</h2>
+  {% set exp = load_data(path="data/experiences.md", format="plain") %}
+  <div class="about-detail about-detail--experiences">
+    {{ exp | markdown | safe }}
+  </div>
+</section>
+
+<section class="about-section" aria-labelledby="skills">
+  <h2 id="skills">Skills</h2>
+  {% set skills = load_data(path="data/skills.md", format="plain") %}
+  <div class="about-detail about-detail--skills">
+    {{ skills | markdown | safe }}
+  </div>
+</section>
 {% endblock content %}

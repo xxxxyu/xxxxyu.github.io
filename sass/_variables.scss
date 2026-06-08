@@ -131,7 +131,7 @@
 
   // ---------- Typography ----------
   --f-serif:       "Libre Baskerville", "Noto Serif SC", "Source Serif 4", Georgia, "Times New Roman", serif;
-  --f-sans:        "Dobra Book", "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --f-sans:        "Dobra", "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --f-mono:        "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
 
   --fs-xs:   0.75rem;   // 12px
@@ -150,6 +150,12 @@
   --fw-normal: 400;
   --fw-medium: 500;
   --fw-bold:   700;
+
+  // Sans UI weights are tuned independently from content weights. Dobra's
+  // heavier faces read too strong in compact UI, so keep most sans text on Book.
+  --fw-sans-normal: 400;
+  --fw-sans-medium: 400;
+  --fw-sans-strong: 500;
 
   // ---------- Spacing ----------
   --sp-1:  0.25rem;  // 4px

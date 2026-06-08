@@ -54,7 +54,7 @@
   &__title {
     font-size: var(--fs-sm);
     font-family: var(--f-sans);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-sans-strong);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--c-text-muted);
@@ -67,6 +67,7 @@
     margin: 0;
     font-size: var(--fs-sm);
     font-family: var(--f-sans);
+    font-weight: var(--fw-sans-normal);
 
     li {
       margin-bottom: var(--sp-1);
@@ -105,6 +106,7 @@
   &__meta {
     font-family: var(--f-sans);
     font-size: var(--fs-sm);
+    font-weight: var(--fw-sans-normal);
     color: var(--c-text-muted);
     margin-bottom: var(--sp-2);
   }
@@ -120,6 +122,7 @@
     margin-top: var(--sp-2);
     font-family: var(--f-sans);
     font-size: var(--fs-sm);
+    font-weight: var(--fw-sans-normal);
 
     .tag {
       padding: 0;
@@ -172,10 +175,11 @@
     padding: var(--sp-3);
     font-size: var(--fs-sm);
     font-family: var(--f-sans);
+    font-weight: var(--fw-sans-normal);
 
     summary {
       cursor: pointer;
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-sans-medium);
       color: var(--c-text-muted);
     }
 
@@ -197,7 +201,7 @@
 .tag {
   font-family: var(--f-sans);
   font-size: var(--fs-xs);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-sans-medium);
   padding: var(--sp-1) var(--sp-2);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
@@ -303,6 +307,7 @@ html[data-theme="dark"] {
     flex-shrink: 0;
     font-family: var(--f-sans);
     font-size: var(--fs-sm);
+    font-weight: var(--fw-sans-normal);
     color: var(--c-text-muted);
     min-width: 5.5em;
   }
@@ -331,4 +336,5 @@ html[data-theme="dark"] {
   border-top: 1px solid var(--c-border);
   font-family: var(--f-sans);
   font-size: var(--fs-sm);
+  font-weight: var(--fw-sans-normal);
 }

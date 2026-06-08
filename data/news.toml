@@ -24,7 +24,7 @@ links = [{ label = 'Paper', url = 'https://arxiv.org/abs/2605.10332' }]
 date = '2026/04'
 text = '*Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment* (short paper) accepted to the **Rising Stars Forum of ACM MobiSys 2026**.'
 links = [
-  # { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3812835.3814828' },
 ]
 
 [[news]]

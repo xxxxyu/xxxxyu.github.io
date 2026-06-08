@@ -11,6 +11,8 @@ I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR)](ht
 - **[Vec-LUT](https://dl.acm.org/doi/10.1145/3745756.3809200) (MobiSys 2026):** an efficient <u>mpGeMM kernel</u> based on vector lookup table (LUT) for parallel ultra-low-bit LLM inference.
 - **[OxyGen](https://arxiv.org/abs/2603.14371) (preprint):** a unified <u>KV cache management</u> framework for multi-task MoT-based VLA inference.
 
+> An overview of my Ph.D. work is published at [ACM MobiSys 2026 Rising Stars Forum](https://dl.acm.org/doi/10.1145/3812835.3814828).
+
 I am currently working on **model-system co-design for embodied AI**, especially VLA training and deployment.
 
 Feel free to email me: [lixiangy22@mails.tsinghua.edu.cn](mailto:lixiangy22@mails.tsinghua.edu.cn).

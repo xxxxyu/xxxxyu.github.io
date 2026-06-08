@@ -27,6 +27,13 @@ model_url = 'https://huggingface.co/collections/XXXXyu/vlutcpp'
 featured = true
 
 [[publications]]
+title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
+authors = 'Xiangyu Li'
+venue = 'ACM MobiSys Companion 2026'
+paper_url = 'https://dl.acm.org/doi/10.1145/3812835.3814828'
+featured = false
+
+[[publications]]
 title = 'An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint'
 authors = 'Yi Sun, Han Wang, Jiaqiang Li, Jiacheng Liu, Xiangyu Li, Hao Wen, Yizhen Yuan, Huiwen Zheng, Yan Liang, Yuanchun Li, Yunxin Liu'
 venue = 'EMNLP 2025'

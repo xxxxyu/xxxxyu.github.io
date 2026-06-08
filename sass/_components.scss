@@ -79,7 +79,7 @@
     a {
       font-family: var(--f-sans);
       font-size: var(--fs-base);
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-sans-medium);
       color: var(--c-accent);
       transition: color var(--transition);
     }
@@ -149,6 +149,7 @@
     a {
       font-family: var(--f-sans);
       font-size: var(--fs-md);
+      font-weight: var(--fw-sans-normal);
       display: inline-flex;
       align-items: center;
       gap: var(--sp-1);
@@ -181,6 +182,7 @@
     color: var(--c-text-muted);
     font-family: var(--f-sans);
     font-size: var(--fs-base);
+    font-weight: var(--fw-sans-normal);
     min-width: 4em;
 
     &::after {
@@ -194,6 +196,7 @@
     color: var(--c-text-muted);
     font-family: var(--f-sans);
     font-size: var(--fs-base);
+    font-weight: var(--fw-sans-normal);
     margin-left: var(--sp-2);
     white-space: nowrap;
 
@@ -202,6 +205,64 @@
       @extend %bullet-sep;
       margin: 0 var(--sp-2);
     }
+  }
+}
+
+// ---------- About Details ----------
+.about-section {
+  margin-top: var(--sp-6);
+
+  > h2 {
+    margin-bottom: var(--sp-2);
+  }
+}
+
+.about-detail {
+  margin-bottom: var(--sp-5);
+  border-top: 1px solid var(--c-border);
+  padding-top: var(--sp-5);
+
+  h3 {
+    margin: var(--sp-6) 0 var(--sp-2);
+    font-family: var(--f-sans);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-sans-strong);
+    color: var(--c-text-muted);
+    line-height: var(--lh-tight);
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  h3:first-child {
+    margin-top: 0;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    margin: 0;
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--c-border);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-normal);
+  }
+
+  strong {
+    font-weight: var(--fw-bold);
+    color: var(--c-text);
+  }
+}
+
+.about-detail--skills {
+  strong {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    font-weight: var(--fw-bold);
   }
 }
 
@@ -231,6 +292,7 @@
     font-size: var(--fs-sm);
     color: var(--c-text-muted);
     font-family: var(--f-sans);
+    font-weight: var(--fw-sans-normal);
   }
 
   p {
