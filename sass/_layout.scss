@@ -26,8 +26,11 @@
     font-family: var(--f-serif);
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
+    line-height: 1;
     color: var(--c-text);
     text-decoration: none;
+    padding-right: var(--sp-3);
+    white-space: nowrap;
 
     &:hover {
       color: var(--c-accent);
@@ -381,21 +384,32 @@ body.search-open { overflow: hidden; }
 // ---------- Responsive ----------
 @media (max-width: 768px) {
   .nav {
+    --bullet-gap: var(--sp-2);
+
     &__inner {
       padding: 0 var(--sp-4);
     }
+    &__brand {
+      font-size: var(--fs-sm);
+    }
     &__right {
-      gap: var(--sp-3);
+      gap: var(--sp-2);
     }
     &__links {
       gap: var(--bullet-gap);
     }
     &__link {
       font-size: var(--fs-xs);
+      letter-spacing: 0;
     }
   }
 
   .nav__icons { gap: var(--sp-1); }
+
+  .icon-btn {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 
   .content {
     padding: var(--sp-6) var(--sp-4);

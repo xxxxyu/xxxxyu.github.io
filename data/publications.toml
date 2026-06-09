@@ -1,4 +1,14 @@
 [[publications]]
+title = 'ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies'
+authors = 'Bingjia Huang*, Xiangyu Li*, Xiang Wang, Liang Mi, Zixu Hao, Weijun Wang, Hao Wu, Kun Li, Yunxin Liu, Ting Cao'
+venue = 'ArXiv preprint'
+year = 2026
+paper_url = 'https://arxiv.org/abs/2606.08508'
+code_url = 'https://github.com/air-embodied-brain/actprobe'
+page_url = 'https://air-embodied-brain.github.io/actprobe'
+featured = false
+
+[[publications]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
 authors = 'Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, Qianxi Zhang, Hao Wen, Xiangyu Li, Weijun Wang, Kun Li, Yunxin Liu, Haipeng Dai, Wei Wang, Ting Cao'
 venue = 'ArXiv preprint'

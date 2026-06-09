@@ -1,4 +1,13 @@
 [[news]]
+date = '2026/06'
+text = '*ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies* released.'
+links = [
+  { label = 'Paper', url = 'https://arxiv.org/abs/2606.08508' },
+  { label = 'Code', url = 'https://github.com/air-embodied-brain/actprobe' },
+  { label = 'Page', url = 'https://air-embodied-brain.github.io/actprobe' },
+]
+
+[[news]]
 date = '2026/05'
 text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
 links = [
