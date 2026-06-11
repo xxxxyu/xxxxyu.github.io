@@ -14,7 +14,7 @@
   <meta property="og:url" content="{{ config.base_url }}">
 
   {% if config.extra.favicon %}
-  <link rel="icon" href="{{ config.extra.favicon }}">
+  <link id="favicon" rel="icon" href="{{ config.extra.favicon }}" data-light="{{ config.extra.favicon_light }}" data-dark="{{ config.extra.favicon_dark }}">
   {% endif %}
 
   <link rel="stylesheet" href="/style.css">
@@ -108,10 +108,28 @@
   <script>
     (function() {
       var btn = document.getElementById('theme-toggle');
+      var favicon = document.getElementById('favicon');
+      var systemDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
       var cycle = ['light', 'dark', 'system'];
 
       function current() {
         return localStorage.getItem('theme') || 'system';
+      }
+
+      function resolvedTheme(mode) {
+        if (mode === 'system') {
+          return systemDark && systemDark.matches ? 'dark' : 'light';
+        }
+        return mode;
+      }
+
+      function updateFavicon(mode) {
+        if (!favicon) return;
+        var theme = resolvedTheme(mode);
+        var href = favicon.getAttribute(theme === 'dark' ? 'data-dark' : 'data-light');
+        if (href) {
+          favicon.setAttribute('href', href);
+        }
       }
 
       function apply(mode) {
@@ -124,12 +142,26 @@
         }
         document.documentElement.setAttribute('data-theme-mode', mode);
         btn.setAttribute('aria-label', 'Theme: ' + mode + ' (click to change)');
+        updateFavicon(mode);
       }
 
       btn.addEventListener('click', function() {
         var idx = cycle.indexOf(current());
         apply(cycle[(idx + 1) % cycle.length]);
       });
+
+      if (systemDark) {
+        var handleSystemThemeChange = function() {
+          if (current() === 'system') {
+            updateFavicon('system');
+          }
+        };
+        if (systemDark.addEventListener) {
+          systemDark.addEventListener('change', handleSystemThemeChange);
+        } else if (systemDark.addListener) {
+          systemDark.addListener(handleSystemThemeChange);
+        }
+      }
 
       apply(current());
     })();

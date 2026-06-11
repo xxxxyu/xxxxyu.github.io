@@ -1,4 +1,11 @@
 [[publications]]
+title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
+authors = 'Xiangyu Li'
+venue = 'ACM MobiSys Companion 2026'
+paper_url = 'https://dl.acm.org/doi/10.1145/3812835.3814828'
+featured = false
+
+[[publications]]
 title = 'ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies'
 authors = 'Bingjia Huang*, Xiangyu Li*, Xiang Wang, Liang Mi, Zixu Hao, Weijun Wang, Hao Wu, Kun Li, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
@@ -37,13 +44,6 @@ model_url = 'https://huggingface.co/collections/XXXXyu/vlutcpp'
 featured = true
 
 [[publications]]
-title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
-authors = 'Xiangyu Li'
-venue = 'ACM MobiSys Companion 2026'
-paper_url = 'https://dl.acm.org/doi/10.1145/3812835.3814828'
-featured = false
-
-[[publications]]
 title = 'An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint'
 authors = 'Yi Sun, Han Wang, Jiaqiang Li, Jiacheng Liu, Xiangyu Li, Hao Wen, Yizhen Yuan, Huiwen Zheng, Yan Liang, Yuanchun Li, Yunxin Liu'
 venue = 'EMNLP 2025'
@@ -58,6 +58,16 @@ authors = 'Xiang Wang, Lingxiao Ma, Ziyan Fu, Xiangyu Li, Yuanchun Li, Ju Ren, Y
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2025
 paper_url = 'https://ieeexplore.ieee.org/abstract/document/11096018'
+featured = false
+
+[[publications]]
+title = 'ChainStream: An LLM-based Framework for Unified Synthetic Sensing'
+authors = 'Jiacheng Liu, Yuanchun Li, Liangyan Li, Yi Sun, Hao Wen, Xiangyu Li, Yao Guo, Yunxin Liu'
+venue = 'ArXiv preprint'
+year = 2024
+paper_url = 'https://arxiv.org/abs/2412.15240'
+code_url = 'https://github.com/MobileLLM/ChainStream'
+page_url = 'https://mobilellm.github.io/ChainStream'
 featured = false
 
 [[publications]]
@@ -80,20 +90,10 @@ venue = 'ArXiv preprint'
 year = 2024
 paper_url = 'https://arxiv.org/abs/2401.05459'
 code_url = 'https://github.com/MobileLLM/Personal_LLM_Agents_Survey'
-gs_id = 'personal_llm_agents'
+gs_id = 'personal-llm-agents'
 notes = 'Survey & Position, "Efficiency" Section Lead'
-# image = '/img/publication/personal_llm_agents.png'
+# image = '/img/publication/personal-llm-agents.png'
 featured = true
-
-[[publications]]
-title = 'ChainStream: An LLM-based Framework for Unified Synthetic Sensing'
-authors = 'Jiacheng Liu, Yuanchun Li, Liangyan Li, Yi Sun, Hao Wen, Xiangyu Li, Yao Guo, Yunxin Liu'
-venue = 'ArXiv preprint'
-year = 2024
-paper_url = 'https://arxiv.org/abs/2412.15240'
-code_url = 'https://github.com/MobileLLM/ChainStream'
-page_url = 'https://mobilellm.github.io/ChainStream'
-featured = false
 
 [[publications]]
 title = 'DIMMining: Pruning-Efficient and Parallel Graph Mining on Near-Memory-Computing'
