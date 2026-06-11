@@ -421,3 +421,20 @@ body.search-open { overflow: hidden; }
     &__hint { display: none; }
   }
 }
+
+@media (max-width: 420px) {
+  .nav {
+    &__inner {
+      padding: 0 var(--sp-3);
+    }
+
+    &__brand {
+      display: none;
+    }
+
+    &__right {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
