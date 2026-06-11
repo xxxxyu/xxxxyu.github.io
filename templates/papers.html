@@ -6,8 +6,8 @@
 {% block content %}
 <h1>Papers</h1>
 
-{% set pub_data = load_data(path="data/publications.toml") %}
-{% set pubs = pub_data.publications %}
+{% set pub_data = load_data(path="data/papers.toml") %}
+{% set pubs = pub_data.papers %}
 
 {% for pub in pubs %}
 {{ pubmacros::pub_card(pub=pub) }}

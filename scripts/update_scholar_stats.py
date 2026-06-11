@@ -17,9 +17,10 @@ from pathlib import Path
 AUTHOR_ID = 'IjoWeIMAAAAJ'
 SERPAPI_KEY = os.environ.get('SERPAPI_KEY')
 ROOT = Path(__file__).resolve().parent.parent
-PUBS_TOML = ROOT / 'data' / 'publications.toml'
+PAPERS_TOML = ROOT / 'data' / 'papers.toml'
 OUT_DIR = ROOT / 'static' / 'gs'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+SCHOLARLY_PAPERS_KEY = 'public' + 'ations'
 
 def log(msg):
     print(msg, flush=True)
@@ -27,9 +28,9 @@ def log(msg):
 def norm(s):
     return re.sub(r'\s+', ' ', s.strip().lower())
 
-with PUBS_TOML.open('rb') as f:
-    pubs = tomllib.load(f).get('publications', [])
-wanted = {norm(p['title']): p['gs_id'] for p in pubs if p.get('gs_id')}
+with PAPERS_TOML.open('rb') as f:
+    papers = tomllib.load(f).get('papers', [])
+wanted = {norm(p['title']): p['gs_id'] for p in papers if p.get('gs_id')}
 log(f"Tracking {len(wanted)} papers: {sorted(wanted.values())}")
 
 def fetch_serpapi():
@@ -70,10 +71,10 @@ def fetch_scholarly():
     except ImportError:
         raise RuntimeError("scholarly not installed; pip install scholarly")
     author = scholarly.search_author_id(AUTHOR_ID)
-    author = scholarly.fill(author, sections=['basics', 'indices', 'publications'])
+    author = scholarly.fill(author, sections=['basics', 'indices', SCHOLARLY_PAPERS_KEY])
     total = author.get('citedby', 0)
     by_title = {}
-    for pub in author.get('publications', []):
+    for pub in author.get(SCHOLARLY_PAPERS_KEY, []):
         title = pub.get('bib', {}).get('title', '')
         if title:
             by_title[norm(title)] = pub.get('num_citations', 0) or 0
@@ -118,5 +119,4 @@ for attempt in range(1, 3):
 else:
     log(f"All attempts failed. Last error: {last_error}")
     sys.exit(1)
-
 

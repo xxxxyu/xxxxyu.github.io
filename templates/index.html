@@ -47,13 +47,13 @@
   {% endfor %}
 </ul>
 
-{# ── Selected Publications (featured) ── #}
-{% set pub_data = load_data(path="data/publications.toml") %}
-{% set pubs = pub_data.publications %}
+{# ── Selected Papers (featured) ── #}
+{% set pub_data = load_data(path="data/papers.toml") %}
+{% set pubs = pub_data.papers %}
 
 <div class="section-heading">
   <h2>Selected Papers</h2>
-  <a class="section-heading__more" href="/publications/">See all &rarr;</a>
+  <a class="section-heading__more" href="/papers/">See all &rarr;</a>
 </div>
 {% for pub in pubs %}
 {% if pub.featured %}

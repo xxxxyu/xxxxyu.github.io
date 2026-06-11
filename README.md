@@ -27,7 +27,7 @@ To enable: go to repo Settings > Pages > Source > GitHub Actions.
 
 ```
 content/          # Markdown content (homepage, about, blog posts)
-data/             # Structured data (publications.toml)
+data/             # Structured data (papers.toml)
 templates/        # Zola Tera templates
 sass/             # SCSS stylesheets
 static/           # Static assets (images, fonts, files)
