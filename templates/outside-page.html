@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+{% block main_class %}{% if page.extra.kind | default(value="note") == "photography" %}content content--wide{% else %}content{% endif %}{% endblock main_class %}
+
+{% block content %}
+{% set kind = page.extra.kind | default(value="note") %}
+{% set kind_label = page.extra.kind_label | default(value="Outside") %}
+{% set cover = page.extra.cover | default(value="") %}
+{% set cover_label = page.extra.cover_label | default(value=kind_label) %}
+{% set location = page.extra.location | default(value="") %}
+{% set year = page.extra.year | default(value="") %}
+<article class="outside-detail outside-detail--{{ kind }}">
+  <a class="outside-detail__back" href="/outside/">&larr; Outside</a>
+
+  <header class="outside-detail__header">
+    <div class="outside-detail__meta">
+      <span>{{ kind_label }}</span>
+      {% if location %}<span>{{ location }}</span>{% endif %}
+      {% if year %}<span>{{ year }}</span>{% endif %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}
+    <p>{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  {% if cover or kind != "note" %}
+  <div class="outside-detail__cover">
+    {% if cover %}
+    <img src="{{ cover }}" alt="{{ page.title }}" loading="eager">
+    {% else %}
+    <div class="outside-detail__placeholder" aria-hidden="true">
+      <span>{{ cover_label }}</span>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="outside-detail__content">
+    {{ page.content | safe }}
+  </div>
+
+  {% if kind == "photography" and page.extra.gallery %}
+  <div class="outside-gallery" aria-label="{{ page.title }} gallery">
+    {% for item in page.extra.gallery %}
+    {% set image = item.image | default(value="") %}
+    <figure class="outside-gallery__item">
+      {% if image %}
+      <img src="{{ image }}" alt="{{ item.caption | default(value=page.title) }}" loading="lazy">
+      {% else %}
+      <div class="outside-gallery__placeholder" aria-hidden="true">
+        <span>{{ item.label | default(value="Frame") }}</span>
+      </div>
+      {% endif %}
+      {% if item.caption %}
+      <figcaption>{{ item.caption }}</figcaption>
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if kind == "music" %}
+  <div class="outside-video-placeholder">
+    <span>{{ page.extra.video_label | default(value="Video") }}</span>
+  </div>
+  {% endif %}
+</article>
+{% endblock content %}
