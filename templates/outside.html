@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}Outside — {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+{% block main_class %}content content--wide{% endblock main_class %}
+
+{% block content %}
+<header class="outside-hero">
+  <p class="outside-hero__eyebrow">Outside</p>
+  <h1>{{ section.title }}</h1>
+  {% if section.description %}
+  <p class="outside-hero__dek">{{ section.description }}</p>
+  {% endif %}
+  <div class="outside-hero__body">
+    {{ section.content | safe }}
+  </div>
+</header>
+
+<section class="outside-section" aria-labelledby="outside-featured">
+  <div class="section-heading">
+    <h2 id="outside-featured">Featured</h2>
+  </div>
+  <div class="outside-featured-grid">
+    {% for page in section.pages %}
+    {% if page.extra.featured | default(value=false) %}
+    {{ macros::outside_card(page=page, variant="featured") }}
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="outside-section" aria-labelledby="outside-photography">
+  <div class="section-heading">
+    <h2 id="outside-photography">Photography</h2>
+  </div>
+  <div class="outside-grid">
+    {% for page in section.pages %}
+    {% if page.extra.kind == "photography" %}
+    {{ macros::outside_card(page=page, variant="standard") }}
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="outside-section" aria-labelledby="outside-notes">
+  <div class="section-heading">
+    <h2 id="outside-notes">Notes</h2>
+  </div>
+  <div class="outside-list">
+    {% for page in section.pages %}
+    {% if page.extra.kind == "note" %}
+    <article class="outside-list__item">
+      <div class="outside-list__meta">
+        <span>{{ page.extra.kind_label | default(value="Note") }}</span>
+        {% if page.extra.year | default(value="") %}<span>{{ page.extra.year }}</span>{% endif %}
+      </div>
+      <div class="outside-list__body">
+        <h3><a href="{{ page.permalink }}">{{ page.title }}</a></h3>
+        {% if page.description %}
+        <p>{{ page.description }}</p>
+        {% endif %}
+      </div>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="outside-section" aria-labelledby="outside-music">
+  <div class="section-heading">
+    <h2 id="outside-music">Music</h2>
+  </div>
+  <div class="outside-grid outside-grid--compact">
+    {% for page in section.pages %}
+    {% if page.extra.kind == "music" %}
+    {{ macros::outside_card(page=page, variant="standard") }}
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock content %}
