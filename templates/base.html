@@ -17,8 +17,6 @@
   <link id="favicon" rel="icon" href="{{ config.extra.favicon }}" data-light="{{ config.extra.favicon_light }}" data-dark="{{ config.extra.favicon_dark }}">
   {% endif %}
 
-  <link rel="stylesheet" href="/style.css">
-
   <script>
     (function() {
       var t = localStorage.getItem('theme');
@@ -29,6 +27,10 @@
       document.documentElement.setAttribute('data-theme-mode', mode);
     })();
   </script>
+
+  <link rel="preload" href="/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dobra/Dobra-Book.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
 
   {% block head_extra %}{% endblock head_extra %}
 </head>

@@ -8,14 +8,14 @@
   font-family: "Libre Baskerville";
   src: url("/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2") format("woff2");
   font-weight: 400 700;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Libre Baskerville";
   src: url("/fonts/libre-baskerville/LibreBaskerville-Italic-VariableFont_wght.woff2") format("woff2");
   font-weight: 400 700;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 
 // Noto Serif SC (variable)
@@ -23,7 +23,8 @@
   font-family: "Noto Serif SC";
   src: url("/fonts/noto-serif-sc/NotoSerifSC-VariableFont_wght.woff2") format("woff2");
   font-weight: 200 900;
-  font-display: swap;
+  font-display: optional;
+  unicode-range: U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
 }
 
 // Noto Sans SC (variable)
@@ -31,7 +32,8 @@
   font-family: "Noto Sans SC";
   src: url("/fonts/noto-sans-sc/NotoSansSC-VariableFont_wght.woff2") format("woff2");
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
+  unicode-range: U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
 }
 
 // Dobra (static, 10 variants)
@@ -40,70 +42,70 @@
   src: url("/fonts/dobra/Dobra-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-LightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-Book.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-BookItalic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-MediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-BoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-Black.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 @font-face {
   font-family: "Dobra";
   src: url("/fonts/dobra/Dobra-BlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
-  font-display: swap;
+  font-display: optional;
 }
 
 // ---------- Color Palette ----------
