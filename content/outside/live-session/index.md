@@ -6,6 +6,7 @@ weight = 40
 [extra]
 kind = "music"
 kind_label = "Music"
+cover = "/img/outside/live-session/cover.jpg"
 cover_label = "Video"
 year = "Year TBD"
 featured = false

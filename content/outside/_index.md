@@ -1,9 +1,9 @@
 +++
 title = "Outside"
-description = "Photography, notes, and occasional music outside my research work."
+description = "Photography, writing, and music — things I make outside the technical track."
 template = "outside.html"
 page_template = "outside-page.html"
 sort_by = "weight"
 +++
 
-A small, curated collection of things I make and keep outside the technical track.
+<!-- A quiet corner for the things I make outside the technical track. -->

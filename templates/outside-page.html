@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
@@ -8,6 +9,7 @@
 {% set kind = page.extra.kind | default(value="note") %}
 {% set kind_label = page.extra.kind_label | default(value="Outside") %}
 {% set cover = page.extra.cover | default(value="") %}
+{% set cover_webp = page.extra.cover_webp | default(value="") %}
 {% set cover_label = page.extra.cover_label | default(value=kind_label) %}
 {% set location = page.extra.location | default(value="") %}
 {% set year = page.extra.year | default(value="") %}
@@ -29,7 +31,10 @@
   {% if cover or kind != "note" %}
   <div class="outside-detail__cover">
     {% if cover %}
-    <img src="{{ cover }}" alt="{{ page.title }}" loading="eager">
+    <picture>
+      {% if cover_webp %}<source srcset="{{ cover_webp }}" type="image/webp">{% endif %}
+      <img src="{{ cover }}" alt="{{ page.title }}" loading="eager">
+    </picture>
     {% else %}
     <div class="outside-detail__placeholder" aria-hidden="true">
       <span>{{ cover_label }}</span>
@@ -42,24 +47,15 @@
     {{ page.content | safe }}
   </div>
 
-  {% if kind == "photography" and page.extra.gallery %}
-  <div class="outside-gallery" aria-label="{{ page.title }} gallery">
-    {% for item in page.extra.gallery %}
-    {% set image = item.image | default(value="") %}
-    <figure class="outside-gallery__item">
-      {% if image %}
-      <img src="{{ image }}" alt="{{ item.caption | default(value=page.title) }}" loading="lazy">
-      {% else %}
-      <div class="outside-gallery__placeholder" aria-hidden="true">
-        <span>{{ item.label | default(value="Frame") }}</span>
-      </div>
+  {% if kind == "photography" %}
+    {% if page.extra.gallery_manifest %}
+      {% set gallery_data = load_data(path=page.extra.gallery_manifest, required=false) %}
+      {% if gallery_data and gallery_data.gallery %}
+      {{ macros::outside_gallery(gallery=gallery_data.gallery, title=page.title) }}
       {% endif %}
-      {% if item.caption %}
-      <figcaption>{{ item.caption }}</figcaption>
-      {% endif %}
-    </figure>
-    {% endfor %}
-  </div>
+    {% elif page.extra.gallery %}
+    {{ macros::outside_gallery(gallery=page.extra.gallery, title=page.title) }}
+    {% endif %}
   {% endif %}
 
   {% if kind == "music" %}

@@ -40,7 +40,7 @@ favicon_dark = "/img/identity/logo-dobra-medium-italic-dark.svg"
 email = "lixiangy22@mails.tsinghua.edu.cn"
 github = "https://github.com/xxxxyu"
 google_scholar = "https://scholar.google.com/citations?user=IjoWeIMAAAAJ"
-cv = "/files/cv-260609.pdf"
+cv = "/files/cv/cv-260609.pdf"
 
 [[taxonomies]]
 name = "tags"

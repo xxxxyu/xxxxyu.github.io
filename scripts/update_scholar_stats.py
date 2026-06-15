@@ -18,7 +18,7 @@ AUTHOR_ID = 'IjoWeIMAAAAJ'
 SERPAPI_KEY = os.environ.get('SERPAPI_KEY')
 ROOT = Path(__file__).resolve().parent.parent
 PAPERS_TOML = ROOT / 'data' / 'papers.toml'
-OUT_DIR = ROOT / 'static' / 'gs'
+OUT_DIR = ROOT / 'data' / 'gs'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 SCHOLARLY_PAPERS_KEY = 'public' + 'ations'
 
@@ -119,4 +119,3 @@ for attempt in range(1, 3):
 else:
     log(f"All attempts failed. Last error: {last_error}")
     sys.exit(1)
-

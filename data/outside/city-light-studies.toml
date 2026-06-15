@@ -1,0 +1,23 @@
+[[gallery]]
+image = "/img/outside/city-light-studies/frame-01.jpg"
+layout = "full"
+label = "Frame 01"
+caption = "Placeholder for a selected image."
+
+[[gallery]]
+image = "/img/outside/city-light-studies/frame-02.jpg"
+layout = "pair"
+label = "Frame 02"
+caption = "Placeholder for a selected image."
+
+[[gallery]]
+image = "/img/outside/city-light-studies/frame-03.jpg"
+layout = "pair"
+label = "Frame 03"
+caption = "Placeholder for a selected image."
+
+[[gallery]]
+image = "/img/outside/city-light-studies/frame-04.jpg"
+layout = "full"
+label = "Frame 04"
+caption = "Placeholder for a selected image."
