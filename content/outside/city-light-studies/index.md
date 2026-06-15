@@ -6,26 +6,12 @@ weight = 10
 [extra]
 kind = "photography"
 kind_label = "Photography"
+cover = "/img/outside/city-light-studies/cover.jpg"
 cover_label = "Photo Set"
+gallery_manifest = "data/outside/city-light-studies.toml"
 location = "Location TBD"
 year = "Year TBD"
 featured = true
-
-[[extra.gallery]]
-label = "Frame 01"
-caption = "Placeholder for a selected image."
-
-[[extra.gallery]]
-label = "Frame 02"
-caption = "Placeholder for a selected image."
-
-[[extra.gallery]]
-label = "Frame 03"
-caption = "Placeholder for a selected image."
-
-[[extra.gallery]]
-label = "Frame 04"
-caption = "Placeholder for a selected image."
 +++
 
 This is a placeholder for a photography collection. It can later hold a short note about the place, time, camera, or visual idea behind the set.

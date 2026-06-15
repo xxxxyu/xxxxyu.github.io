@@ -4,3 +4,8 @@ public/
 .claude
 .venv-scholar/
 __pycache__/
+
+# Local source assets. Keep camera originals and other large source files out of git.
+assets-src/
+static/img/**/raw/
+static/img/**/originals/

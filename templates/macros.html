@@ -13,7 +13,7 @@
   {% endif %}
   <div class="pub-card__body">
     <h3 class="pub-card__title">{% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{{ pub.title | markdown(inline=true) | safe }}</a>{% else %}{{ pub.title | markdown(inline=true) | safe }}{% endif %}{% if pub.gs_id %}
-      {%- set gs_data = load_data(path="static/gs/" ~ pub.gs_id ~ ".json", required=false) -%}
+      {%- set gs_data = load_data(path="data/gs/" ~ pub.gs_id ~ ".json", required=false) -%}
       {%- if gs_data -%}
       <a class="pub-card__citations" href="https://scholar.google.com/scholar?q={{ pub.title | urlencode }}" target="_blank" rel="noopener" aria-label="Google Scholar citations"><img src="https://img.shields.io/badge/citations-{{ gs_data.message }}-1a5276?logo=Google%20Scholar&logoColor=white&style=flat" alt="Citations: {{ gs_data.message }}" loading="lazy"></a>
       {%- endif -%}
@@ -48,13 +48,17 @@
 {% set kind = page.extra.kind | default(value="note") %}
 {% set kind_label = page.extra.kind_label | default(value="Outside") %}
 {% set cover = page.extra.cover | default(value="") %}
+{% set cover_webp = page.extra.cover_webp | default(value="") %}
 {% set cover_label = page.extra.cover_label | default(value=kind_label) %}
 {% set location = page.extra.location | default(value="") %}
 {% set year = page.extra.year | default(value="") %}
 <article class="outside-card outside-card--{{ kind }}{% if variant == "featured" %} outside-card--featured{% endif %}">
   <a class="outside-card__media" href="{{ page.permalink }}" aria-label="{{ page.title }}">
     {% if cover %}
-    <img src="{{ cover }}" alt="{{ page.title }}" loading="lazy">
+    <picture>
+      {% if cover_webp %}<source srcset="{{ cover_webp }}" type="image/webp">{% endif %}
+      <img src="{{ cover }}" alt="{{ page.title }}" loading="lazy">
+    </picture>
     {% else %}
     <div class="outside-card__placeholder" aria-hidden="true">
       <span>{{ cover_label }}</span>
@@ -74,3 +78,28 @@
   </div>
 </article>
 {% endmacro outside_card %}
+
+{% macro outside_gallery(gallery, title) %}
+<div class="outside-gallery" aria-label="{{ title }} gallery">
+  {% for item in gallery %}
+  {% set image = item.image | default(value="") %}
+  {% set image_webp = item.image_webp | default(value="") %}
+  {% set layout = item.layout | default(value="pair") %}
+  <figure class="outside-gallery__item outside-gallery__item--{{ layout }}">
+    {% if image %}
+    <picture>
+      {% if image_webp %}<source srcset="{{ image_webp }}" type="image/webp">{% endif %}
+      <img src="{{ image }}" alt="{{ item.caption | default(value=title) }}" loading="lazy">
+    </picture>
+    {% else %}
+    <div class="outside-gallery__placeholder" aria-hidden="true">
+      <span>{{ item.label | default(value="Frame") }}</span>
+    </div>
+    {% endif %}
+    {% if item.caption %}
+    <figcaption>{{ item.caption }}</figcaption>
+    {% endif %}
+  </figure>
+  {% endfor %}
+</div>
+{% endmacro outside_gallery %}

@@ -6,6 +6,7 @@ weight = 30
 [extra]
 kind = "note"
 kind_label = "Note"
+cover = "/img/outside/personal-note/cover.jpg"
 cover_label = "Note"
 year = "Year TBD"
 featured = false
