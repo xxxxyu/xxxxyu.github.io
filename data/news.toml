@@ -1,5 +1,15 @@
 [[news]]
 date = '2026/06'
+text = '**Vec-LUT** received <strong class="highlight">Best Paper Award Runner-Up</strong> at ACM MobiSys 2026.'
+links = [
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
+  { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
+  { label = 'Slides', url = 'https://github.com/OpenBitSys/vlut.cpp/blob/master/media/veclut_slides_mobisys_2026.pdf' },
+  { label = 'Model', url = 'https://huggingface.co/collections/XXXXyu/vlutcpp' },
+]
+
+[[news]]
+date = '2026/06'
 text = '*ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies* released.'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2606.08508' },
@@ -7,14 +17,14 @@ links = [
   { label = 'Page', url = 'https://air-embodied-brain.github.io/actprobe' },
 ]
 
-[[news]]
-date = '2026/05'
-text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
-links = [
-  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
-  { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
-  { label = 'Model', url = 'https://huggingface.co/collections/XXXXyu/vlutcpp' },
-]
+# [[news]]
+# date = '2026/05'
+# text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
+# links = [
+#   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
+#   { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
+#   { label = 'Model', url = 'https://huggingface.co/collections/XXXXyu/vlutcpp' },
+# ]
 
 [[news]]
 date = '2026/05'

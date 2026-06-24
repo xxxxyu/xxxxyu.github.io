@@ -8,7 +8,7 @@ I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR)](ht
 **My Ph.D. research centers on system optimization for edge AI deployment,** toward the goal of running increasingly capable models on resource-constrained edge. Representative works include:
 
 - **[FlexNN](https://dl.acm.org/doi/10.1145/3636534.3649391) (MobiCom 2024):** an efficient and adaptive <u>memory management</u> framework for memory-constrained on-device DNN inference.
-- **[Vec-LUT](https://dl.acm.org/doi/10.1145/3745756.3809200) (MobiSys 2026):** an efficient <u>mpGeMM kernel</u> based on vector lookup table (LUT) for parallel ultra-low-bit LLM inference.
+- **[Vec-LUT](https://dl.acm.org/doi/10.1145/3745756.3809200) (MobiSys 2026, Best Paper Runner-Up):** a fast <u>mpGeMM kernel</u> based on vector lookup table (LUT) for parallel ultra-low-bit LLM inference.
 - **[OxyGen](https://arxiv.org/abs/2603.14371) (preprint):** a unified <u>KV cache management</u> framework for multi-task MoT-based VLA inference.
 
 > An overview of my Ph.D. work is published at [ACM MobiSys 2026 Rising Stars Forum](https://dl.acm.org/doi/10.1145/3812835.3814828).
