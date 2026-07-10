@@ -1,6 +1,6 @@
 +++
 title = "Live Session"
-description = "A placeholder for a music or singing video."
+description = "Temporary placeholder for a music or singing video."
 weight = 40
 
 [extra]
@@ -13,4 +13,4 @@ featured = false
 video_label = "Video placeholder"
 +++
 
-This is a placeholder for a music or singing video. The final page can include an embedded player where it works well, plus a plain external link as a fallback.
+Temporary placeholder. This page is reserved for a future music or singing video.

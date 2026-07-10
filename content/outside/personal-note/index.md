@@ -1,6 +1,6 @@
 +++
 title = "A Personal Note"
-description = "A placeholder for occasional non-technical writing."
+description = "Temporary placeholder for occasional non-technical writing."
 weight = 30
 
 [extra]
@@ -12,4 +12,4 @@ year = "Year TBD"
 featured = false
 +++
 
-This is a placeholder for a personal, non-technical note. It can be written more like an essay than a blog post, without needing to follow the rhythm of the technical blog.
+Temporary placeholder. This page is reserved for a future personal, non-technical note.

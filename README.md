@@ -70,13 +70,14 @@ Outside photography workflow:
 mkdir -p assets-src/outside/tokyo-2026
 
 # Install the image backend once on each machine.
-python3 -m pip install Pillow
+uv sync
 
 # Process whatever source images exist on this machine.
-python3 scripts/optimize_outside_images.py \
+uv run scripts/optimize_outside_images.py \
   --collection tokyo-2026 \
   --src assets-src/outside/tokyo-2026 \
-  --cover IMG_0001.JPG
+  --cover IMG_0001.JPG \
+  --watermark
 ```
 
 The script writes optimized files to `static/img/outside/<collection>/` and a
@@ -85,19 +86,45 @@ files, not the originals. Another machine can process another collection, or use
 `--mode append` to add more images to an existing manifest without having the
 earlier originals locally.
 
+By default, cover and gallery images are resized proportionally to a maximum
+edge of 2160px and encoded as progressive JPEG plus WebP at quality 88. The
+script does not crop image files; page layout decides how images are framed.
+Use `--watermark` to place the site logo in the lower-right corner, with
+optional `--watermark-opacity`, `--watermark-width-ratio`, and
+`--watermark-margin-ratio` adjustments. The default watermark is small and
+close to the corner: 3.2% of the image width, 1% right margin, 0.4% bottom
+margin, and 38% opacity. The script writes unwatermarked `cover.*` files from
+the cover source for cards, then writes the same source as a watermarked
+source-stem image, such as `img-0001.*`, for the detail image. The gallery
+manifest starts after that detail image, so the first photo is not repeated
+below the page intro.
+
+Cover and ordering rules:
+
+- Sources are discovered from `--src` and sorted by filename, case-insensitively.
+- `--cover IMG_0001.JPG` selects the cover source by exact filename or stem.
+- If `--cover` is omitted, the first sorted source is used.
+- The cover source is promoted to the watermarked detail image unless
+  `--exclude-cover-from-gallery` is passed.
+- `--order IMG_0003.JPG,IMG_0001.JPG,IMG_0002.JPG` customizes gallery order by
+  filename or stem; unlisted images are appended in filename order.
+- Default output names come from source filename stems. Pass
+  `--name-mode sequence` only when you explicitly want `frame-01.*` naming.
+
 Gallery items support a small amount of layout control:
 
 ```toml
 [[gallery]]
-image = "/img/outside/tokyo-2026/frame-01.jpg"
-image_webp = "/img/outside/tokyo-2026/frame-01.webp"
-layout = "full" # pair | full
-label = "Frame 01"
+image = "/img/outside/tokyo-2026/img-0002.jpg"
+image_webp = "/img/outside/tokyo-2026/img-0002.webp"
+layout = "center" # pair | center | full
+label = "IMG_0002"
 caption = "..."
 ```
 
-Use `pair` for the normal two-column rhythm and `full` for highlight images
-that should span the full gallery width.
+Use `pair` for the normal two-column rhythm, `center` for a pair-sized image
+centered on its own row, and `full` for highlight images that should span the
+full gallery width.
 
 ## Credits
 

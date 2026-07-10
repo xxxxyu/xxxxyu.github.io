@@ -1,0 +1,9 @@
+[project]
+name = "xxxxyu-github-io-tools"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "cairosvg>=2.8.2",
+  "pillow>=11.3.0",
+]
+

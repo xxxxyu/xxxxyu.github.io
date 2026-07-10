@@ -10,6 +10,8 @@
 {% set kind_label = page.extra.kind_label | default(value="Outside") %}
 {% set cover = page.extra.cover | default(value="") %}
 {% set cover_webp = page.extra.cover_webp | default(value="") %}
+{% set detail_image = page.extra.detail_image | default(value=cover) %}
+{% set detail_image_webp = page.extra.detail_image_webp | default(value=cover_webp) %}
 {% set cover_label = page.extra.cover_label | default(value=kind_label) %}
 {% set location = page.extra.location | default(value="") %}
 {% set year = page.extra.year | default(value="") %}
@@ -28,12 +30,12 @@
     {% endif %}
   </header>
 
-  {% if cover or kind != "note" %}
+  {% if detail_image or kind != "note" %}
   <div class="outside-detail__cover">
-    {% if cover %}
+    {% if detail_image %}
     <picture>
-      {% if cover_webp %}<source srcset="{{ cover_webp }}" type="image/webp">{% endif %}
-      <img src="{{ cover }}" alt="{{ page.title }}" loading="eager">
+      {% if detail_image_webp %}<source srcset="{{ detail_image_webp }}" type="image/webp">{% endif %}
+      <img src="{{ detail_image }}" alt="{{ page.title }}" loading="eager">
     </picture>
     {% else %}
     <div class="outside-detail__placeholder" aria-hidden="true">

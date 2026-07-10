@@ -85,11 +85,13 @@
   {% set image = item.image | default(value="") %}
   {% set image_webp = item.image_webp | default(value="") %}
   {% set layout = item.layout | default(value="pair") %}
+  {% set width = item.width | default(value="") %}
+  {% set height = item.height | default(value="") %}
   <figure class="outside-gallery__item outside-gallery__item--{{ layout }}">
     {% if image %}
     <picture>
       {% if image_webp %}<source srcset="{{ image_webp }}" type="image/webp">{% endif %}
-      <img src="{{ image }}" alt="{{ item.caption | default(value=title) }}" loading="lazy">
+      <img src="{{ image }}" alt="{% if item.caption %}{{ item.caption }}{% elif item.label %}{{ item.label }}{% else %}{{ title }}{% endif %}" loading="lazy"{% if width and height %} width="{{ width }}" height="{{ height }}"{% endif %}>
     </picture>
     {% else %}
     <div class="outside-gallery__placeholder" aria-hidden="true">
