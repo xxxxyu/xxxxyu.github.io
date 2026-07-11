@@ -6,9 +6,9 @@
 
 .blog-post-layout {
   display: grid;
-  grid-template-columns: 220px minmax(0, var(--w-content)) 220px;
+  grid-template-columns: 300px minmax(0, var(--w-content)) 300px;
   gap: var(--sp-5);
-  max-width: calc(220px + var(--w-content) + 220px + var(--sp-5) * 2);
+  max-width: calc(300px + var(--w-content) + 300px + var(--sp-5) * 2 + var(--sp-4) * 2);
   margin: 0 auto;
   padding: var(--sp-8) var(--sp-4);
   align-items: start;
@@ -28,23 +28,54 @@
 
   // ── Right: Footnotes ──
   &__footnotes {
-    position: sticky;
-    top: calc(var(--nav-height) + var(--sp-5));
-    max-height: calc(100vh - var(--nav-height) - var(--sp-8));
-    overflow-y: auto;
+    position: relative;
+    font-family: var(--f-sans);
     font-size: var(--fs-sm);
     color: var(--c-text-muted);
+    overflow-wrap: break-word;
 
     .footnotes-list {
-      padding-left: var(--sp-4);
+      list-style: none;
+      counter-reset: footnote;
+      padding-left: 0;
       margin: 0;
 
       li {
+        counter-increment: footnote;
+        display: grid;
+        grid-template-columns: 2.25em minmax(0, 1fr);
+        column-gap: var(--sp-2);
         margin-bottom: var(--sp-3);
-        line-height: var(--lh-normal);
+        line-height: var(--lh-tight);
+        scroll-margin-top: calc(var(--nav-height) + var(--sp-4));
+
+        &::before {
+          content: counter(footnote) ".";
+          grid-column: 1;
+          color: var(--c-text-muted);
+          font-variant-numeric: tabular-nums;
+          text-align: right;
+        }
+
+        > * {
+          grid-column: 2;
+        }
       }
 
       p { margin-bottom: var(--sp-1); }
+    }
+
+    &--aligned {
+      .footnotes-list {
+        position: relative;
+
+        li {
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }
@@ -78,10 +109,19 @@
       text-decoration: none;
       line-height: var(--lh-tight);
       display: block;
-      padding: var(--sp-1) 0;
+      padding: var(--sp-1) 0 var(--sp-1) var(--sp-2);
+      margin-left: calc(-1 * var(--sp-2));
+      border-left: 2px solid transparent;
 
       &:hover {
         color: var(--c-accent);
+      }
+
+      &.toc__link--active,
+      &[aria-current="location"] {
+        border-left-color: var(--c-accent);
+        color: var(--c-accent);
+        font-weight: var(--fw-sans-strong);
       }
     }
 
@@ -147,12 +187,47 @@
   &__content {
     line-height: var(--lh-loose);
 
+    h2[id],
+    h3[id],
+    h4[id] {
+      position: relative;
+
+      &:hover,
+      &:focus-within {
+        .heading-anchor {
+          opacity: 1;
+        }
+      }
+    }
+
+    .heading-anchor {
+      position: absolute;
+      right: calc(100% + var(--sp-2));
+      color: var(--c-text-muted);
+      font-family: var(--f-sans);
+      font-weight: var(--fw-sans-normal);
+      opacity: 0;
+      text-decoration: none;
+      transition: color var(--transition), opacity var(--transition);
+
+      &:hover,
+      &:focus-visible {
+        color: var(--c-accent);
+        opacity: 1;
+        outline: none;
+        text-decoration: none;
+      }
+    }
+
     // Footnote references
-    .footnote-reference {
+    .footnote-reference,
+    .footnote-separator {
       font-size: var(--fs-xs);
       vertical-align: super;
       line-height: 0;
+    }
 
+    .footnote-reference {
       a {
         color: var(--c-accent);
         text-decoration: none;
@@ -160,9 +235,17 @@
       }
     }
 
+    .footnote-separator {
+      color: var(--c-accent);
+    }
+
     img {
       margin: var(--sp-4) 0;
       border-radius: var(--radius);
+    }
+
+    .media-figure__image {
+      margin: 0;
     }
   }
 
@@ -255,16 +338,67 @@ html[data-theme="dark"] {
   width: 100%;
 }
 
-// ── Responsive: collapse to single column ──
-@media (max-width: 1100px) {
+// ── Media Figures ──
+.media-figure {
+  margin: var(--sp-5) auto;
+  max-width: 100%;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &__image,
+  &__video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  &__image {
+    margin: 0;
+    background: var(--c-surface);
+  }
+
+  &__video {
+    max-height: min(72vh, 720px);
+    background: #000;
+  }
+
+  &__caption {
+    margin-top: var(--sp-2);
+    color: var(--c-text-muted);
+    font-family: var(--f-sans);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-normal);
+    text-align: center;
+  }
+}
+
+// ── Responsive: below 1440px, hide ToC first and keep side notes ──
+@media (max-width: 1439px) {
   .blog-post-layout {
-    grid-template-columns: 1fr;
-    max-width: var(--w-content);
+    grid-template-columns: minmax(0, var(--w-content)) 300px;
+    max-width: calc(var(--w-content) + 300px + var(--sp-5) + var(--sp-4) * 2);
     padding: var(--sp-6) var(--sp-4);
 
     &__toc {
       display: none;
     }
+  }
+
+  .blog-post__mobile-toc {
+    display: block;
+  }
+}
+
+// ── Responsive: below 1024px, collapse to single column ──
+@media (max-width: 1023px) {
+  .blog-post-layout {
+    grid-template-columns: 1fr;
+    max-width: var(--w-content);
 
     &__footnotes {
       position: static;
@@ -272,11 +406,32 @@ html[data-theme="dark"] {
       border-top: 1px solid var(--c-border);
       padding-top: var(--sp-5);
       margin-top: var(--sp-5);
+
+      .footnotes-list {
+        height: auto !important;
+
+        li {
+          position: static;
+          transform: none !important;
+          top: auto !important;
+        }
+      }
     }
   }
 
   .blog-post__mobile-toc {
     display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-post__content {
+    .heading-anchor {
+      position: static;
+      display: inline-block;
+      margin-right: var(--sp-2);
+      opacity: 1;
+    }
   }
 }
 

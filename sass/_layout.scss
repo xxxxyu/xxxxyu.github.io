@@ -131,10 +131,14 @@
   }
 
   table {
-    width: 100%;
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
     border-collapse: collapse;
-    margin-bottom: var(--sp-5);
+    margin: 0 auto var(--sp-5);
     font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
   }
 
   th, td {

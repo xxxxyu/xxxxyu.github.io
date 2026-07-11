@@ -9,7 +9,7 @@ Personal academic homepage and blog for Xiangyu Li, built with [Zola](https://ww
 brew install zola
 
 # Local dev server with live reload
-zola serve
+./serve.sh # calls `zola serve` with extra args
 
 # Production build
 zola build

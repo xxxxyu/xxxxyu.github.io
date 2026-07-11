@@ -1,0 +1,21 @@
+{% if src %}
+{% set video_path = src %}
+{% if not src is starting_with("/") and not src is starting_with("http") %}
+  {% set video_path = get_url(path=page.colocated_path ~ src) %}
+{% endif %}
+{% if poster %}
+{% set poster_path = poster %}
+{% if not poster is starting_with("/") and not poster is starting_with("http") %}
+  {% set poster_path = get_url(path=page.colocated_path ~ poster) %}
+{% endif %}
+{% endif %}
+<figure class="media-figure{% if full_width | default(value=false) %} full-width{% endif %}"{% if max_width %} style="max-width: {{ max_width }};"{% endif %}>
+  <video class="media-figure__video" playsinline{% if controls | default(value=true) %} controls{% endif %}{% if autoplay | default(value=false) %} autoplay muted{% elif muted | default(value=false) %} muted{% endif %}{% if loop | default(value=false) %} loop{% endif %} preload="{{ preload | default(value='metadata') }}"{% if poster %} poster="{{ poster_path }}"{% endif %}>
+    <source src="{{ video_path }}" type="{{ type | default(value='video/mp4') | safe }}">
+    <a href="{{ video_path }}">Download the video</a>.
+  </video>
+  {% if caption %}
+  <figcaption class="media-figure__caption">{{ caption }}</figcaption>
+  {% endif %}
+</figure>
+{% endif %}
