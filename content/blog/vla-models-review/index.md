@@ -1,8 +1,8 @@
 +++
 title = "Vision-Language-Action (VLA) Models: A Review of Recent Progress"
 date = "2025-09-16"
-updated = "2025-09-16"
-description = "Recent VLAs evolve from discrete to continuous, and from single-system (system 1 only) to dual-system."
+updated = "2026-07-11"
+description = "Recent VLAs are moving from discrete to continuous control and from single-system to dual-system designs."
 template = "blog-page.html"
 
 [taxonomies]
@@ -12,8 +12,8 @@ tags = ["Review", "VLA", "Embodied AI"]
 katex = true
 +++
 
-> I am new to this field — feel free to discuss, and welcome to bring up any questions!
-> This is adapted from my slides, available at: [[PDF]](/files/blog/vla-models-review/vla-review-0911.pdf).
+> I am new to this field — feel free to discuss and bring up any questions! \
+> This post is adapted from my [slides](/files/blog/vla-models-review/vla-review-0911.pdf).
 
 ## Background and Concepts
 
@@ -21,100 +21,99 @@ katex = true
 
 ### The Concept of Vision-Language-Action (VLA) Models
 
-According to my understanding, *Vision-Language-Action (VLA)* Models are multi-modal foundation models for embodied AI, which ingest **vision** (e.g., observations in video streams) and **language** (e.g., user instructions) as inputs, and generate low-level robot **actions** (i.e., the *control policy*) as outputs.
-Mechanically, a VLA utilizes a *VLM (Vision-Language Model)* for *VL-conditioned action generation*.
+In my understanding, *Vision-Language-Action (VLA) models*[^1] are multimodal foundation models for embodied AI. They take **vision** (e.g., observations in video streams) and **language** (e.g., user instructions) as inputs, and generate low-level robot **actions** (i.e., the *control policy*) as outputs.
+A VLA uses a *vision-language model (VLM)* for *vision-and-language-conditioned action generation*.
 
-{{ dimmable_image(src="/img/blog/vla-models-review/timeline.png", alt="The concepts and timelines related to the development of VLA.") }}
+{{ image(src="/img/blog/vla-models-review/timeline.png", dimmable=true) }}
 
 ### Add VLM-Based Task Planners for Long-Horizon Tasks
 
-VLAs are initially optimized for the low-level robot control policy, which is insufficient for completing complex and long-horizon tasks without end-to-end training.
-An effective approach is to add an LLM/VLM-based *task planner* to decompose a long-horizon task into simple subtasks, so that the VLA could complete them one by one.
-While earlier works usually adopt a separate model as the task planner, recent works are utilizing a shared VLM backbone for both task planning and control policy within the same model (i.e., the *dual-system* design).
+Early VLAs focus on low-level robot control, which alone is insufficient for complex, long-horizon tasks unless the entire task is trained end to end.
+One approach is to add an LLM/VLM-based *task planner* that decomposes a long-horizon task into simpler subtasks for the VLA to complete in sequence.
+Earlier work usually uses a separate model as the task planner, while recent work shares one VLM backbone between task planning and control (i.e., a *dual-system* design).
 
-{{ dimmable_image(src="/img/blog/vla-models-review/hierarchical-policy.png", alt="An example of a hierarchical robot policy (high-level planning + low-level control).") }}
+{{ image(src="/img/blog/vla-models-review/hierarchical-policy.png", dimmable=true) }}
 
-## Recent Progress of VLA
+## Recent VLA Progress
 
-I summarize the trend of recent VLA as evolving **from *system-1-only* (control) to *dual-system* (planning + control), and from *discrete* action to *continuous* action.** I divide recent progress of VLA into 4 quadrants:
+I summarize recent VLA progress along two axes: **from *system-1-only* (control) to *dual-system* (planning + control), and from *discrete* actions to *continuous* actions.** This gives four quadrants:
 
-{{ invertible_image(src="/img/blog/vla-models-review/quadrants.png", alt="The quandrants of recent VLAs.") }}
+{{ image(src="/img/blog/vla-models-review/quadrants.png", invertible=true) }}
 
-In the following of this section, I'll introduce these categories respectively.
+The following sections introduce these categories in turn.
 
 ### Discrete VLA
 
-*Discrete VLA* generates *discrete action tokens*. Specifically, it adopts *discrete action tokenization* that maps low-level robot actions to discrete tokens, and trains the VLM to generate such tokens *autoregressively*, just like generating text tokens.
-This provides a straightforward approach to align the two modalities, action and language, which simplifies the training based on autoregressive VLMs (i.e., from next token prediction to next action prediction).
-However, it suffers from high latency and low FPS in robot control, since the autoregressive generation paradigm needs to go through the entire VLA for each forward pass.
+A *discrete VLA* generates *discrete action tokens*. It maps low-level robot actions to discrete tokens, then trains the VLM to generate them *autoregressively*, much like text tokens.
+This gives action and language a common representation and extends next-token prediction to next-action prediction.
+However, autoregressive generation can introduce high latency and low control frequency because each new action token requires another pass through the VLA.
 
 Some representative methods:
 
-- **RT-2**[^2] (ViT + PALI-X/PALM-E): a pioneer work that proposes and popularizes the term "VLA".
-- **OpenVLA**[^3] (DinoV2 & SigLIP + Llama2 7B): an influential open-source VLA model (3.8k stars on [GitHub](https://github.com/openvla/openvla)).
+- **RT-2**[^2] (ViT + PaLI-X/PaLM-E): pioneering work that introduced and popularized the term "VLA."
+- **OpenVLA**[^3] (DINOv2 & SigLIP + Llama 2 7B): an influential open-source VLA model (3.8k stars on [GitHub](https://github.com/openvla/openvla)).
 - **FAST**[^4]: an action tokenizer that compresses action sequences with DCT (Discrete Cosine Transform).
 
-{{ dimmable_image(src="/img/blog/vla-models-review/openvla.png", alt="Overview of OpenVLA.") }}
+{{ image(src="/img/blog/vla-models-review/openvla.png", dimmable=true) }}
 
 ### Continuous VLA
 
-*Continuous VLA* samples from a *continuous action space*, which allows smoother control with higher precision, but also increases the difficulty of training atop existing language models.
-To solve this, Physical Intelligence first proposes to integrate a *flow-matching (a variant of diffusion) action expert* to a pre-trained VLM, and trains $\pi_0$[^5] atop a pre-trained PaliGemma 2B VLM.
+A *continuous VLA* samples from a *continuous action space*. This allows smoother, higher-precision control, but is harder to train on top of existing language models.
+Physical Intelligence addressed this by adding a *flow-matching action expert* to a pretrained VLM, and trained $\pi_0$[^5] on top of a pretrained PaliGemma 2B VLM.
 
-The insight is to 1) utilize the VLM pre-trained on *internet-scale* datasets for **semantic understanding and generalization**, and 2) utilize the flow-matching action expert trained on *cross-embodiment* datasets for **high-frequency (up to 50Hz) control policy**. It also allows optional post-training fine-tuning for difficult or unseen tasks.
+The pretrained VLM provides **semantic understanding and generalization** from internet-scale data, while the flow-matching action expert learns **high-frequency (up to 50 Hz) control** from cross-embodiment data. The model can then be fine-tuned for difficult or unseen tasks.
 
-{{ dimmable_image(src="/img/blog/vla-models-review/pi0.png", alt="Overview of $\pi_0$.") }}
+{{ image(src="/img/blog/vla-models-review/pi0.png", dimmable=true) }}
 
-Similarly, NVIDIA Isaac trains GR00T N1(.5)[^6] that combines an pre-trained Eagle-2 VLM and an diffusion-based action head, which is the first foundation model for generalist humanoid robots. In both $\pi_0$ and GR00T, the VLM backbone and action expert communicates through attention modules, so that the generated actions are conditioned on the hidden states (i.e., KV) of the VLM. Still, there are two technical differences:
+Similarly, NVIDIA Isaac trained GR00T N1(.5)[^6], which combines a pretrained Eagle-2 VLM with a diffusion-based action head as a foundation model for generalist humanoid robots. In both $\pi_0$ and GR00T, the VLM backbone and action expert communicate through attention modules, conditioning generated actions on the VLM hidden states (i.e., KV). There are two technical differences:
 
 - **Attention mechanism**: $\pi_0$ concatenates the VL and action KV and conducts masked self-attention (a [blog](https://huggingface.co/blog/pi0) illustrates this clearly); GR00T directly conducts cross-attention between the two parts.
 - **Number of VLM layers involved**: $\pi_0$ aligns the number of layers in the action expert to the VLM backbone, and conducts self-attention in each layer (MoE-like); GR00T only keeps the hidden states of the last layer in the VLM[^7], and conducts cross-attention with it for each layer.
 
 ### Dual-System VLA
 
-Different from earlier works that use a separate LLM/VLM as the task planner (i.e., system-1-only VLA), *dual-system VLA* utilize the VLM backbone in VLA as the task planner, so the system 2 (high-level planning) and system 1 (low-level control policy) **shares one VLM**.
-This further enhances open-world generalization of the VLA, by learning to **predict subtasks from user instructions by itself**.
-Besides, it reduces the resource requirements compared to using a separate task planner model.
+Rather than pairing a system-1 VLA with a separate LLM/VLM task planner, a *dual-system VLA* also uses its VLM backbone for planning. System 2 (high-level planning) and system 1 (low-level control) therefore **share one VLM**.
+The VLA learns to **predict subtasks directly from user instructions**, improving open-world generalization while using fewer resources than a separate planner model.
 
-> Question: does it also help improve model performance, as the system 1 and 2 are better aligned? On the other hand, does this cause potential interference between different objectives?
+> Question: does sharing a VLM improve performance by aligning systems 1 and 2? On the other hand, could their objectives interfere with each other?
 
-{{ dimmable_image(src="/img/blog/vla-models-review/pi05.png", alt="Overview of $\pi_{0.5}$.") }}
+{{ image(src="/img/blog/vla-models-review/pi05.png", dimmable=true) }}
 
-$\pi_{0.5}$[^8] is the first of this category, trained by Physical Intelligence. Compared to $\pi_0$, it involves new training data, including object detection, instructions & subtask commands, discrete actions, etc.
-At inference time, it first predicts low-level command from high-level prompt with the VLM (system 2), then executes the low-level command with the VLM and action expert (system 1).
-This paradigm (training recipe and inference scheme) is followed by recent VLA like G0[^9] by Galaxea and WALL-OSS[^10] by X Square Robot.
-While most of these models are continuous VLA, WALL-OSS also includes a discrete version with FAST tokenization ([WALL-OSS-FAST](https://huggingface.co/x-square-robot/wall-oss-fast)).
+$\pi_{0.5}$[^8], trained by Physical Intelligence, is the first model in this category. Compared with $\pi_0$, its training data also includes object detection, instructions, subtask commands, and discrete actions.
+At inference time, its VLM first predicts a subtask from the high-level prompt (system 2), then the VLM and action expert execute that subtask (system 1).
+Recent VLAs such as Galaxea's G0[^9] and X Square Robot's WALL-OSS[^10] follow this training recipe and inference scheme.
+While most of these models are continuous VLAs, WALL-OSS also includes a discrete version with FAST tokenization ([WALL-OSS-FAST](https://huggingface.co/x-square-robot/wall-oss-fast)).
 
-Their repositories and open-source states:
+Their repositories and open-source status:
 
-- $\pi_{0.5}$: Weights opened. Code partially opened at [Physical-Intelligence/openpi](https://github.com/Physical-Intelligence/openpi). Inference code for the VLM subtask prediction is not opened.
-- G0: Weights and open-world dataset opened. Code partially opened at [OpenGalaxea/G0](https://github.com/OpenGalaxea/G0). Currently only support real-robot inference.
-- WALL-OSS: Weights and code opened at [X-Square-Robot/wall-x](https://github.com/X-Square-Robot/wall-x).
+- $\pi_{0.5}$: Weights are available, and part of the code is released at [Physical-Intelligence/openpi](https://github.com/Physical-Intelligence/openpi). The VLM subtask-prediction inference code is not available.
+- G0: Weights and the open-world dataset are available, and part of the code is released at [OpenGalaxea/G0](https://github.com/OpenGalaxea/G0). It currently supports only real-robot inference.
+- WALL-OSS: Weights and code are available at [X-Square-Robot/wall-x](https://github.com/X-Square-Robot/wall-x).
 
-## Summary and Future Look
+## Summary and Outlook
 
-In the past 3 years (from RT-2 in 2023), VLA has rapidly evolved from discrete to continuous, and from single-system to dual-system.
-In the following years, I personally think *native multi-tasking* will be another trend of VLA (I will probably write another post) — embodied agents should be capable of performing multiple fundamentally different tasks (e.g., chat, memory, navigation) instead of restricted to "action".
-As introduced above, recent models are already sharing the Internet-scale pre-trained VLM backbone for task planning and control policy (though still restricted to action tasks), which lays the foundation for more aggressive model sharing (one VLM backbone for multiple tasks) as a step forward in the future.
+Since RT-2 appeared in 2023, VLAs have rapidly evolved from discrete to continuous control, and from single-system to dual-system designs.
+I expect *native multitasking* to become another trend: embodied agents should handle fundamentally different tasks (e.g., chat, memory, and navigation) rather than being restricted to actions.
+Recent models already share an internet-scale pretrained VLM backbone between task planning and control. Although both are still action-oriented, this provides a foundation for sharing one VLM across a broader set of tasks.
 
-I am currently working on building this *multi-expert foundation model* for native multi-tasking of embodied agents — feel free to contact for discussion and collaboration!
+I am currently working on this *multi-expert foundation model* for native multitasking in embodied agents — feel free to contact me for discussion and collaboration!
 
-[^1]: Ma, Yueen, et al. "A Survey on Vision-Language-Action Models for Embodied AI." *arXiv preprint arXiv:2405.14093* (2024).
+[^1]: Yueen Ma et al., ["A Survey on Vision-Language-Action Models for Embodied AI"](https://arxiv.org/abs/2405.14093), arXiv, 2024.
 
-[^2]: Zitkovich, Brianna, et al. "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control." *Conference on Robot Learning*. PMLR, 2023.
+[^2]: Brianna Zitkovich et al., ["RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control"](https://arxiv.org/abs/2307.15818), CoRL, 2023.
 
-[^3]: Kim, Moo Jin, et al. "OpenVLA: An Open-Source Vision-Language-Action Model." *arXiv preprint arXiv:2406.09246* (2024).
+[^3]: Moo Jin Kim et al., ["OpenVLA: An Open-Source Vision-Language-Action Model"](https://arxiv.org/abs/2406.09246), CoRL, 2024.
 
-[^4]: Pertsch, Karl, et al. "FAST: Efficient Action Tokenization for Vision-Language-Action Models." *arXiv preprint arXiv:2501.09747* (2025).
+[^4]: Karl Pertsch et al., ["FAST: Efficient Action Tokenization for Vision-Language-Action Models"](https://arxiv.org/abs/2501.09747), RSS, 2025.
 
-[^5]: Black, Kevin, et al. "$\pi_0$: A Vision-Language-Action Flow Model for General Robot Control." *arXiv preprint arXiv:2410.24164* (2024).
+[^5]: Kevin Black et al., ["$\pi_0$: A Vision-Language-Action Flow Model for General Robot Control"](https://arxiv.org/abs/2410.24164), RSS, 2025.
 
-[^6]: Bjorck, Johan, et al. "GR00T N1: An Open Foundation Model for Generalist Humanoid Robots." *arXiv preprint arXiv:2503.14734* (2025).
+[^6]: Johan Bjorck et al., ["GR00T N1: An Open Foundation Model for Generalist Humanoid Robots"](https://arxiv.org/abs/2503.14734), arXiv, 2025.
 
 [^7]: Specifically, the language backbone of the VLM in GR00T N1.5 is fine-tuned from the first 14 layers of the pre-trained [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B) (28 layers in total), according to my test of similarity between the weights.
 
-[^8]: Intelligence, Physical, et al. "$\pi_{0.5}$: a Vision-Language-Action Model with Open-World Generalization." *arXiv preprint arXiv:2504.16054* (2025).
+[^8]: Physical Intelligence et al., ["$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization"](https://arxiv.org/abs/2504.16054), arXiv, 2025.
 
-[^9]: Jiang, Tao, et al. "Galaxea Open-World Dataset and G0 Dual-System VLA Model." *arXiv preprint arXiv:2509.00576* (2025).
+[^9]: Tao Jiang et al., ["Galaxea Open-World Dataset and G0 Dual-System VLA Model"](https://arxiv.org/abs/2509.00576), arXiv, 2025.
 
-[^10]: X Square Robot. "WALL-OSS: Igniting VLMs toward the Embodied Space." 2025, <https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf>. White paper.
+[^10]: X Square Robot, ["WALL-OSS: Igniting VLMs toward the Embodied Space"](https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf), white paper, 2025.

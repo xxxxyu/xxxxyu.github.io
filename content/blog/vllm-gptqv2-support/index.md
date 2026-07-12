@@ -1,8 +1,8 @@
 +++
 title = "Enhancing GPTQv2 Format Support in vLLM: Analysis and Implementation"
 date = "2025-10-12"
-updated = "2025-10-28"
-description = "Deep technical analysis of GPTQv2 format limitations in vLLM, and implementation of CUDA kernel adaptations to enable efficient low-bit/asymmetric quantization inference."
+updated = "2026-07-11"
+description = "An analysis of GPTQv2 format limitations in vLLM and the CUDA kernel changes needed for low-bit asymmetric quantization inference."
 template = "blog-page.html"
 
 [taxonomies]
@@ -20,24 +20,24 @@ mermaid = true
 
 ## Introduction
 
-vLLM, one of the leading LLM inference frameworks, currently lacks robust support for **GPTQv2 format** (an upgraded version of GPTQv1 format) models, particularly those using **low-bit (2/3-bit) or asymmetric quantization**. While vLLM doesn't raise explicit errors when loading such models, it incorrectly treats them as GPTQv1 format, resulting in degraded inference quality and characteristic gibberish outputs (consisting of repeated `!!!`, details in [this issue](https://github.com/vllm-project/vllm/issues/26343)).
+Before this change, vLLM lacked robust support for models in **GPTQv2 format**, particularly those using **low-bit (2/3-bit) or asymmetric quantization**. vLLM loaded these models without an explicit error but treated them as GPTQv1, degrading inference quality and often producing repeated `!!!` tokens (see [issue #26343](https://github.com/vllm-project/vllm/issues/26343)).
 
-This limitation stems from differences in **zero point handling** between GPTQv1 and GPTQv2 checkpoint formats, which vLLM's existing GPTQ GeMM kernels don't account for. This post presents a comprehensive analysis of this limitation, and documents the implementation of kernel adaptations (i.e., in [this PR](https://github.com/vllm-project/vllm/pull/26092)), that enable proper GPTQv2 support while maintaining backward compatibility.
+The problem came from differences in **zero-point handling** between GPTQv1 and GPTQv2 checkpoints that vLLM's fallback GPTQ GeMM kernel did not account for. This post analyzes the failure and documents the kernel changes in [PR #26092](https://github.com/vllm-project/vllm/pull/26092), which added GPTQv2 support while preserving backward compatibility.
 
-Through careful investigation of vLLM's quantization support and targeted CUDA kernel modifications, I enable robust inference for GPTQv2 format models, especially low-bit or asymmetric ones, with vLLM — contributing a step forward towards efficient LLM deployment.
+The resulting implementation supports GPTQv2 models across low-bit and asymmetric configurations in vLLM's fallback GPTQ path.
 
 ## Background and Preliminaries
 
-In my case, I use vLLM to serve some low-bit (e.g., 2-bit), asymmetrically quantized models, stored in GPTQv2 format, and encountered [this issue](https://github.com/vllm-project/vllm/issues/26343).
+I encountered the issue while using vLLM to serve low-bit (e.g., 2-bit), asymmetrically quantized models stored in GPTQv2 format.
 
-Before diving into technical details, I'll briefly introduce the background to do so (e.g., why GPTQv2), and some preliminaries (e.g., the checkpoint format) to help follow the technical parts. **Key takeaways:**
+Two points of background are useful before the implementation details:
 
-- **Asymmetric quantization benefits low-bit quantization**, by adjusting the zero point for each group of weights.
-- **GPTQv2 format outperforms GPTQv1 in asymmetric quantization**, by better preserving zero point information.
+- **Asymmetric quantization benefits low-bit quantization** by adjusting the zero point for each group of weights.
+- **GPTQv2 better preserves zero-point information** in asymmetrically quantized checkpoints.
 
 ### Weight Quantization of LLMs
 
-Weight quantization that quantizes high-precision model weights (e.g., 16/32-bit) into fewer bits (e.g., 2/3/4/8-bit) has been a common practice in LLM deployment, especially in resource-constrained scenarios.
+Weight quantization maps high-precision model weights (e.g., 16/32-bit) to fewer bits (e.g., 2/3/4/8-bit). It is common in LLM deployment, especially under tight resource constraints.
 
 Technically, weight quantization maps the large range of high-precision weights (e.g., within $[-65504, 65504]$ for FP16) into a limited range of quantized weights (e.g., $[0, 2^b - 1]$ for $b$-bit unsigned integer).
 This mapping typically involves a scaling factor ($scale$) that compresses the range, and a bias ($zero$) that shifts the zero point. We denote $w_o$ as the original weight within the range $[w_{min}, w_{max}]$ (usually for a group of weights), and $w_q$ as the quantized weight. Then, a simple $b$-bit integer quantization is formulated as:
@@ -62,59 +62,59 @@ To recover the original weight $\hat{w}_o$ during dequantization:
 
 Based on this formulation, quantization methods are categorized by whether the zero point is required:
 
-- *Symmetric quantization* assumes $w_{max} = - w_{min}$, so $zero = - \mathrm{round}(\frac{2^b - 1}{2})$ will not change. In this case, $zero$ doesn't provide additional information given the quantization bits.
+- *Symmetric quantization* assumes $w_{max} = -w_{min}$, so $zero = \mathrm{round}(\frac{2^b - 1}{2})$ is fixed. In this case, $zero$ provides no additional information once the bit width is known.
 
-- *Asymmetric quantization* doesn't have such assumption. So $zero$ varies across groups of weights, and is necessary for accurately recovering the original weights.
+- *Asymmetric quantization* does not make this assumption. Its $zero$ varies across weight groups and must be stored to recover the quantized values accurately.
 
-Note that most GPTQ implementations are 4-bit symmetric quantization. However, to reduce the quantization error in lower bits, asymmetric quantization is necessary.
+Most GPTQ implementations use 4-bit symmetric quantization. At lower bit widths, asymmetric quantization can reduce quantization error by adapting the zero point to each group.
 
 ### GPTQ: Quantization and Checkpoint Format
 
 GPTQ[^1] is one of the most popular post-training **quantization methods** for generative transformers (mainly LLMs and VLMs).
 It utilizes approximate second-order information (inverse layer Hessian) to reduce quantization errors.
-Besides, GPTQ could also refer to the specific **checkpoint format** adopted by GPTQ-quantized models (e.g., by [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ)), with details explained in [this blog](https://danieldk.eu/GPTQ-Checkpoint-Format).
+GPTQ can also refer to the **checkpoint format** used by GPTQ-quantized models, such as those produced by [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ). Daniël de Kok's [GPTQ Checkpoint Format](https://danieldk.eu/GPTQ-Checkpoint-Format) explains this representation in detail.
 
-GPTQ is widely supported by the community, including 1) quantization libraries that implement the GPTQ quantization method or support exporting to GPTQ format (although not implementing the quantization method), and 2) kernel libraries and inference frameworks that support inference with models of the GPTQ checkpoint format, as listed below:
+The GPTQ ecosystem includes quantization libraries that implement the method or export its checkpoint format, as well as kernels and inference frameworks that execute those checkpoints.
 
 Quantization libraries:
 
-- [GPTQModel](https://github.com/ModelCloud/GPTQModel) is now the 1st choice for GPTQ quantization in replacement of AutoGPTQ, with richer model and backend support.
-- [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ) was the most popular library for GPTQ quantization, and is unmaintained now.
-- [gptq](https://github.com/IST-DASLab/gptq) is the official code implementation of the GPTQ paper.
-- Many other libraries implement GPTQ quantization, or support to save quantized models in GPTQ format.
+- [GPTQModel](https://github.com/ModelCloud/GPTQModel) is the actively maintained successor to AutoGPTQ, with broader model and backend support.
+- [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ) was a popular GPTQ quantization library but is no longer maintained.
+- [gptq](https://github.com/IST-DASLab/gptq) is the official implementation of the GPTQ paper.
+- Other libraries either implement GPTQ quantization or export quantized models in GPTQ format.
 
 Computing (CUDA) kernels:
 
-- [Marlin](https://github.com/IST-DASLab/marlin) is the SOTA W4A16 mpGeMM kernel supporting 4-bit GPTQ models.
+- [Marlin](https://github.com/IST-DASLab/marlin) is a high-performance W4A16 mpGeMM kernel for 4-bit GPTQ models.
 - [ExLlamaV2](https://github.com/turboderp-org/exllamav2) is an inference library with high-performance kernels for GPTQ models.
 - [BitBLAS](https://github.com/microsoft/BitBLAS) is a high-performance low-bit mpGeMM kernel library supporting GPTQ models.
-- Similarly, many other kernel libraries support GPTQ format models.
+- Many other kernel libraries also support GPTQ-format models.
 
-SOTA LLM inference frameworks, including [vLLM](https://github.com/vllm-project/vllm), are integrated with the above quantization and kernel libraries, to support efficient LLM deployment with GPTQ quantization.
+LLM inference frameworks such as [vLLM](https://github.com/vllm-project/vllm) integrate these quantization and kernel libraries to serve GPTQ models efficiently.
 
 ### From GPTQv1 to GPTQv2
 
-GPTQv2 is an upgraded version of GPTQ (by a different team though), in both the quantization method and checkpoint format. Specifically:
+The name GPTQv2 is used for changes to both the quantization method and the checkpoint format:
 
-- Quantization method: GPTQv2 (also called GPTAQ) introduces asymmetric calibration, which effectively reduces the quantization error accumulated in previous layers[^2]. It's first implemented in [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ), and then integrated to [GPTQModel](https://github.com/ModelCloud/GPTQModel) (enabled by setting `v2=True`).
-- Checkpoint format: GPTQv2 format stores the zero points differently with GPTQv1 (i.e., GPTQ) format — GPTQv1 stores $\mathrm{clamp}(zero - 1)$ in the checkpoint, and requires adding $1$ back before dequantization at runtime[^3]. GPTQv2 stores the exact $zero$ value, and doesn't require extra runtime adjustment. It is also supported by [GPTQModel](https://github.com/ModelCloud/GPTQModel) (enabled by setting `format="gptq_v2"`).
+- Quantization method: GPTQv2 (also called GPTAQ) introduces asymmetric calibration to reduce quantization error propagated from earlier layers[^2]. It was first implemented in [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ), then integrated into [GPTQModel](https://github.com/ModelCloud/GPTQModel) behind `v2=True`.
+- Checkpoint format: GPTQv2 stores zero points differently from GPTQv1. GPTQv1 stores $\mathrm{clamp}(zero - 1)$ and adds $1$ before runtime dequantization[^3]. GPTQv2 stores the exact $zero$ value and needs no adjustment. GPTQModel enables this format with `format="gptq_v2"`.
 
 Just like GPTQv1, the quantization method and checkpoint format are not coupled. So you can:
 
-- Store a non-GPTQ-quantized model in GPTQv2 format, like [BitDistiller/Qwen-8B-w2g64-gptq](https://huggingface.co/BitDistiller/Qwen-8B-w2g64-gptq).
-- Store a GPTQv1-quantized model in GPTQv2 format, by setting `format="gptq_v2"` only, in GPTQModel.
-- Store a GPTQv2-quantized model in GPTQv1 format, by setting `v2=True` only, in GPTQModel.
+- Store a model quantized by another method in GPTQv2 format, as in [BitDistiller/Qwen-8B-w2g64-gptq](https://huggingface.co/BitDistiller/Qwen-8B-w2g64-gptq).
+- Store a GPTQv1-quantized model in GPTQv2 format by setting only `format="gptq_v2"` in GPTQModel.
+- Store a GPTQv2-quantized model in GPTQv1 format by setting only `v2=True` in GPTQModel.
 
-Note that the conversion between GPTQv2 and GPTQv1 format is **irreversible** — you can convert GPTQv1 to GPTQv2 losslessly, but not from GPTQv2 to GPTQv1. This is due to the "-1" issue of GPTQv1 as mentioned above. In this way, the actual zero point range in suppressed by clamping $0 - 1$ to $0$ in GPTQv1. For example, in INT2 quantization, the effective range shrinks from $[0,3]$ to $[1,3]$.
-Therefore, **GPTQv2 format is a preferable choice in asymmetric quantization, especially for low-bit quantization.**
+The conversion is lossless from GPTQv1 to GPTQv2, but not in the reverse direction. GPTQv1's subtract-one representation clamps $0 - 1$ to $0$, suppressing part of the zero-point range. For INT2 quantization, for example, the effective range shrinks from $[0,3]$ to $[1,3]$.
+Therefore, **GPTQv2 is preferable for asymmetric checkpoints, especially at low bit widths.**
 
 ## Cause Analysis
 
-After all the preparation, we can finally dive into the technical details about why and how vLLM fails for GPTQv2 in my case — even though it has some sort of support actually, which I found after careful investigation. **Key takeaways:**
+The failure comes from how vLLM routes different GPTQ configurations to its available kernels:
 
-- **vLLM has several GPTQ-compatible GeMM kernels with pre-defined priorities** — Marlin, BitBLAS, and fallbacks.
-- **Performant kernels like Marlin support GPTQv2 format of limited bits and symmetry** — only 4/8-bit symmetric quantization.
-- **Fallback kernels support more bits and symmetry but lacks GPTQv2 format support** — the reason why I encountered the issue.
+- **vLLM has several GPTQ-compatible GeMM kernels with predefined priorities** — Marlin, BitBLAS, and fallbacks.
+- **Optimized kernels such as Marlin support GPTQv2 only for limited configurations** — 4/8-bit symmetric quantization.
+- **The fallback kernel supports more bit widths and asymmetric quantization, but lacked GPTQv2 support** — the source of this issue.
 
 <!-- markdownlint-disable MD046 -->
 {% mermaid(invertible=false, full_width=false) %}
@@ -122,23 +122,23 @@ graph TD
     A[VllmConfig] --> B[ModelConfig._verify_quantization]
 
     B --> |"Priority: gptq_marlin > gptq_bitblas > gptq"| E[QuantizationConfig.get_quant_method]
-    
+
     E -->|4/8-bit + sym| J[GPTQMarlinLinearMethod]
     E -->|4/8-bit + sym| K[GPTQBitBLASLinearMethod]
     E -->|2/3/4/8-bit + sym/asym| L[GPTQLinearMethod]
-    
+
     J --> JJ[MarlinLinearKernel]
     K --> KK[BitBLASLinearKernel]
     L --> LL[Direct Kernel Call]
-    
+
     JJ --> M[gptq_marlin_gemm<br/>CUDA kernel]
     KK --> N[bitblas.Matmul<br/>External library]
     LL --> O[gptq_gemm<br/>CUDA kernel]
-    
+
     M --> Q["✅ Marlin: gptq/gptq_v2"]
-    N --> R["✅ BitBLAS: gptq/gptq_v2"] 
+    N --> R["✅ BitBLAS: gptq/gptq_v2"]
     O --> S["❌ GPTQ: gptq only"]
-    
+
     style J fill:#90EE90
     style K fill:#90EE90
     style L fill:#FFB6C1
@@ -151,7 +151,7 @@ graph TD
 
 ### vLLM's Kernel Routing Hierarchy
 
-The first step is to understand how vLLM routes computing kernels for different quantizations, like GPTQ. This is implemented in the model execution part of the [LLMEngine](https://docs.vllm.ai/en/stable/design/arch_overview.html#llm-engine). For simplicity, we only consider dense models (no MoE). It includes the following calling hierarchy:
+The first step is to understand how vLLM routes compute kernels for quantization methods such as GPTQ. This logic lives in the model-execution portion of the [LLMEngine](https://docs.vllm.ai/en/stable/design/arch_overview.html#llm-engine). For simplicity, this discussion covers only dense models (no MoE). The call hierarchy is:
 
 **1. Model-level quantization configuration:**
 
@@ -176,7 +176,7 @@ vLLM supports several ways of routing to low-level CUDA kernels from a linear me
 
 ### vLLM's Support for GPTQ(v2) Format
 
-vLLM integrates several optimized kernels for GPTQ format models, as listed in [GPTQ: Quantization and Checkpoint Format](#gptq-quantization-and-checkpoint-format), including Marlin, ExLlamaV2, BitBLAS, etc. vLLM also has fallback kernels for unsupported quantization configurations of these kernels. Following the analysis in [vLLM's Kernel Routing Hierarchy](#vllm-s-kernel-routing-hierarchy), I summarize this support matrix (by linear methods):
+vLLM integrates several optimized kernels for GPTQ-format models, including Marlin, ExLlamaV2, and BitBLAS, plus fallback kernels for unsupported configurations. The resulting support matrix by linear method is:
 
 | Method      | Bits    | Sym  | GPTQ Format     |
 | ----------- | ------- | ---- | --------------- |
@@ -203,33 +203,33 @@ overrides = [
             ]
 ```
 
-- Only `GPTQLinearMethod` supports 2/3-bit quantization and asymmetric quantization. However, it lacks GPTQv2 support (both the other two supports).
+- Only `GPTQLinearMethod` supports 2/3-bit and asymmetric quantization. However, it lacked GPTQv2 support; the other two methods already supported the format.
 
-As a result, neither 2/3-bit nor asymmetric quantization in GPTQv2 format are unsupported by vLLM, which motivates [this PR](https://github.com/vllm-project/vllm/pull/26092).
+As a result, vLLM supported neither 2/3-bit nor asymmetric quantization in GPTQv2 format through this fallback path, which motivated [PR #26092](https://github.com/vllm-project/vllm/pull/26092).
 
 ## Solution
 
-Based on the above analysis, vLLM's GPTQ linear methods lack support for 2/3-bit quantization and asymmetric quantization in GPTQv2 format, and require adaption to robustly support GPTQv2 format models of various configurations.
+Based on this analysis, one GPTQ linear method and its kernel needed adaptation to support GPTQv2 models across these configurations.
 
-### Approach: Adapt GPTQ Linear Method & Kernel
+### Approach: Adapt the GPTQ Linear Method and Kernel
 
-To add such support, at least one linear method should be added/adapted. To adapt existing linear methods:
+Adding this support requires adapting at least one existing linear method:
 
-- `GPTQMarlinLinearMethod` (lacking 2/3-bit and asymmetric support): It requires also modifying vLLM's Marlin CUDA kernel, which is dedicated for 4/8-bit symmetric quantization — not a good choice.
-- `GPTQBitBLASLinearMethod` (lacking 2/3-bit and asymmetric support): It requires modifying only the linear method/kernel (Python code), since the `bitblas` library itself supports the `bits` and `sym` we want — a reasonable choice, but requires the optional `bitblas` package to be installed.
-- `GPTQLinearMethod` (lacking GPTQv2 format support): It requires also modifying vLLM's `gptq_gemm` CUDA kernel, by only adapting the zero point handling logic — preferred.
+- `GPTQMarlinLinearMethod` lacks 2/3-bit and asymmetric support. Extending it would also require changes to vLLM's Marlin CUDA kernel, which targets 4/8-bit symmetric quantization.
+- `GPTQBitBLASLinearMethod` also lacks 2/3-bit and asymmetric support at the linear-method layer. Although the `bitblas` library supports the required `bits` and `sym` values, this route depends on the optional `bitblas` package.
+- `GPTQLinearMethod` already supports the required bit widths and symmetry modes. It only needs format-aware zero-point handling in the `gptq_gemm` CUDA kernel, making it the preferred route.
 
-So, the plan is to adapt `GPTQLinearMethod` (with `GPTQConfig`) and `gptq_gemm` to add proper GPTQv2 format support.
+The implementation therefore adapts `GPTQLinearMethod` (with `GPTQConfig`) and `gptq_gemm` for GPTQv2.
 
-### Details of Adaption: Conditioned on Format
+### Adaptation Details: Conditioned on Format
 
-During this linear method & kernel adaption, there are 3 points to keep in mind:
+The linear-method and kernel adaptation has three requirements:
 
 1. Maintain compatibility for GPTQv1 format.
-2. Keep the code and binary size impact down.
-3. Make sure other kernels (e.g., Marlin) are not running with GPTQv2 incorrectly.
+2. Minimize the impact on code and binary size.
+3. Preserve the existing routing of GPTQv2 models to other kernels such as Marlin.
 
-In response to Pt. 1 and 2:
+For the first two requirements:
 
 - Add a `use_v2_format: bool` attribute to `GPTQLinearMethod` that indicates whether `checkpoint_format == "gptq_v2"`.
 - Add a `bool use_v2_format` argument to `gptq_gemm`, which accepts `GPTQLinearMethod.use_v2_format` as input.
@@ -254,27 +254,27 @@ dequant_2bit_16(load_int4.w, dq[3], size_n, zeros[3] + zero_offset);
 
 ```
 
-> When testing, I found that the original `gptq_gemm` is buggy at 4-bit even with symmetrically quantized model of GPTQv1 format — out of scope of this PR.
+> During testing, I found that the original `gptq_gemm` is buggy at 4-bit even with a symmetrically quantized GPTQv1 model. This is outside the scope of the PR.
 
-To ensure Pt. 3, review [vLLM's Support for GPTQ(v2) Format](#vllm-s-support-for-gptq-v2-format) — both `GPTQMarlinLinearMethod` and `GPTQBitBLASLinearMethod` are not affected, as they already support GPTQv2 format, though limited to 4/8-bit symmetric quantization.
+For the third requirement, both `GPTQMarlinLinearMethod` and `GPTQBitBLASLinearMethod` remain unchanged: they already support GPTQv2, although only for 4/8-bit symmetric quantization.
 
 > TODO: Add some performance benchmarks.
-> Currently I've found that 2-bit gptq_gemm is slower during decoding (GeMV) than prefilling (GeMM).
+> I found that 2-bit `gptq_gemm` is slower during decoding (GeMV) than during prefilling (GeMM).
 
 ## Conclusion
 
-This post details the development of GPTQv2 format support in vLLM, which addresses a significant gap in low-bit asymmetric quantization inference with SOTA LLM inference frameworks.
+This change adds GPTQv2 support to vLLM's fallback GPTQ path, covering low-bit and asymmetric configurations while preserving GPTQv1 compatibility.
 
-Questions and discussions are welcomed.
+Questions and discussion are welcome.
 
-**Possible future works:**
+**Possible future work:**
 
 - Extend optimized kernels (Marlin, BitBLAS) to support 2/3-bit or asymmetric quantization.
 - Fix the 4-bit bug in `gptq_gemm`.
 - Improve the decoding speed with `gptq_gemm`.
 
-[^1]: Frantar, Elias, et al. "GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers." arXiv preprint arXiv:2210.17323 (2022).
+[^1]: Elias Frantar et al., ["GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers"](https://arxiv.org/abs/2210.17323), ICLR, 2023.
 
-[^2]: Li, Yuhang, et al. "GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration." arXiv preprint arXiv:2504.02692 (2025).
+[^2]: Yuhang Li et al., ["GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration"](https://arxiv.org/abs/2504.02692), arXiv, 2025.
 
-[^3]: de Kok, Daniël. "GPTQ Checkpoint Format." Daniël's Website, 7 Aug. 2024, danieldk.eu/GPTQ-Checkpoint-Format.
+[^3]: Daniël de Kok, ["GPTQ Checkpoint Format"](https://danieldk.eu/GPTQ-Checkpoint-Format), Daniël's Website, 2024.

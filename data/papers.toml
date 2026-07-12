@@ -39,8 +39,8 @@ venue = 'ACM MobiSys 2026'
 # year = 2026
 notes = '<strong class="highlight">Best Paper Award Runner-Up</strong>, [Results Reproduced @AE](https://www.acm.org/%70%75%62%6c%69%63%61%74%69%6f%6e%73/policies/artifact-review-and-badging-current)'
 paper_url = 'https://dl.acm.org/doi/10.1145/3745756.3809200'
+blog_url = '/blog/vec-lut-parallel-low-bit-llm/'
 code_url = 'https://github.com/OpenBitSys/vlut.cpp'
-model_url = 'https://huggingface.co/collections/XXXXyu/vlutcpp'
 slides_url = 'https://github.com/OpenBitSys/vlut.cpp/blob/master/media/veclut_slides_mobisys_2026.pdf'
 featured = true
 

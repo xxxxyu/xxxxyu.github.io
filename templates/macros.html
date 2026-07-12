@@ -35,10 +35,10 @@
     {% endif %}
     <div class="pub-card__links">
       {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">Paper</a>{% endif %}
+      {% if pub.blog_url %}<a href="{{ pub.blog_url }}">Blog</a>{% endif %}
       {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">Code</a>{% endif %}
       {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">Page</a>{% endif %}
       {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">Slides</a>{% endif %}
-      {% if pub.model_url %}<a href="{{ pub.model_url }}" target="_blank" rel="noopener">Model</a>{% endif %}
     </div>
   </div>
 </div>

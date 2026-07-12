@@ -1,15 +1,15 @@
 +++
 title = "Cheatsheet for Setting up Pi Devices"
 date = "2025-01-03"
-updated = "2025-08-04"
-description = "Quickly setting up new single-board computers like Raspberry Pi."
+updated = "2026-07-11"
+description = "A practical setup checklist for Raspberry Pi and similar single-board computers."
 template = "blog-page.html"
 
 [taxonomies]
 tags = ["Development", "Linux", "Edge Device"]
 +++
 
-This is mostly based on my personal development requirements. It is best applicable for boards like Orange Pi and Raspberry Pi.
+This cheatsheet is tailored to my development needs and works best for boards such as Orange Pi and Raspberry Pi.
 
 ## Hardware
 
@@ -23,36 +23,36 @@ For first-boot setup and local debugging
 
 ### TF (MicroSD) card with OS flashed
 
-- Ubuntu latest LTS recommended for general development
-  - I prefer server OS over desktop ones cuz it's more lightweight
-  - It also prevents the GUI affecting performance measurement
-- If money allows, buy a larger card yourself (>=256GB in my case)
+- The latest Ubuntu LTS is recommended for general development
+  - I prefer a server OS because it is more lightweight than a desktop image
+  - It also prevents the GUI from affecting performance measurements
+- If the budget allows, use a larger card (≥256 GB in my case)
   - The default 32/64GB is insufficient for many tasks
-- Imaging tools: [BalenaEtcher](https://etcher.balena.io/#download-etcher) (general), and [Raspberry Pi Imager](https://www.raspberrypi.com/software/) (R Pi)
-  - R Pi Imager supports headless setup through customized configuration
+- Imaging tools: [BalenaEtcher](https://etcher.balena.io/#download-etcher) (general) and [Raspberry Pi Imager](https://www.raspberrypi.com/software/) (Raspberry Pi)
+  - Raspberry Pi Imager supports headless setup through custom configuration
 
 ## System
 
 ### Set/change the username and password if required
 
-- Recommended format: device (raspi, orangepi) \[+ user info (if not shared)\]
+- Recommended format: device (`raspi`, `orangepi`) [+ user info if the device is not shared]
 
 ### Connect to the (wireless) network
 
-- On R Pi, you can perform a headless setup to automatically connect
+- On Raspberry Pi, a headless setup can connect to the network automatically
   - The network is managed by `cloud-init`, `netplan`, and `networkd` by default.
   - I switched to `NetworkManager` as it's more familiar.
-- On others, use the `NetworkManager` with Ubuntu
+- On other boards running Ubuntu, use `NetworkManager`
   - Detect available networks: `nmcli dev wifi`
-  - Connect by ssid: `nmcli dev wifi connect <ssid> password <passwd>`
+  - Connect by SSID: `nmcli dev wifi connect <ssid> password <passwd>`
 
 ### Configure the network if required
 
 - Tsinghua TUNET authentication: [GoAuthing](https://github.com/z4yx/GoAuthing/)
-  - If there's proxy issue to access GitHub, it's available on [TUNA](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/)
-  - Linux arm64 pre-built binaries: [auth-thu.linux.arm64](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/auth-thu.linux.arm64)
-- Setup the proxy: TODO
-  - Make sure not to allow LAN connection in public network
+  - If a proxy prevents access to GitHub, releases are also available on [TUNA](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/)
+  - Prebuilt Linux ARM64 binary: [auth-thu.linux.arm64](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/auth-thu.linux.arm64)
+- Set up the proxy: TODO
+  - Do not allow LAN connections on a public network
 
 ### Install/update necessary packages
 
@@ -77,8 +77,8 @@ For first-boot setup and local debugging
 - tmux: `sudo apt install tmux`
 - git: `sudo apt install git`
   - Copy SSH public key to GitHub to clone with SSH
-  - Config username and email to commit
-- code-server (if platform doesn't support VSC Remote)
+  - Configure a username and email before committing
+- code-server (if the platform does not support VS Code Remote)
 
 ### Build tools and compilers
 
@@ -91,7 +91,7 @@ For first-boot setup and local debugging
 - LLVM + Clang
   - Install from official website: [download page](https://apt.llvm.org/)
   - One-liner to install latest: `bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"`
-- Note: when multiple compilers (GCC, Clang, and different versions) are installed, make sure the `$CC` and `$CXX` enviroment variables are correctly set, or the building tools (e.g., CMake) might use the wrong compiler and cause errors
+- Note: when multiple compilers (GCC, Clang, or different versions) are installed, make sure the `$CC` and `$CXX` environment variables are set correctly. Otherwise, build tools such as CMake may select the wrong compiler.
 
 ### Python environments
 
@@ -100,10 +100,10 @@ For first-boot setup and local debugging
   - One-liner installation (mind the OS and arch)
     - `curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh`
     - `bash ~/Miniconda3-latest-Linux-aarch64.sh`
-      - No `sudo` or will be installed to another location
+      - Do not use `sudo`, or Miniconda will be installed to a different location
     - Press Enter and type yes after reading the agreement
 - Virtualenv
-  - If the project specifies
+  - Use it when required by the project
   - Install via apt: `sudo apt install python3-venv`
 - Note: when both conda and virtualenv are installed, make sure the correct environment is activated (they seem the same from the terminal)
 
@@ -115,7 +115,7 @@ For first-boot setup and local debugging
 
 ### CMake update
 
-Update latest CMake on Ubuntu (generated by Claude):
+Install the latest CMake on Ubuntu (generated by Claude):
 
 ```sh
 sudo apt remove --purge cmake
@@ -135,7 +135,7 @@ Install latest standard library: `sudo apt install libstdc++-12-dev`
 
 ### Git Clone
 
-One-liner to use SSH url: `sed -i 's/https:\/\/github.com\//git@github.com:/' .gitmodules`
+One-liner to use SSH URLs: `sed -i 's/https:\/\/github.com\//git@github.com:/' .gitmodules`
 
 Recursive script:
 
@@ -151,7 +151,7 @@ update_modules() {
 process_level() {
     # 1. Update current .gitmodules
     update_modules
-    
+
     # 2. For each currently cloned submodule
     git submodule foreach '
         # 3. Update their .gitmodules if exists
@@ -171,8 +171,8 @@ for i in {1..5}; do
 done
 ```
 
-### Huggingface
+### Hugging Face
 
 HF mirror: `export HF_ENDPOINT=https://hf-mirror.com`
 
-Mindscope: `https://www.modelscope.cn/home`
+ModelScope: [modelscope.cn](https://www.modelscope.cn/home)

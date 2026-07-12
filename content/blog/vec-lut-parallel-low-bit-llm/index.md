@@ -35,11 +35,11 @@ Their small weight alphabet also makes **lookup-table (LUT)-based inference** pr
 
 A major cost in quantized LLM inference is **mixed-precision general matrix multiplication (mpGeMM)**, such as multiplying 1.58-bit weights with INT8 or FP16 activations. Commodity CPUs and many edge accelerators do not natively support these mixed-precision operations, so inference frameworks usually need either dequantization or custom kernels[^8].
 
-{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/lut-based-inference.png", caption="LUT-based mpGeMM replaces dequantization and multiplication with table lookup in quantized Transformer layers.") }}
+{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/lut-based-inference.png", dimmable=true, caption="LUT-based mpGeMM replaces dequantization and multiplication with table lookup in quantized Transformer layers.") }}
 
 LUT-based inference starts by splitting the weight matrix into small groups. Low-bit weights have very few possible patterns: four ternary weights have only `3^4 = 81` combinations. For a given activation vector, the kernel can **precompute** every "weight pattern × activation" result and store the results in a table. At runtime, the packed weight group becomes an **index** into that table, so the kernel can skip dequantization and multiplication for the inner loop and accumulate the looked-up values instead.
 
-{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/lut-example.png", max_width="60%", caption="A concrete LUT example: compute o = w × v by using the ternary weight group as a lookup index.") }}
+{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/lut-example.png", max_width="60%", dimmable=true, caption="A concrete LUT example: compute o = w × v by using the ternary weight group as a lookup index.") }}
 
 ---
 
@@ -71,7 +71,7 @@ The key observation is that **lookup indices come from the weights, and the weig
 
 Vec-LUT changes the lookup unit from a scalar to a vector. Instead of one table per token, it builds a single **unified table** across all parallel tokens. Each table entry stores not one scalar result, but a *vector* of results, one per token. A weight index now triggers one `1→N` lookup that fetches the results for the whole token group.
 
-{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/scalar-vs-vector-lut.png", caption="Vec-LUT: turning per-token 1→1 lookups into a single multi-token 1→N lookup") }}
+{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/scalar-vs-vector-lut.png", dimmable=true, caption="Vec-LUT: turning per-token 1→1 lookups into a single multi-token 1→N lookup") }}
 
 The resulting access pattern has three useful properties:
 
@@ -104,7 +104,7 @@ We evaluated Vec-LUT across five x86/ARM devices (PC, laptop, SBC, smartphone, a
 - **Continuous batching:** on an 8-core, **$0.50/h** AWS Graviton 3 server, Vec-LUT `I2` serves Falcon3 1B at **273.5 tokens/s** across 32 parallel requests, **1.4×** faster than llama.cpp `TQ2_0`.
 - **Energy efficiency:** up to **2.1×** better tokens/Joule than llama.cpp and **1.8×** better than T-MAC.
 
-{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/eval-prefill.png", max_width="80%", caption="End-to-end prefilling comparison across models, devices and threads.") }}
+{{ image(src="/img/blog/vec-lut-parallel-low-bit-llm/eval-prefill.png", max_width="80%", dimmable=true, caption="End-to-end prefilling comparison across models, devices and threads.") }}
 
 ---
 

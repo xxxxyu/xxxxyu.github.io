@@ -38,7 +38,7 @@
       {% if item.links %}
       <span class="news-list__links">
         {%- for link in item.links -%}
-        <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+        <a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}>{{ link.label }}</a>
         {%- endfor -%}
       </span>
       {% endif %}
