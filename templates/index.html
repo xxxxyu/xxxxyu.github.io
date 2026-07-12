@@ -1,7 +1,39 @@
 {% extends "base.html" %}
 {% import "macros.html" as pubmacros %}
 
-{% block title %}{{ config.title }} — {{ config.description }}{% endblock title %}
+{% block title %}{{ config.title }} — {{ config.extra.position }} at {{ config.extra.affiliation }}{% endblock title %}
+{% block description %}{{ config.description }}{% endblock description %}
+{% block og_title %}{{ config.title }}{% endblock og_title %}
+{% block og_description %}{{ config.description }}{% endblock og_description %}
+{% block twitter_title %}{{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ config.description }}{% endblock twitter_description %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "url": {{ current_url | json_encode() | safe }},
+  "name": {{ config.title | json_encode() | safe }},
+  "description": {{ config.description | json_encode() | safe }},
+  "mainEntity": {
+    "@type": "Person",
+    "name": {{ config.extra.author | json_encode() | safe }},
+    "url": {{ current_url | json_encode() | safe }},
+    "jobTitle": {{ config.extra.position | json_encode() | safe }},
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "Tsinghua University",
+      "url": {{ config.extra.affiliation_link | json_encode() | safe }}
+    },
+    "sameAs": [
+      {{ config.extra.github | json_encode() | safe }},
+      {{ config.extra.google_scholar | json_encode() | safe }}
+    ]
+  }
+}
+</script>
+{% endblock head_extra %}
 
 {% block content %}
 {# ── Profile Block ── #}

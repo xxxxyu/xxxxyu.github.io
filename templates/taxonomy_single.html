@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}{{ term.name }} — {{ config.title }}{% endblock title %}
+{% block description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock description %}
+{% block robots %}noindex,follow{% endblock robots %}
+{% block og_title %}{{ term.name }} — {{ config.title }}{% endblock og_title %}
+{% block og_description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock og_description %}
+{% block twitter_title %}{{ term.name }} — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock twitter_description %}
 
 {% block content %}
 <h1>Tagged: {{ term.name }}</h1>

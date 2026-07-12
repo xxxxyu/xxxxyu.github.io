@@ -3,9 +3,19 @@
 
 {% block title %}Outside — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+{% block og_title %}Outside — {{ config.title }}{% endblock og_title %}
+{% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
+{% block twitter_title %}Outside — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
 {% block main_class %}content content--wide{% endblock main_class %}
 
 {% block content %}
+{% set has_notes = false %}
+{% set has_music = false %}
+{% for page in section.pages %}
+  {% if page.extra.kind == "note" %}{% set_global has_notes = true %}{% endif %}
+  {% if page.extra.kind == "music" %}{% set_global has_music = true %}{% endif %}
+{% endfor %}
 <header class="outside-hero">
   <h1>{{ section.title }}</h1>
   {% if section.description %}
@@ -42,6 +52,7 @@
   </div>
 </section>
 
+{% if has_notes %}
 <section class="outside-section" aria-labelledby="outside-notes">
   <div class="section-heading">
     <h2 id="outside-notes">Notes</h2>
@@ -65,7 +76,9 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 
+{% if has_music %}
 <section class="outside-section" aria-labelledby="outside-music">
   <div class="section-heading">
     <h2 id="outside-music">Music</h2>
@@ -78,4 +91,5 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 {% endblock content %}

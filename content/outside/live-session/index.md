@@ -2,6 +2,7 @@
 title = "Live Session"
 description = "Temporary placeholder for a music or singing video."
 weight = 40
+draft = true
 
 [extra]
 kind = "music"

@@ -2,7 +2,13 @@
 
 {% block title %}Blog — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+{% block robots %}{% if current_path == "/blog/page/1/" %}noindex,follow{% else %}index,follow{% endif %}{% endblock robots %}
+{% block canonical_url %}{% if current_path == "/blog/page/1/" %}{{ section.permalink }}{% else %}{{ current_url }}{% endif %}{% endblock canonical_url %}
+{% block og_title %}Blog — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
+{% block og_url %}{% if current_path == "/blog/page/1/" %}{{ section.permalink }}{% else %}{{ current_url }}{% endif %}{% endblock og_url %}
+{% block twitter_title %}Blog — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
 
 {% block content %}
 <h1>Blog</h1>

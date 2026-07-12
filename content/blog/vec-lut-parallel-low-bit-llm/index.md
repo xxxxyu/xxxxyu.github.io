@@ -10,6 +10,8 @@ tags = ["LLM Inference", "Edge AI", "Quantization", "GeMM"]
 
 [extra]
 toc = true
+og_image = "/img/blog/vec-lut-parallel-low-bit-llm/scalar-vs-vector-lut.png"
+og_image_alt = "Diagram comparing scalar and vector table lookup for parallel LLM inference"
 +++
 
 > 🏆 ACM MobiSys 2026 <strong class="highlight">Best Paper Award Runner-Up</strong> \

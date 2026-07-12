@@ -7,6 +7,10 @@ template = "blog-page.html"
 
 [taxonomies]
 tags = ["LLM Inference", "Edge AI", "中文"]
+
+[extra]
+lang = "zh-CN"
+og_locale = "zh_CN"
 +++
 
 > 微信公众号版本：[「口袋里的 GPT」，离我们还有多远？](https://mp.weixin.qq.com/s/3aPCYBfXCftxF6HtB4e2hw)

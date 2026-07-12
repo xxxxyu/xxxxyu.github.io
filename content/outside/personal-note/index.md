@@ -2,6 +2,7 @@
 title = "A Personal Note"
 description = "Temporary placeholder for occasional non-technical writing."
 weight = 30
+draft = true
 
 [extra]
 kind = "note"

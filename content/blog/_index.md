@@ -1,6 +1,6 @@
 +++
 title = "Blog"
-description = "Notes on efficient AI systems, edge inference, embodied AI, and practical development."
+description = "Notes on on-device AI and embodied AI."
 template = "blog.html"
 sort_by = "date"
 paginate_by = 10

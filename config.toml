@@ -1,6 +1,6 @@
 base_url = "https://xxxxyu.github.io"
 title = "Xiangyu Li"
-description = "Ph.D. at AIR, THU"
+description = "Xiangyu Li is a Ph.D. candidate at AIR, Tsinghua University, working on on-device AI and embodied AI."
 default_language = "en"
 
 compile_sass = true
@@ -30,10 +30,13 @@ anchors = "on"
 
 [extra]
 author = "Xiangyu Li"
+site_name = "Xiangyu Li"
 position = "Ph.D. Candidate"
 affiliation = "AIR, Tsinghua University"
 affiliation_link = "https://air.tsinghua.edu.cn/en/"
 avatar = "/img/identity/profile-photo.png"
+og_image = "/img/identity/og-logo.png"
+og_image_alt = "Xiangyu Li site logo"
 favicon = "/img/identity/logo-dobra-medium-italic-light.svg"
 favicon_light = "/img/identity/logo-dobra-medium-italic-light.svg"
 favicon_dark = "/img/identity/logo-dobra-medium-italic-dark.svg"

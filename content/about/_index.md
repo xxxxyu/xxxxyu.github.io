@@ -1,5 +1,6 @@
 +++
 title = "About"
+description = "About Xiangyu Li: research interests, experience, recent news, and technical skills."
 template = "about.html"
 +++
 

@@ -2,6 +2,11 @@
 {% import "macros.html" as pubmacros %}
 
 {% block title %}Papers — {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+{% block og_title %}Papers — {{ config.title }}{% endblock og_title %}
+{% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
+{% block twitter_title %}Papers — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
 
 {% block content %}
 <h1>Papers</h1>

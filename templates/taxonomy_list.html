@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}Tags — {{ config.title }}{% endblock title %}
+{% block description %}Browse blog posts by topic.{% endblock description %}
+{% block robots %}noindex,follow{% endblock robots %}
+{% block og_title %}Tags — {{ config.title }}{% endblock og_title %}
+{% block og_description %}Browse blog posts by topic.{% endblock og_description %}
+{% block twitter_title %}Tags — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}Browse blog posts by topic.{% endblock twitter_description %}
 
 {% block content %}
 <h1>Tags</h1>

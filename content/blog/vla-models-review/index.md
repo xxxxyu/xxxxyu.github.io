@@ -1,7 +1,7 @@
 +++
 title = "Vision-Language-Action (VLA) Models: A Review of Recent Progress"
 date = "2025-09-16"
-updated = "2026-07-11"
+updated = "2026-07-12"
 description = "Recent VLAs are moving from discrete to continuous control and from single-system to dual-system designs."
 template = "blog-page.html"
 
@@ -10,6 +10,8 @@ tags = ["Review", "VLA", "Embodied AI"]
 
 [extra]
 katex = true
+og_image = "/img/blog/vla-models-review/quadrants.png"
+og_image_alt = "Recent VLA models organized by action representation and system design"
 +++
 
 > I am new to this field — feel free to discuss and bring up any questions! \
@@ -24,7 +26,7 @@ katex = true
 In my understanding, *Vision-Language-Action (VLA) models*[^1] are multimodal foundation models for embodied AI. They take **vision** (e.g., observations in video streams) and **language** (e.g., user instructions) as inputs, and generate low-level robot **actions** (i.e., the *control policy*) as outputs.
 A VLA uses a *vision-language model (VLM)* for *vision-and-language-conditioned action generation*.
 
-{{ image(src="/img/blog/vla-models-review/timeline.png", dimmable=true) }}
+{{ image(src="/img/blog/vla-models-review/timeline.png", dimmable=true, caption="VLA concepts and the research lineages that converge in modern VLA systems.") }}
 
 ### Add VLM-Based Task Planners for Long-Horizon Tasks
 
@@ -32,13 +34,13 @@ Early VLAs focus on low-level robot control, which alone is insufficient for com
 One approach is to add an LLM/VLM-based *task planner* that decomposes a long-horizon task into simpler subtasks for the VLA to complete in sequence.
 Earlier work usually uses a separate model as the task planner, while recent work shares one VLM backbone between task planning and control (i.e., a *dual-system* design).
 
-{{ image(src="/img/blog/vla-models-review/hierarchical-policy.png", dimmable=true) }}
+{{ image(src="/img/blog/vla-models-review/hierarchical-policy.png", dimmable=true, caption="A high-level planner decomposes a long-horizon instruction into subtasks for a low-level VLA control policy.") }}
 
 ## Recent VLA Progress
 
 I summarize recent VLA progress along two axes: **from *system-1-only* (control) to *dual-system* (planning + control), and from *discrete* actions to *continuous* actions.** This gives four quadrants:
 
-{{ image(src="/img/blog/vla-models-review/quadrants.png", invertible=true) }}
+{{ image(src="/img/blog/vla-models-review/quadrants.png", invertible=true, caption="Recent VLAs organized by action representation and system design.") }}
 
 The following sections introduce these categories in turn.
 
@@ -54,7 +56,7 @@ Some representative methods:
 - **OpenVLA**[^3] (DINOv2 & SigLIP + Llama 2 7B): an influential open-source VLA model (3.8k stars on [GitHub](https://github.com/openvla/openvla)).
 - **FAST**[^4]: an action tokenizer that compresses action sequences with DCT (Discrete Cosine Transform).
 
-{{ image(src="/img/blog/vla-models-review/openvla.png", dimmable=true) }}
+{{ image(src="/img/blog/vla-models-review/openvla.png", dimmable=true, caption="OpenVLA treats robot actions as discrete tokens generated autoregressively by a pretrained VLM.") }}
 
 ### Continuous VLA
 
@@ -63,7 +65,7 @@ Physical Intelligence addressed this by adding a *flow-matching action expert* t
 
 The pretrained VLM provides **semantic understanding and generalization** from internet-scale data, while the flow-matching action expert learns **high-frequency (up to 50 Hz) control** from cross-embodiment data. The model can then be fine-tuned for difficult or unseen tasks.
 
-{{ image(src="/img/blog/vla-models-review/pi0.png", dimmable=true) }}
+{{ image(src="/img/blog/vla-models-review/pi0.png", dimmable=true, caption="π₀ pairs a pretrained VLM with a flow-matching action expert for continuous control.") }}
 
 Similarly, NVIDIA Isaac trained GR00T N1(.5)[^6], which combines a pretrained Eagle-2 VLM with a diffusion-based action head as a foundation model for generalist humanoid robots. In both $\pi_0$ and GR00T, the VLM backbone and action expert communicate through attention modules, conditioning generated actions on the VLM hidden states (i.e., KV). There are two technical differences:
 
@@ -77,7 +79,7 @@ The VLA learns to **predict subtasks directly from user instructions**, improvin
 
 > Question: does sharing a VLM improve performance by aligning systems 1 and 2? On the other hand, could their objectives interfere with each other?
 
-{{ image(src="/img/blog/vla-models-review/pi05.png", dimmable=true) }}
+{{ image(src="/img/blog/vla-models-review/pi05.png", dimmable=true, caption="π₀.₅ extends π₀ with high-level subtask prediction for dual-system planning and control.") }}
 
 $\pi_{0.5}$[^8], trained by Physical Intelligence, is the first model in this category. Compared with $\pi_0$, its training data also includes object detection, instructions, subtask commands, and discrete actions.
 At inference time, its VLM first predicts a subtask from the high-level prompt (system 2), then the VLM and action expert execute that subtask (system 1).
