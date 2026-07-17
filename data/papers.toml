@@ -1,4 +1,12 @@
 [[papers]]
+title = 'DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models'
+authors = 'Weining Chen, Yongheng Deng, Xiang Wang, Ziyan Fu, Xiangyu Li, Ting Cao'
+venue = 'IEEE Transactions on Mobile Computing (TMC)'
+year = 2026
+paper_url = 'https://ieeexplore.ieee.org/document/11599643'
+featured = false
+
+[[papers]]
 title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
 authors = 'Xiangyu Li'
 venue = 'ACM MobiSys Companion 2026'

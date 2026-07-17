@@ -1,4 +1,11 @@
 [[news]]
+date = '2026/07'
+text = '*DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models* accepted to **IEEE TMC**. Congrats to Weining Chen.'
+links = [
+  { label = 'Paper', url = 'https://ieeexplore.ieee.org/document/11599643' },
+]
+
+[[news]]
 date = '2026/06'
 text = '**Vec-LUT** received <strong class="highlight">Best Paper Award Runner-Up</strong> at ACM MobiSys 2026.'
 links = [
