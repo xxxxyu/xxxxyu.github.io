@@ -21,7 +21,7 @@ year = 2026
 paper_url = 'https://arxiv.org/abs/2606.08508'
 code_url = 'https://github.com/air-embodied-brain/actprobe'
 page_url = 'https://air-embodied-brain.github.io/actprobe'
-featured = false
+featured = true
 
 [[papers]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'

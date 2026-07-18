@@ -7,7 +7,7 @@ links = [
 
 [[news]]
 date = '2026/06'
-text = '**Vec-LUT** received <strong class="highlight">Best Paper Award Runner-Up</strong> at ACM MobiSys 2026.'
+text = '**Vec-LUT** received <strong class="highlight">Best Paper Award Runner-Up</strong> at **ACM MobiSys 2026**.'
 links = [
   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
   { label = 'Blog', url = '/blog/vec-lut-parallel-low-bit-llm/' },
