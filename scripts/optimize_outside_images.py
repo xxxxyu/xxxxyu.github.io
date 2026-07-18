@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_FORMATS = ("jpg", "webp")
 DEFAULT_IMAGE_MAX = 2160
-DEFAULT_WATERMARK = ROOT / "static" / "img" / "identity" / "logo-dobra-medium-italic-dark.svg"
+DEFAULT_WATERMARK = ROOT / "static" / "img" / "identity" / "logo-libre-baskerville-bold-dark.svg"
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp", ".heic", ".heif"}
 
 
