@@ -46,7 +46,7 @@
   </script>
 
   <link rel="preload" href="/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/dobra/Dobra-Book.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/source-sans-3/SourceSans3VF-Upright.ttf.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
 
   {% block head_extra %}{% endblock head_extra %}
@@ -121,8 +121,7 @@
   {% endif %}
 
   <footer class="footer">
-    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }}. Migrated and vibed from <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">Minimal Light</a> and <a href="https://github.com/welpo/tabi" target="_blank" rel="noopener">Tabi</a>.
-    Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
+    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }} &middot; <a href="/licensing/">Licensing</a> &middot; Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
   </footer>
 
   <script>

@@ -17,6 +17,7 @@
 
 {% block head_extra %}
 {% set author_url = config.base_url ~ "/about/" %}
+<link rel="license" href="{{ config.extra.content_license_url | safe }}">
 <meta property="article:published_time" content="{{ page.date }}T00:00:00+08:00">
 <meta property="article:modified_time" content="{{ page.updated | default(value=page.date) }}T00:00:00+08:00">
 <meta property="article:author" content="{{ config.base_url }}/about/">
@@ -37,6 +38,7 @@
   "inLanguage": {{ page.extra.lang | default(value="en") | json_encode() | safe }},
   "datePublished": "{{ page.date }}T00:00:00+08:00",
   "dateModified": "{{ page.updated | default(value=page.date) }}T00:00:00+08:00",
+  "license": {{ config.extra.content_license_url | json_encode() | safe }},
   "author": {
     "@type": "Person",
     "name": {{ config.extra.author | json_encode() | safe }},

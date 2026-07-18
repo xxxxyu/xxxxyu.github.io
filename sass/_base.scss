@@ -13,6 +13,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-height) + var(--sp-4));
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
   color-scheme: light dark;
 }

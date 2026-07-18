@@ -11,6 +11,7 @@
 {% block twitter_description %}{{ page.description | default(value=config.description) }}{% endblock twitter_description %}
 {% block twitter_image %}{{ get_url(path=page.extra.cover | default(value=config.extra.og_image)) }}{% endblock twitter_image %}
 {% block twitter_image_alt %}{{ page.title }}{% endblock twitter_image_alt %}
+{% block head_extra %}<link rel="license" href="{{ config.extra.content_license_url | safe }}">{% endblock head_extra %}
 {% block main_class %}{% if page.extra.kind | default(value="note") == "photography" %}content content--wide{% else %}content{% endif %}{% endblock main_class %}
 
 {% block content %}

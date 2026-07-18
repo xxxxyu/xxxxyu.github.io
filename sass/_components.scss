@@ -320,3 +320,9 @@
     &__img { width: 100%; }
   }
 }
+
+@media (max-width: 420px) {
+  .news-list__links {
+    white-space: normal;
+  }
+}
