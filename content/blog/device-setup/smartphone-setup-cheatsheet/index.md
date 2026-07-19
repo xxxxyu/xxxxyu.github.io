@@ -3,7 +3,11 @@ title = "Cheatsheet for Setting up Android Smartphones"
 date = "2025-01-09"
 updated = "2026-07-11"
 description = "A practical checklist for setting up Android smartphones for development."
-template = "blog-page.html"
+path = "blog/smartphone-setup-cheatsheet"
+weight = 20
+
+[extra]
+series = "blog/device-setup/_index.md"
 
 [taxonomies]
 tags = ["Development", "Android", "Edge Device"]

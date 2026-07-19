@@ -105,3 +105,24 @@
   {% endfor %}
 </div>
 {% endmacro outside_gallery %}
+
+{% macro post_meta(page, class, show_updated) %}
+{% set series_path = page.extra.series | default(value="") %}
+{% set series = false %}
+{% if series_path %}
+  {% set parent = get_section(path=series_path) %}
+  {% if parent.extra.series | default(value=false) %}
+    {% set_global series = parent %}
+  {% endif %}
+{% endif %}
+{% if page.date or series %}
+<div class="{{ class }} post-meta">
+  {% if page.date %}
+  <span class="post-meta__date"><time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>{% if show_updated and page.updated and page.updated != page.date %} <span class="post-meta__updated">(updated {{ page.updated | date(format="%Y/%m/%d") }})</span>{% endif %}</span>
+  {% endif %}
+  {% if series %}
+  <span class="post-meta__series"><a href="{{ series.permalink }}">{{ series.title }}</a></span>
+  {% endif %}
+</div>
+{% endif %}
+{% endmacro post_meta %}

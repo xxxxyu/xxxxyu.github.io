@@ -5,15 +5,16 @@ published by Zola.
 
 ## Site features
 
-- [ ] Add first-class post series, using [tabi's series
+- [x] Add first-class post series, using [tabi's series
   design](https://welpo.github.io/tabi/blog/series/) as a reference.
-  - [ ] Define a small front-matter/section convention for series membership
+  - [x] Define a small front-matter/section convention for series membership
     and explicit ordering.
-  - [ ] Add a series overview page with its description and ordered post list.
-  - [ ] Show the series name and `part N of M` on each member post.
-  - [ ] Add previous/next navigation within the series without removing posts
-    from the main chronological Blog flow.
-  - [ ] Ensure series pages work with feeds, search, tags, archives, and mobile
+  - [x] Add a series overview page with its description and ordered post list.
+  - [x] Show the series name on each member post and post listing.
+  - [x] Keep member posts in the main chronological Blog navigation flow.
+  - [ ] Add optional series intro/outro content if a series needs internal
+    progress or previous/next links.
+  - [x] Ensure series pages work with feeds, search, tags, archives, and mobile
     layouts.
 
 - [ ] Add multilingual site and post support.

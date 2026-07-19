@@ -3,7 +3,11 @@ title = "Cheatsheet for Setting up Termux on Android Smartphones"
 date = "2025-01-09"
 updated = "2026-07-11"
 description = "A practical checklist for setting up Termux as an Android development environment."
-template = "blog-page.html"
+path = "blog/termux-setup-cheatsheet"
+weight = 30
+
+[extra]
+series = "blog/device-setup/_index.md"
 
 [taxonomies]
 tags = ["Development", "Android", "Edge Device"]

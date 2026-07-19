@@ -103,9 +103,7 @@
 {% for page in blog.pages | slice(end=3) %}
 <div class="post-preview">
   <h3><a href="{{ page.permalink }}">{{ page.title }}</a></h3>
-  {% if page.date %}
-  <time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>
-  {% endif %}
+  {{ pubmacros::post_meta(page=page, class="post-preview__meta", show_updated=false) }}
   {% if page.description %}
   <p>{{ page.description }}</p>
   {% endif %}

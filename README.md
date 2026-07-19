@@ -7,7 +7,8 @@ The site brings together:
 
 - a research profile, experience, news, and selected skills;
 - publications with Google Scholar citation badges;
-- technical writing on on-device AI, efficient inference, and embodied AI;
+- technical writing on on-device AI, efficient inference, and embodied AI,
+  including ordered post series;
 - an "Outside" section for photography, personal writing, and music;
 - full-site search, light/dark/system themes, Atom feeds, and responsive layouts.
 
@@ -51,6 +52,20 @@ paths, and forward extra arguments to Zola. For example:
 Open the URL printed by Zola (normally `http://127.0.0.1:1111`). To create a
 production build, run `zola build`; generated output is written to `public/`.
 
+## Repository checks
+
+Run the lightweight content and feature checks through
+[uv](https://docs.astral.sh/uv/):
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+The checks currently validate the post-series structure and are intended to
+grow alongside repository features. Run `zola build` as a separate production
+rendering check when templates, styles, configuration, or content structure
+change.
+
 ## Project layout
 
 ```text
@@ -60,14 +75,17 @@ templates/     Zola Tera templates and shortcodes
 sass/          Site styles
 static/        Files copied directly into the built site
 scripts/       Content and asset maintenance utilities
+tests/         Extensible repository and content checks
 docs/          Maintainer documentation
 config.toml    Zola and site-wide configuration
 serve.sh       Unix development entry point
 serve.ps1      Windows development entry point
 ```
 
-See [Asset and gallery workflow](docs/assets-and-galleries.md) before adding
-large files or publishing an Outside photography collection.
+See the [post series convention](docs/post-series.md) before creating or
+reordering a series, and the
+[asset and gallery workflow](docs/assets-and-galleries.md) before adding large
+files or publishing an Outside photography collection.
 
 ## Deployment
 

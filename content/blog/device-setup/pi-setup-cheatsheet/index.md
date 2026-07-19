@@ -3,7 +3,11 @@ title = "Cheatsheet for Setting up Pi Devices"
 date = "2025-01-03"
 updated = "2026-07-11"
 description = "A practical setup checklist for Raspberry Pi and similar single-board computers."
-template = "blog-page.html"
+path = "blog/pi-setup-cheatsheet"
+weight = 10
+
+[extra]
+series = "blog/device-setup/_index.md"
 
 [taxonomies]
 tags = ["Development", "Linux", "Edge Device"]

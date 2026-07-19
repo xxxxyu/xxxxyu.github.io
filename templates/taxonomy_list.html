@@ -10,9 +10,9 @@
 
 {% block content %}
 <h1>Tags</h1>
-<ul class="tags-cloud">
+<ul class="tags-index">
   {% for term in terms %}
-  <li><a href="{{ term.permalink }}" class="tag">{{ term.name }} ({{ term.pages | length }})</a></li>
+  <li><a href="{{ term.permalink }}" class="tag-link">{{ term.name }} <span>({{ term.pages | length }})</span></a></li>
   {% endfor %}
 </ul>
 {% endblock content %}

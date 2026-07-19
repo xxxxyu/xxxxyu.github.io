@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+{% block og_title %}{{ section.title }}{% endblock og_title %}
+{% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
+{% block og_url %}{{ section.permalink }}{% endblock og_url %}
+{% block twitter_title %}{{ section.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": {{ section.title | json_encode() | safe }},
+  "description": {{ section.description | default(value=config.description) | json_encode() | safe }},
+  "url": {{ section.permalink | json_encode() | safe }},
+  "numberOfItems": {{ section.pages | length }},
+  "itemListElement": [
+    {% for page in section.pages %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": {{ page.permalink | json_encode() | safe }},
+      "name": {{ page.title | json_encode() | safe }}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock head_extra %}
+
+{% block content %}
+<header class="series-overview__header">
+  <p class="series-overview__eyebrow">Blog series</p>
+  <h1>{{ section.title }}</h1>
+  {% if section.description %}<p class="series-overview__description">{{ section.description }}</p>{% endif %}
+</header>
+
+{% if section.content %}
+<div class="series-overview__intro">
+  {{ section.content | safe }}
+</div>
+{% endif %}
+
+<ol class="series-list">
+  {% for page in section.pages %}
+  <li class="series-list__item">
+    <span class="series-list__number" aria-hidden="true">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>
+    <article>
+      <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
+      <div class="series-list__meta">
+        <span>Part {{ loop.index }} of {{ section.pages | length }}</span>
+        {% if page.date %}<time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>{% endif %}
+      </div>
+      {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+    </article>
+  </li>
+  {% endfor %}
+</ol>
+{% endblock content %}

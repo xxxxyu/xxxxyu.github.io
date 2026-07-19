@@ -7,9 +7,9 @@ structured content and generated manifests in `data/`, Tera views in
 `templates/`, styles in `sass/`, served assets in `static/`, and maintenance
 utilities in `scripts/`. `public/` is generated output; do not edit it.
 
-Main features are the academic profile and publications, technical blog,
-Outside galleries, citation data, site search, Atom feeds, responsive styling,
-and light/dark/system themes.
+Main features are the academic profile and publications, technical blog with
+ordered post series, Outside galleries, citation data, site search, Atom feeds,
+responsive styling, and light/dark/system themes.
 
 ## Constraints
 
@@ -19,6 +19,8 @@ and light/dark/system themes.
   `docs/assets-and-galleries.md` and commit only web-ready outputs.
 - Preserve existing content/front-matter conventions and keep templates valid
   Tera. Run `zola build` when a production-build check is appropriate.
+- Run `uv run python -m unittest discover -s tests -v` after changing a
+  feature or content convention covered by repository checks.
 - Do not hand-edit generated files in `public/`.
 - Preserve copyright, license, and third-party attribution notices. See
   `LICENSE.md` before adding or reusing content or assets.
