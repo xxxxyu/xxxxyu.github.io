@@ -114,6 +114,13 @@
 
   li { margin-bottom: var(--sp-1); }
 
+  // Long inline identifiers and paths must wrap on narrow screens. Keep
+  // fenced code unchanged: its parent <pre> provides horizontal scrolling.
+  code:not(pre code) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   pre { margin-bottom: var(--sp-5); }
 
   blockquote {
@@ -195,6 +202,30 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 var(--sp-1);
+  border-radius: var(--radius);
+  color: var(--c-text-muted);
+  font-family: var(--f-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-sans-strong);
+  line-height: 1;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--c-accent);
+    background: var(--c-bg-alt);
+    outline: none;
+    text-decoration: none;
+  }
 }
 
 .icon-btn {
@@ -412,6 +443,11 @@ body.search-open { overflow: hidden; }
 
   .icon-btn {
     width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .language-switch {
+    min-width: 1.75rem;
     height: 1.75rem;
   }
 

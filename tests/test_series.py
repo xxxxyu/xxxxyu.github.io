@@ -83,7 +83,8 @@ class PostSeriesTests(unittest.TestCase):
             members = sorted(
                 path
                 for path in section.parent.rglob("*.md")
-                if path.name != "_index.md"
+                if not path.name.startswith("_index.")
+                and not path.name.endswith(".zh.md")
             )
             with self.subTest(series=expected_pointer):
                 self.assertTrue(members, f"{expected_pointer} has no member posts")
@@ -123,7 +124,8 @@ class PostSeriesTests(unittest.TestCase):
             members = sorted(
                 path
                 for path in section.parent.rglob("*.md")
-                if path.name != "_index.md"
+                if not path.name.startswith("_index.")
+                and not path.name.endswith(".zh.md")
             )
 
             for member in members:

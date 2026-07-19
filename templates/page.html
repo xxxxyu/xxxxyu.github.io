@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
@@ -6,6 +7,7 @@
 {% block og_description %}{{ page.description | default(value=config.description) }}{% endblock og_description %}
 {% block twitter_title %}{{ page.title }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ page.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=page.translations, current_permalink=page.permalink, current_lang=page.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
 <article>

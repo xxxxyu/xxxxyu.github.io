@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% import "macros.html" as pubmacros %}
 
-{% block title %}{{ config.title }} — {{ config.extra.position }} at {{ config.extra.affiliation }}{% endblock title %}
+{% block title %}{% if section.lang == "zh" %}{{ config.title }} — {{ trans(key="position", lang=section.lang) }}，{{ trans(key="affiliation", lang=section.lang) }}{% else %}{{ config.title }} — {{ trans(key="position", lang=section.lang) }} at {{ trans(key="affiliation", lang=section.lang) }}{% endif %}{% endblock title %}
 {% block description %}{{ config.description }}{% endblock description %}
 {% block og_title %}{{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ config.description }}{% endblock og_description %}
 {% block twitter_title %}{{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ config.description }}{% endblock twitter_description %}
+{% block alternates %}{{ pubmacros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block head_extra %}
 <script type="application/ld+json">
@@ -18,12 +19,12 @@
   "description": {{ config.description | json_encode() | safe }},
   "mainEntity": {
     "@type": "Person",
-    "name": {{ config.extra.author | json_encode() | safe }},
+    "name": {{ trans(key="author_name", lang=section.lang) | json_encode() | safe }},
     "url": {{ current_url | json_encode() | safe }},
-    "jobTitle": {{ config.extra.position | json_encode() | safe }},
+    "jobTitle": {{ trans(key="position", lang=section.lang) | json_encode() | safe }},
     "affiliation": {
-      "@type": "CollegeOrUniversity",
-      "name": "Tsinghua University",
+      "@type": "Organization",
+      "name": {{ trans(key="affiliation", lang=section.lang) | json_encode() | safe }},
       "url": {{ config.extra.affiliation_link | json_encode() | safe }}
     },
     "sameAs": [
@@ -39,19 +40,19 @@
 {# ── Profile Block ── #}
 <div class="profile">
   <div class="profile__photo">
-    <img src="{{ config.extra.avatar }}" alt="{{ config.extra.author }}">
+    <img src="{{ config.extra.avatar }}" alt="{{ trans(key="author_name", lang=section.lang) }}">
   </div>
   <div class="profile__info">
-    <h1 class="profile__name">{{ config.extra.author }}</h1>
-    <p class="profile__title">{{ config.extra.position }}, <a href="{{ config.extra.affiliation_link }}" target="_blank" rel="noopener">{{ config.extra.affiliation }}</a></p>
+    <h1 class="profile__name">{{ trans(key="author_name", lang=section.lang) }}</h1>
+    <p class="profile__title"><span data-i18n-text="position">{{ trans(key="position", lang=section.lang) }}</span>, <a href="{{ config.extra.affiliation_link }}" target="_blank" rel="noopener" data-i18n-text="affiliation">{{ trans(key="affiliation", lang=section.lang) }}</a></p>
     <div class="profile__bio">
       {{ section.content | safe }}
     </div>
     <ul class="profile__links">
-      {% if config.extra.email %}<li><a href="mailto:{{ config.extra.email }}">Email</a></li>{% endif %}
+      {% if config.extra.email %}<li><a href="mailto:{{ config.extra.email }}" data-i18n-text="email">{{ trans(key="email", lang=section.lang) }}</a></li>{% endif %}
       {% if config.extra.github %}<li><a href="{{ config.extra.github }}" target="_blank" rel="noopener">GitHub</a></li>{% endif %}
-      {% if config.extra.google_scholar %}<li><a href="{{ config.extra.google_scholar }}" target="_blank" rel="noopener">Scholar</a></li>{% endif %}
-      {% if config.extra.cv %}<li><a href="{{ config.extra.cv }}" target="_blank" rel="noopener">CV</a></li>{% endif %}
+      {% if config.extra.google_scholar %}<li><a href="{{ config.extra.google_scholar }}" target="_blank" rel="noopener" data-i18n-text="scholar">{{ trans(key="scholar", lang=section.lang) }}</a></li>{% endif %}
+      {% if config.extra.cv %}<li><a href="{{ config.extra.cv }}" target="_blank" rel="noopener" data-i18n-text="cv">{{ trans(key="cv", lang=section.lang) }}</a></li>{% endif %}
     </ul>
   </div>
 </div>
@@ -59,8 +60,8 @@
 {# ── News (latest 3) ── #}
 {% set news_data = load_data(path="data/news.toml") %}
 <div class="section-heading">
-  <h2>News</h2>
-  <a class="section-heading__more" href="/about/#news">See all &rarr;</a>
+  <h2 data-i18n-text="news">{{ trans(key="news", lang=section.lang) }}</h2>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/about/#news{% else %}/about/#news{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
 </div>
 <ul class="news-list">
   {% for item in news_data.news | slice(end=3) %}
@@ -84,8 +85,8 @@
 {% set pubs = pub_data.papers %}
 
 <div class="section-heading">
-  <h2>Selected Papers</h2>
-  <a class="section-heading__more" href="/papers/">See all &rarr;</a>
+  <h2 data-i18n-text="selected_papers">{{ trans(key="selected_papers", lang=section.lang) }}</h2>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/papers/{% else %}/papers/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
 </div>
 {% for pub in pubs %}
 {% if pub.featured %}
@@ -94,19 +95,13 @@
 {% endfor %}
 
 {# ── Latest Posts (latest 3) ── #}
-{% set blog = get_section(path="blog/_index.md") %}
+{% set blog = get_section(path="blog/_index.md", lang=config.default_language) %}
 
 <div class="section-heading">
-  <h2>Latest Posts</h2>
-  <a class="section-heading__more" href="/blog/">See all &rarr;</a>
+  <h2 data-i18n-text="latest_posts">{{ trans(key="latest_posts", lang=section.lang) }}</h2>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/blog/{% else %}/blog/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
 </div>
 {% for page in blog.pages | slice(end=3) %}
-<div class="post-preview">
-  <h3><a href="{{ page.permalink }}">{{ page.title }}</a></h3>
-  {{ pubmacros::post_meta(page=page, class="post-preview__meta", show_updated=false) }}
-  {% if page.description %}
-  <p>{{ page.description }}</p>
-  {% endif %}
-</div>
+{{ pubmacros::localized_post_preview(page=page, target_lang=section.lang, default_language=config.default_language, heading_level=3) }}
 {% endfor %}
 {% endblock content %}

@@ -1,17 +1,19 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
-{% block title %}Archive — {{ config.title }}{% endblock title %}
+{% block title %}{{ trans(key="archive", lang=section.lang) }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
 {% block robots %}noindex,follow{% endblock robots %}
-{% block og_title %}Archive — {{ config.title }}{% endblock og_title %}
+{% block og_title %}{{ trans(key="archive", lang=section.lang) }} — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
-{% block twitter_title %}Archive — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_title %}{{ trans(key="archive", lang=section.lang) }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1>Archive</h1>
+<h1 data-i18n-text="archive">{{ trans(key="archive", lang=section.lang) }}</h1>
 
-{% set blog = get_section(path="blog/_index.md") %}
+{% set blog = get_section(path="blog/_index.md", lang=config.default_language) %}
 {% set pages = blog.pages %}
 
 {% set years = [] %}
@@ -30,7 +32,7 @@
     {% if page.date | date(format="%Y") == year %}
     <li>
       <time datetime="{{ page.date }}">{{ page.date | date(format="%m/%d") }}</time>
-      <a href="{{ page.permalink }}">{{ page.title }}</a>
+      {{ macros::localized_archive_link(page=page, target_lang=section.lang, default_language=config.default_language) }}
     </li>
     {% endif %}
     {% endfor %}

@@ -1,24 +1,29 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}{{ term.name }} — {{ config.title }}{% endblock title %}
-{% block description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock description %}
+{% block description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock description %}
 {% block robots %}noindex,follow{% endblock robots %}
 {% block og_title %}{{ term.name }} — {{ config.title }}{% endblock og_title %}
-{% block og_description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock og_description %}
+{% block og_description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock og_description %}
 {% block twitter_title %}{{ term.name }} — {{ config.title }}{% endblock twitter_title %}
-{% block twitter_description %}Blog posts tagged {{ term.name }} by {{ config.extra.author }}.{% endblock twitter_description %}
+{% block twitter_description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock twitter_description %}
+{% block alternates %}
+<link rel="alternate" hreflang="en" href="{{ get_taxonomy_url(kind='tags', name=term.name, lang='en') }}">
+<link rel="alternate" hreflang="zh" href="{{ get_taxonomy_url(kind='tags', name=term.name, lang='zh') }}">
+<link rel="alternate" hreflang="x-default" href="{{ get_taxonomy_url(kind='tags', name=term.name, lang='en') }}">
+{% endblock alternates %}
 
 {% block content %}
-<h1>Tagged: {{ term.name }}</h1>
-{% for page in term.pages %}
-<article class="post-preview">
-  <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
-  {% if page.date %}
-  <time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>
-  {% endif %}
-  {% if page.description %}
-  <p>{{ page.description }}</p>
-  {% endif %}
-</article>
+<h1><span data-i18n-text="tagged">{{ trans(key="tagged", lang=lang) }}</span>: {{ term.name }}</h1>
+{% set_global source_pages = term.pages %}
+{% if lang != config.default_language %}
+  {% set source_taxonomy = get_taxonomy(kind="tags", lang=config.default_language) %}
+  {% for source_term in source_taxonomy.items %}
+    {% if source_term.name == term.name %}{% set_global source_pages = source_term.pages %}{% endif %}
+  {% endfor %}
+{% endif %}
+{% for page in source_pages %}
+{{ macros::localized_post_preview(page=page, target_lang=lang, default_language=config.default_language, heading_level=2) }}
 {% endfor %}
 {% endblock content %}

@@ -6,23 +6,31 @@
   const input = document.getElementById('search-input');
   const closeBtn = document.getElementById('search-close');
   const resultsEl = document.getElementById('search-results');
+  const emptyLabel = modal.dataset.emptyLabel || 'No results found.';
 
   const MAX_RESULTS = 8;
   const SNIPPET_LEN = 140;
 
   let docs = null;
   let docsPromise = null;
+  let docsLanguage = null;
   let lastFocused = null;
   let activeIndex = -1;
   let currentItems = [];
 
   function loadDocs() {
-    if (docsPromise) return docsPromise;
-    const lang = document.documentElement.lang || 'en';
+    const preferredLang = localStorage.getItem('site-language');
+    const lang = preferredLang === 'zh' || preferredLang === 'en'
+      ? preferredLang
+      : (document.documentElement.lang || 'en');
+    if (docsPromise && docsLanguage === lang) return docsPromise;
+    docsLanguage = lang;
+    docs = null;
     docsPromise = fetch('/search_index.' + lang + '.json')
       .then((r) => r.json())
       .then((idx) => {
-        docs = Object.values(idx.documentStore.docs).map((d) => ({
+        const storedDocs = idx.documents || Object.values(idx.documentStore.docs);
+        docs = storedDocs.map((d) => ({
           id: d.id,
           title: d.title || '',
           description: d.description || '',
@@ -115,7 +123,7 @@
 
     if (!matches.length) {
       resultsEl.innerHTML =
-        '<div class="search-modal__empty">No results found.</div>';
+        '<div class="search-modal__empty">' + escapeHtml(emptyLabel) + '</div>';
       return;
     }
 

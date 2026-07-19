@@ -4,7 +4,7 @@ description = "About Xiangyu Li: research interests, experience, recent news, an
 template = "about.html"
 +++
 
-I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR)](https://air.tsinghua.edu.cn/en/), Tsinghua University, advised by [Prof. Yunxin Liu（刘云新）](https://yunxinliu.github.io) and working closely with [Prof. Ting Cao（曹婷）](https://tingcao952.github.io). Prior to this, I received my B.E. degree from Department of Electronic Engineering, Tsinghua University in 2022.
+I am a 4th year Ph.D. candidate at [Institute for AI Industry Research (AIR), Tsinghua University](https://air.tsinghua.edu.cn/en/), advised by [Prof. Yunxin Liu（刘云新）](https://yunxinliu.github.io) and working closely with [Prof. Ting Cao（曹婷）](https://tingcao952.github.io). Prior to this, I received my B.E. degree from Department of Electronic Engineering, Tsinghua University in 2022.
 
 **My Ph.D. research centers on system optimization for edge AI deployment,** toward the goal of running increasingly capable models on resource-constrained edge. Representative works include:
 

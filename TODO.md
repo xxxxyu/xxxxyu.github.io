@@ -17,16 +17,16 @@ published by Zola.
   - [x] Ensure series pages work with feeds, search, tags, archives, and mobile
     layouts.
 
-- [ ] Add multilingual site and post support.
-  - [ ] Decide the default language, URL scheme, and translation-pairing
+- [x] Add multilingual infrastructure MVP.
+  - [x] Decide the default language, URL scheme, and translation-pairing
     convention before translating content.
-  - [ ] Add a compact language switcher that opens the equivalent translation
+  - [x] Add a compact language switcher that opens the equivalent translation
     of the current page when available and falls back predictably otherwise.
-  - [ ] Add English and Chinese versions of existing posts while keeping dates,
+  - [x] Establish the first English/Chinese Cheatsheet pair while keeping dates,
     tags, series membership, and assets in sync.
-  - [ ] Add appropriate `lang`, `hreflang`, canonical, feed, search-index, and
+  - [x] Add appropriate `lang`, `hreflang`, canonical, feed, search-index, and
     sitemap behavior for each language.
-  - [ ] Verify navigation length, typography, code blocks, ToC, and responsive
+  - [x] Verify navigation length, typography, code blocks, ToC, and responsive
     behavior in both languages.
 
 - [ ] Enrich the Outside photography collection layout.
@@ -40,6 +40,10 @@ published by Zola.
     at full size.
 
 ## Content
+
+- [x] Translate all existing posts, preserving the multilingual
+  metadata and URL conventions in `docs/multilingual.md`.
+- [ ] Publish English and Chinese versions of new posts together when practical.
 
 - [ ] Write about vibe coding: workflow, useful patterns, limitations, and what
   remains worth doing manually.

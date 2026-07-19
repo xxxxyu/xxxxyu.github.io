@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
@@ -7,8 +8,16 @@
 {% block og_url %}{{ section.permalink }}{% endblock og_url %}
 {% block twitter_title %}{{ section.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block head_extra %}
+{% set_global source_series = section %}
+{% for translation in section.translations %}
+  {% set translation_lang = translation.lang | default(value=config.default_language) %}
+  {% if translation_lang == config.default_language %}
+    {% set_global source_series = get_section(path=translation.path) %}
+  {% endif %}
+{% endfor %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -16,14 +25,23 @@
   "name": {{ section.title | json_encode() | safe }},
   "description": {{ section.description | default(value=config.description) | json_encode() | safe }},
   "url": {{ section.permalink | json_encode() | safe }},
-  "numberOfItems": {{ section.pages | length }},
+  "numberOfItems": {{ source_series.pages | length }},
   "itemListElement": [
-    {% for page in section.pages %}
+    {% for page in source_series.pages %}
+    {% set_global item_url = page.permalink %}
+    {% set_global item_name = page.title %}
+    {% for translation in page.translations %}
+      {% set translation_lang = translation.lang | default(value=config.default_language) %}
+      {% if translation_lang == section.lang %}
+        {% set_global item_url = translation.permalink %}
+        {% set_global item_name = translation.title %}
+      {% endif %}
+    {% endfor %}
     {
       "@type": "ListItem",
       "position": {{ loop.index }},
-      "url": {{ page.permalink | json_encode() | safe }},
-      "name": {{ page.title | json_encode() | safe }}
+      "url": {{ item_url | json_encode() | safe }},
+      "name": {{ item_name | json_encode() | safe }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
   ]
@@ -33,7 +51,7 @@
 
 {% block content %}
 <header class="series-overview__header">
-  <p class="series-overview__eyebrow">Blog series</p>
+  <p class="series-overview__eyebrow">{{ trans(key="blog_series", lang=section.lang) }}</p>
   <h1>{{ section.title }}</h1>
   {% if section.description %}<p class="series-overview__description">{{ section.description }}</p>{% endif %}
 </header>
@@ -45,18 +63,8 @@
 {% endif %}
 
 <ol class="series-list">
-  {% for page in section.pages %}
-  <li class="series-list__item">
-    <span class="series-list__number" aria-hidden="true">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>
-    <article>
-      <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
-      <div class="series-list__meta">
-        <span>Part {{ loop.index }} of {{ section.pages | length }}</span>
-        {% if page.date %}<time datetime="{{ page.date }}">{{ page.date | date(format="%Y/%m/%d") }}</time>{% endif %}
-      </div>
-      {% if page.description %}<p>{{ page.description }}</p>{% endif %}
-    </article>
-  </li>
+  {% for page in source_series.pages %}
+  {{ macros::localized_series_item(page=page, target_lang=section.lang, default_language=config.default_language, position=loop.index, total=source_series.pages | length) }}
   {% endfor %}
 </ol>
 {% endblock content %}

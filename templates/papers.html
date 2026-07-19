@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% import "macros.html" as pubmacros %}
 
-{% block title %}Papers — {{ config.title }}{% endblock title %}
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
-{% block og_title %}Papers — {{ config.title }}{% endblock og_title %}
+{% block og_title %}{{ section.title }} — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
-{% block twitter_title %}Papers — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_title %}{{ section.title }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ pubmacros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1>Papers</h1>
+<h1 data-i18n-text="papers">{{ trans(key="papers", lang=section.lang) }}</h1>
 
 {% set pub_data = load_data(path="data/papers.toml") %}
 {% set pubs = pub_data.papers %}

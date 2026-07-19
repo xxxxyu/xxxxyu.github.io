@@ -1,19 +1,21 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 
-{% block title %}About — {{ config.title }}{% endblock title %}
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
-{% block og_title %}About — {{ config.title }}{% endblock og_title %}
+{% block og_title %}{{ section.title }} — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
-{% block twitter_title %}About — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_title %}{{ section.title }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1>About</h1>
+<h1>{{ section.title }}</h1>
 
 {{ section.content | safe }}
 
 {% set news_data = load_data(path="data/news.toml") %}
-<h2 id="news">News</h2>
+<h2 id="news" data-i18n-text="news">{{ trans(key="news", lang=section.lang) }}</h2>
 <ul class="news-list">
   {% for item in news_data.news %}
   <li>
@@ -32,16 +34,24 @@
 </ul>
 
 <section class="about-section" aria-labelledby="experiences">
-  <h2 id="experiences">Experiences</h2>
-  {% set exp = load_data(path="data/experiences.md", format="plain") %}
+  <h2 id="experiences" data-i18n-text="experiences">{{ trans(key="experiences", lang=section.lang) }}</h2>
+  {% if section.lang == "zh" %}
+    {% set exp = load_data(path="data/experiences.zh.md", format="plain") %}
+  {% else %}
+    {% set exp = load_data(path="data/experiences.md", format="plain") %}
+  {% endif %}
   <div class="about-detail about-detail--experiences">
     {{ exp | markdown | safe }}
   </div>
 </section>
 
 <section class="about-section" aria-labelledby="skills">
-  <h2 id="skills">Skills</h2>
-  {% set skills = load_data(path="data/skills.md", format="plain") %}
+  <h2 id="skills" data-i18n-text="skills">{{ trans(key="skills", lang=section.lang) }}</h2>
+  {% if section.lang == "zh" %}
+    {% set skills = load_data(path="data/skills.zh.md", format="plain") %}
+  {% else %}
+    {% set skills = load_data(path="data/skills.md", format="plain") %}
+  {% endif %}
   <div class="about-detail about-detail--skills">
     {{ skills | markdown | safe }}
   </div>

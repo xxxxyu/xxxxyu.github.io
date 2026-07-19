@@ -1,18 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}Tags — {{ config.title }}{% endblock title %}
-{% block description %}Browse blog posts by topic.{% endblock description %}
+{% block title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock title %}
+{% block description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock description %}
 {% block robots %}noindex,follow{% endblock robots %}
-{% block og_title %}Tags — {{ config.title }}{% endblock og_title %}
-{% block og_description %}Browse blog posts by topic.{% endblock og_description %}
-{% block twitter_title %}Tags — {{ config.title }}{% endblock twitter_title %}
-{% block twitter_description %}Browse blog posts by topic.{% endblock twitter_description %}
+{% block og_title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock og_title %}
+{% block og_description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock og_description %}
+{% block twitter_title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock twitter_description %}
+{% block alternates %}
+<link rel="alternate" hreflang="en" href="{{ get_url(path='tags/', lang='en') }}">
+<link rel="alternate" hreflang="zh" href="{{ get_url(path='tags/', lang='zh') }}">
+<link rel="alternate" hreflang="x-default" href="{{ get_url(path='tags/', lang='en') }}">
+{% endblock alternates %}
 
 {% block content %}
-<h1>Tags</h1>
+<h1 data-i18n-text="tags">{{ trans(key="tags", lang=lang) }}</h1>
+{% set_global source_terms = terms %}
+{% if lang != config.default_language %}
+  {% set source_taxonomy = get_taxonomy(kind="tags", lang=config.default_language) %}
+  {% set_global source_terms = source_taxonomy.items %}
+{% endif %}
 <ul class="tags-index">
-  {% for term in terms %}
-  <li><a href="{{ term.permalink }}" class="tag-link">{{ term.name }} <span>({{ term.pages | length }})</span></a></li>
+  {% for source_term in source_terms %}
+  {% set_global display_term = source_term %}
+  {% if lang != config.default_language %}
+    {% for translated_term in terms %}
+      {% if translated_term.name == source_term.name %}{% set_global display_term = translated_term %}{% endif %}
+    {% endfor %}
+  {% endif %}
+  <li><a href="{{ display_term.permalink }}" class="tag-link" lang="{% if display_term.permalink is containing('/zh/') %}zh{% else %}en{% endif %}">{{ source_term.name }} <span>({{ source_term.pages | length }})</span></a></li>
   {% endfor %}
 </ul>
 {% endblock content %}

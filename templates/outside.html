@@ -1,18 +1,20 @@
 {% extends "base.html" %}
 {% import "macros.html" as macros %}
 
-{% block title %}Outside — {{ config.title }}{% endblock title %}
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
-{% block og_title %}Outside — {{ config.title }}{% endblock og_title %}
+{% block og_title %}{{ section.title }} — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ section.description | default(value=config.description) }}{% endblock og_description %}
-{% block twitter_title %}Outside — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_title %}{{ section.title }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ section.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 {% block main_class %}content content--wide{% endblock main_class %}
 
 {% block content %}
+{% set source_outside = get_section(path="outside/_index.md", lang=config.default_language) %}
 {% set has_notes = false %}
 {% set has_music = false %}
-{% for page in section.pages %}
+{% for page in source_outside.pages %}
   {% if page.extra.kind == "note" %}{% set_global has_notes = true %}{% endif %}
   {% if page.extra.kind == "music" %}{% set_global has_music = true %}{% endif %}
 {% endfor %}
@@ -28,12 +30,12 @@
 
 <section class="outside-section" aria-labelledby="outside-featured">
   <div class="section-heading">
-    <h2 id="outside-featured">Featured</h2>
+    <h2 id="outside-featured" data-i18n-text="featured">{{ trans(key="featured", lang=section.lang) }}</h2>
   </div>
   <div class="outside-featured-grid">
-    {% for page in section.pages %}
+    {% for page in source_outside.pages %}
     {% if page.extra.featured | default(value=false) %}
-    {{ macros::outside_card(page=page, variant="featured") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="featured") }}
     {% endif %}
     {% endfor %}
   </div>
@@ -41,12 +43,12 @@
 
 <section class="outside-section" aria-labelledby="outside-photography">
   <div class="section-heading">
-    <h2 id="outside-photography">Photography</h2>
+    <h2 id="outside-photography" data-i18n-text="photography">{{ trans(key="photography", lang=section.lang) }}</h2>
   </div>
   <div class="outside-grid">
-    {% for page in section.pages %}
+    {% for page in source_outside.pages %}
     {% if page.extra.kind == "photography" %}
-    {{ macros::outside_card(page=page, variant="standard") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard") }}
     {% endif %}
     {% endfor %}
   </div>
@@ -55,23 +57,12 @@
 {% if has_notes %}
 <section class="outside-section" aria-labelledby="outside-notes">
   <div class="section-heading">
-    <h2 id="outside-notes">Notes</h2>
+    <h2 id="outside-notes" data-i18n-text="notes">{{ trans(key="notes", lang=section.lang) }}</h2>
   </div>
   <div class="outside-list">
-    {% for page in section.pages %}
+    {% for page in source_outside.pages %}
     {% if page.extra.kind == "note" %}
-    <article class="outside-list__item">
-      <div class="outside-list__meta">
-        <span>{{ page.extra.kind_label | default(value="Note") }}</span>
-        {% if page.extra.year | default(value="") %}<span>{{ page.extra.year }}</span>{% endif %}
-      </div>
-      <div class="outside-list__body">
-        <h3><a href="{{ page.permalink }}">{{ page.title }}</a></h3>
-        {% if page.description %}
-        <p>{{ page.description }}</p>
-        {% endif %}
-      </div>
-    </article>
+    {{ macros::localized_outside_list_item(page=page, target_lang=section.lang, default_language=config.default_language) }}
     {% endif %}
     {% endfor %}
   </div>
@@ -81,12 +72,12 @@
 {% if has_music %}
 <section class="outside-section" aria-labelledby="outside-music">
   <div class="section-heading">
-    <h2 id="outside-music">Music</h2>
+    <h2 id="outside-music" data-i18n-text="music">{{ trans(key="music", lang=section.lang) }}</h2>
   </div>
   <div class="outside-grid outside-grid--compact">
-    {% for page in section.pages %}
+    {% for page in source_outside.pages %}
     {% if page.extra.kind == "music" %}
-    {{ macros::outside_card(page=page, variant="standard") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard") }}
     {% endif %}
     {% endfor %}
   </div>

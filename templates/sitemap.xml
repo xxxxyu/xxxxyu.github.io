@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 {%- for entry in entries %}
   {%- if not entry.permalink is containing("/tags/")
       and not entry.permalink is containing("/blog/archive/")
       and not entry.permalink is containing("/blog/page/1/") %}
   <url>
     <loc>{{ entry.permalink | safe }}</loc>
+    {%- set_global english_url = entry.permalink %}
+    {%- set_global chinese_url = false %}
+    {%- if entry.permalink is containing("/zh/") %}
+      {%- set_global english_url = entry.permalink | replace(from="/zh/", to="/") %}
+      {%- set_global chinese_url = entry.permalink %}
+    {%- else %}
+      {%- for candidate in entries %}
+        {%- if candidate.permalink is containing("/zh/") %}
+          {%- set candidate_default = candidate.permalink | replace(from="/zh/", to="/") %}
+          {%- if candidate_default == entry.permalink %}{% set_global chinese_url = candidate.permalink %}{% endif %}
+        {%- endif %}
+      {%- endfor %}
+    {%- endif %}
+    {%- if chinese_url %}
+    <xhtml:link rel="alternate" hreflang="en" href="{{ english_url | safe }}"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="{{ chinese_url | safe }}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ english_url | safe }}"/>
+    {%- endif %}
     {%- if entry.updated %}
     <lastmod>{{ entry.updated }}</lastmod>
     {%- endif %}

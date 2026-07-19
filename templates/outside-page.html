@@ -9,6 +9,7 @@
 {% block og_image_alt %}{{ page.title }}{% endblock og_image_alt %}
 {% block twitter_title %}{{ page.title }} — {{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ page.description | default(value=config.description) }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=page.translations, current_permalink=page.permalink, current_lang=page.lang, default_language=config.default_language) }}{% endblock alternates %}
 {% block twitter_image %}{{ get_url(path=page.extra.cover | default(value=config.extra.og_image)) }}{% endblock twitter_image %}
 {% block twitter_image_alt %}{{ page.title }}{% endblock twitter_image_alt %}
 {% block head_extra %}<link rel="license" href="{{ config.extra.content_license_url | safe }}">{% endblock head_extra %}

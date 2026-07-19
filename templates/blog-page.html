@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as macros %}
 
-{% block html_lang %}{{ page.extra.lang | default(value=lang) }}{% endblock html_lang %}
 {% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
 {% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
 {% block og_title %}{{ page.title }}{% endblock og_title %}
@@ -10,18 +9,19 @@
 {% block og_url %}{{ page.permalink }}{% endblock og_url %}
 {% block og_image %}{{ get_url(path=page.extra.og_image | default(value=config.extra.og_image)) }}{% endblock og_image %}
 {% block og_image_alt %}{{ page.extra.og_image_alt | default(value=config.extra.og_image_alt) }}{% endblock og_image_alt %}
-{% block og_locale %}{{ page.extra.og_locale | default(value="en_US") }}{% endblock og_locale %}
+{% block og_locale %}{% if page.lang == "zh" %}zh_CN{% else %}en_US{% endif %}{% endblock og_locale %}
 {% block twitter_title %}{{ page.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ page.description | default(value=config.description) }}{% endblock twitter_description %}
 {% block twitter_image %}{{ get_url(path=page.extra.og_image | default(value=config.extra.og_image)) }}{% endblock twitter_image %}
 {% block twitter_image_alt %}{{ page.extra.og_image_alt | default(value=config.extra.og_image_alt) }}{% endblock twitter_image_alt %}
+{% block alternates %}{{ macros::hreflang(translations=page.translations, current_permalink=page.permalink, current_lang=page.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block head_extra %}
 {% set series = false %}
 {% set series_position = 0 %}
 {% set series_path = page.extra.series | default(value="") %}
 {% if series_path %}
-  {% set parent = get_section(path=series_path) %}
+  {% set parent = get_section(path=series_path, lang=page.lang) %}
   {% if parent.extra.series | default(value=false) %}
     {% set_global series = parent %}
     {% for member in parent.pages %}
@@ -50,7 +50,7 @@
   "description": {{ page.description | default(value=config.description) | json_encode() | safe }},
   "url": {{ page.permalink | json_encode() | safe }},
   "image": {{ get_url(path=page.extra.og_image | default(value=config.extra.og_image)) | json_encode() | safe }},
-  "inLanguage": {{ page.extra.lang | default(value="en") | json_encode() | safe }},
+  "inLanguage": {{ page.lang | json_encode() | safe }},
   "datePublished": "{{ page.date }}T00:00:00+08:00",
   "dateModified": "{{ page.updated | default(value=page.date) }}T00:00:00+08:00",
   "license": {{ config.extra.content_license_url | json_encode() | safe }},
@@ -80,28 +80,41 @@
 {% block main_class %}blog-post-layout{% endblock main_class %}
 
 {% block content %}
-{% set blog = get_section(path="blog/_index.md") %}
-{% set blog_previous_url = "" %}
-{% set blog_previous_title = "" %}
-{% set blog_next_url = "" %}
-{% set blog_next_title = "" %}
+{% set blog = get_section(path="blog/_index.md", lang=config.default_language) %}
+{% set_global source_page = page %}
+{% for translation in page.translations %}
+  {% set translation_lang = translation.lang | default(value=config.default_language) %}
+  {% if translation_lang == config.default_language %}
+    {% set_global source_page = get_page(path=translation.path) %}
+  {% endif %}
+{% endfor %}
+{% set_global blog_previous = false %}
+{% set_global blog_next = false %}
 {% set blog_seen_current = false %}
+{% set ai_translation_source_lang = page.extra.ai_translation_source | default(value="") %}
+{% set_global ai_translation_source = false %}
+{% if ai_translation_source_lang %}
+  {% for translation in page.translations %}
+    {% set translation_lang = translation.lang | default(value=config.default_language) %}
+    {% if translation_lang == ai_translation_source_lang %}
+      {% set_global ai_translation_source = translation %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
 {% for member in blog.pages %}
-  {% if member.permalink == page.permalink %}
+  {% if member.permalink == source_page.permalink %}
     {% set_global blog_seen_current = true %}
   {% elif not blog_seen_current %}
-    {% set_global blog_previous_url = member.permalink %}
-    {% set_global blog_previous_title = member.title %}
-  {% elif blog_next_url == "" %}
-    {% set_global blog_next_url = member.permalink %}
-    {% set_global blog_next_title = member.title %}
+    {% set_global blog_previous = member %}
+  {% elif not blog_next %}
+    {% set_global blog_next = member %}
   {% endif %}
 {% endfor %}
 {# ── Left: Table of Contents ── #}
 {% if page.toc %}
 <aside class="blog-post-layout__toc">
-  <nav class="toc" aria-label="Table of Contents">
-    <h2 class="toc__title">Contents</h2>
+  <nav class="toc" data-i18n-aria="toc" aria-label="{{ trans(key="toc", lang=page.lang) }}">
+    <h2 class="toc__title" data-i18n-text="contents">{{ trans(key="contents", lang=page.lang) }}</h2>
     <ul class="toc__list">
       {% for h2 in page.toc %}
       <li>
@@ -128,16 +141,23 @@
     {% if page.taxonomies.tags %}
     <div class="blog-post__tags">
       {% for tag in page.taxonomies.tags %}
-      <a href="/tags/{{ tag | slugify }}/" class="tag-link">{{ tag }}</a>
+      <a href="{{ get_taxonomy_url(kind="tags", name=tag, lang=page.lang) }}" class="tag-link">{{ tag }}</a>
       {% endfor %}
     </div>
     {% endif %}
   </header>
 
+  {% if ai_translation_source %}
+  <aside class="translation-notice" role="note">
+    {{ trans(key="ai_translated_from", lang=page.lang) }}
+    <a href="{{ ai_translation_source.permalink }}" hreflang="{{ ai_translation_source_lang }}" lang="{{ ai_translation_source_lang }}" data-set-site-language="{{ ai_translation_source_lang }}">{{ ai_translation_source.title }}</a>{% if page.lang == "zh" %}。{% else %}.{% endif %}
+  </aside>
+  {% endif %}
+
   {# Mobile ToC (collapsed) #}
   {% if page.toc %}
   <details class="blog-post__mobile-toc">
-    <summary>Table of Contents</summary>
+    <summary data-i18n-text="toc">{{ trans(key="toc", lang=page.lang) }}</summary>
     <ul>
       {% for h2 in page.toc %}
       <li>
@@ -159,19 +179,19 @@
     {{ page.content | safe }}
   </div>
 
-  {% if blog_previous_url or blog_next_url %}
-  <nav class="post-nav" aria-label="Blog post navigation">
+  {% if blog_previous or blog_next %}
+  <nav class="post-nav" data-i18n-aria="post_navigation" aria-label="{{ trans(key="post_navigation", lang=page.lang) }}">
     <div class="post-nav__links">
       <div class="post-nav__item post-nav__item--previous">
-        {% if blog_previous_url %}
-        <span class="post-nav__label">Previous</span>
-        <a href="{{ blog_previous_url }}">{{ blog_previous_title }}</a>
+        {% if blog_previous %}
+        <span class="post-nav__label" data-i18n-text="previous">{{ trans(key="previous", lang=page.lang) }}</span>
+        {{ macros::localized_post_nav_link(page=blog_previous, target_lang=page.lang, default_language=config.default_language) }}
         {% endif %}
       </div>
       <div class="post-nav__item post-nav__item--next">
-        {% if blog_next_url %}
-        <span class="post-nav__label">Next</span>
-        <a href="{{ blog_next_url }}">{{ blog_next_title }}</a>
+        {% if blog_next %}
+        <span class="post-nav__label" data-i18n-text="next">{{ trans(key="next", lang=page.lang) }}</span>
+        {{ macros::localized_post_nav_link(page=blog_next, target_lang=page.lang, default_language=config.default_language) }}
         {% endif %}
       </div>
     </div>

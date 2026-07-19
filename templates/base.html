@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{% block html_lang %}{{ lang | default(value="en") }}{% endblock html_lang %}">
+<html lang="{{ lang | default(value=config.default_language) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,23 @@
   <meta name="author" content="{{ config.extra.author }}">
   <meta name="robots" content="{% block robots %}index,follow{% endblock robots %}">
   <link rel="canonical" href="{% block canonical_url %}{{ current_url | default(value=config.base_url) }}{% endblock canonical_url %}">
+  {% block alternates %}{% endblock alternates %}
+  <script>
+    (function() {
+      try {
+        var preference = localStorage.getItem('site-language');
+        var contentLanguage = document.documentElement.lang;
+        if ((preference === 'en' || preference === 'zh') && preference !== contentLanguage) {
+          var alternate = document.querySelector('link[rel="alternate"][hreflang="' + preference + '"]');
+          if (alternate && alternate.href !== window.location.href) {
+            window.location.replace(alternate.href);
+          }
+        }
+      } catch (error) {
+        // Keep rendering the requested content when storage is unavailable.
+      }
+    })();
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:title" content="{% block og_title %}{{ config.title }}{% endblock og_title %}">
@@ -17,7 +34,7 @@
   <meta property="og:image" content="{% block og_image %}{{ get_url(path=config.extra.og_image) }}{% endblock og_image %}">
   <meta property="og:image:alt" content="{% block og_image_alt %}{{ config.extra.og_image_alt }}{% endblock og_image_alt %}">
   <meta property="og:site_name" content="{{ config.extra.site_name | default(value=config.title) }}">
-  <meta property="og:locale" content="{% block og_locale %}en_US{% endblock og_locale %}">
+  <meta property="og:locale" content="{% block og_locale %}{% if lang == "zh" %}zh_CN{% else %}en_US{% endif %}{% endblock og_locale %}">
 
   <!-- X / Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +44,7 @@
   <meta name="twitter:image:alt" content="{% block twitter_image_alt %}{{ config.extra.og_image_alt }}{% endblock twitter_image_alt %}">
 
   {% if config.generate_feeds %}
-  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path=config.feed_filenames[0]) }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }} ({{ lang }})" href="{{ get_url(path=config.feed_filenames[0], lang=lang) }}">
   {% endif %}
 
   {% if config.extra.favicon %}
@@ -54,17 +71,18 @@
 <body>
   <nav class="nav">
     <div class="nav__inner">
-      <a class="nav__brand" href="/">{{ config.extra.author | default(value=config.title) }}</a>
+      <a class="nav__brand" data-i18n-text="author_name" data-href-en="/" data-href-zh="/zh/" href="{% if lang == "zh" %}/zh/{% else %}/{% endif %}">{{ trans(key="author_name", lang=lang) }}</a>
       <div class="nav__right">
         <ul class="nav__links">
-          <li><a class="nav__link{% if current_path is starting_with("/about") %} nav__link--active{% endif %}" href="/about/">About</a></li>
-          <li><a class="nav__link{% if current_path is starting_with("/papers") %} nav__link--active{% endif %}" href="/papers/">Papers</a></li>
-          <li><a class="nav__link{% if current_path is starting_with("/blog") %} nav__link--active{% endif %}" href="/blog/">Blog</a></li>
-          <li><a class="nav__link{% if current_path is starting_with("/outside") %} nav__link--active{% endif %}" href="/outside/">Outside</a></li>
+          <li><a class="nav__link{% if current_path is containing("/about") %} nav__link--active{% endif %}" data-i18n-text="nav_about" data-href-en="/about/" data-href-zh="/zh/about/" href="{% if lang == "zh" %}/zh/about/{% else %}/about/{% endif %}">{{ trans(key="nav_about", lang=lang) }}</a></li>
+          <li><a class="nav__link{% if current_path is containing("/papers") %} nav__link--active{% endif %}" data-i18n-text="nav_papers" data-href-en="/papers/" data-href-zh="/zh/papers/" href="{% if lang == "zh" %}/zh/papers/{% else %}/papers/{% endif %}">{{ trans(key="nav_papers", lang=lang) }}</a></li>
+          <li><a class="nav__link{% if current_path is containing("/blog") %} nav__link--active{% endif %}" data-i18n-text="nav_blog" data-href-en="/blog/" data-href-zh="/zh/blog/" href="{% if lang == "zh" %}/zh/blog/{% else %}/blog/{% endif %}">{{ trans(key="nav_blog", lang=lang) }}</a></li>
+          <li><a class="nav__link{% if current_path is containing("/outside") %} nav__link--active{% endif %}" data-i18n-text="nav_outside" data-href-en="/outside/" data-href-zh="/zh/outside/" href="{% if lang == "zh" %}/zh/outside/{% else %}/outside/{% endif %}">{{ trans(key="nav_outside", lang=lang) }}</a></li>
         </ul>
         <div class="nav__icons">
-          {% if config.build_search_index %}
-          <button class="icon-btn" id="search-button" type="button" aria-label="Search" title="Search (Ctrl/Cmd + K)">
+          <a class="language-switch" id="language-switch" href="{{ current_url }}" hreflang="{% if lang == "zh" %}en{% else %}zh{% endif %}" lang="{% if lang == "zh" %}en{% else %}zh{% endif %}" aria-label="{{ trans(key="language_switch", lang=lang) }}" title="{{ trans(key="language_switch", lang=lang) }}">{% if lang == "zh" %}EN{% else %}中{% endif %}</a>
+          {% if config.build_search_index or lang == "zh" %}
+          <button class="icon-btn" id="search-button" type="button" data-i18n-aria="search" data-i18n-title="search" data-title-suffix=" (Ctrl/Cmd + K)" aria-label="{{ trans(key="search", lang=lang) }}" title="{{ trans(key="search", lang=lang) }} (Ctrl/Cmd + K)">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="7"/>
               <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -94,36 +112,222 @@
     {% block content %}{% endblock content %}
   </main>
 
-  {% if config.build_search_index %}
-  <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  {% if config.build_search_index or lang == "zh" %}
+  <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" data-i18n-aria="search" data-i18n-empty="search_empty" aria-label="{{ trans(key="search", lang=lang) }}" data-empty-label="{{ trans(key="search_empty", lang=lang) }}" hidden>
     <div class="search-modal__inner" role="document">
       <div class="search-modal__bar">
         <svg class="search-modal__icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7"/>
           <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search..." aria-label="Search query" aria-controls="search-results" />
-        <button class="search-modal__close" id="search-close" type="button" aria-label="Close search">
+        <input id="search-input" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search_placeholder" data-i18n-aria="search" placeholder="{{ trans(key="search_placeholder", lang=lang) }}" aria-label="{{ trans(key="search", lang=lang) }}" aria-controls="search-results" />
+        <button class="search-modal__close" id="search-close" type="button" data-i18n-aria="close" aria-label="{{ trans(key="close", lang=lang) }}">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
       </div>
-      <div class="search-modal__results" id="search-results" role="listbox" aria-label="Search results"></div>
+      <div class="search-modal__results" id="search-results" role="listbox" data-i18n-aria="search_results" aria-label="{{ trans(key="search_results", lang=lang) }}"></div>
       <div class="search-modal__hint">
-        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-        <span><kbd>↵</kbd> open</span>
-        <span><kbd>Esc</kbd> close</span>
+        <span><kbd>↑</kbd><kbd>↓</kbd> <span data-i18n-text="navigate">{{ trans(key="navigate", lang=lang) }}</span></span>
+        <span><kbd>↵</kbd> <span data-i18n-text="open">{{ trans(key="open", lang=lang) }}</span></span>
+        <span><kbd>Esc</kbd> <span data-i18n-text="close">{{ trans(key="close", lang=lang) }}</span></span>
       </div>
     </div>
   </div>
   {% endif %}
 
   <footer class="footer">
-    <p>&copy; {{ now() | date(format="%Y") }} {{ config.extra.author }} &middot; <a href="/licensing/">Licensing</a> &middot; Built with <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
+    <p>&copy; {{ now() | date(format="%Y") }} <span data-i18n-text="author_name">{{ trans(key="author_name", lang=lang) }}</span> &middot; <a data-i18n-text="licensing" data-href-en="/licensing/" data-href-zh="/licensing/" data-content-lang-zh="en" href="/licensing/"{% if lang == "zh" %} hreflang="en" lang="en"{% endif %}>{{ trans(key="licensing", lang=lang) }}</a> &middot; <span data-i18n-text="built_with">{{ trans(key="built_with", lang=lang) }}</span> <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
   </footer>
 
+  <script>
+    (function() {
+      var switcher = document.getElementById('language-switch');
+      if (!switcher) return;
+
+      var messages = {
+        en: {
+          author_name: {{ trans(key="author_name", lang="en") | json_encode() | safe }},
+          nav_about: {{ trans(key="nav_about", lang="en") | json_encode() | safe }},
+          nav_papers: {{ trans(key="nav_papers", lang="en") | json_encode() | safe }},
+          nav_blog: {{ trans(key="nav_blog", lang="en") | json_encode() | safe }},
+          nav_outside: {{ trans(key="nav_outside", lang="en") | json_encode() | safe }},
+          search: {{ trans(key="search", lang="en") | json_encode() | safe }},
+          search_placeholder: {{ trans(key="search_placeholder", lang="en") | json_encode() | safe }},
+          search_results: {{ trans(key="search_results", lang="en") | json_encode() | safe }},
+          search_empty: {{ trans(key="search_empty", lang="en") | json_encode() | safe }},
+          close: {{ trans(key="close", lang="en") | json_encode() | safe }},
+          navigate: {{ trans(key="navigate", lang="en") | json_encode() | safe }},
+          open: {{ trans(key="open", lang="en") | json_encode() | safe }},
+          toc: {{ trans(key="toc", lang="en") | json_encode() | safe }},
+          contents: {{ trans(key="contents", lang="en") | json_encode() | safe }},
+          previous: {{ trans(key="previous", lang="en") | json_encode() | safe }},
+          next: {{ trans(key="next", lang="en") | json_encode() | safe }},
+          post_navigation: {{ trans(key="post_navigation", lang="en") | json_encode() | safe }},
+          updated: {{ trans(key="updated", lang="en") | json_encode() | safe }},
+          licensing: {{ trans(key="licensing", lang="en") | json_encode() | safe }},
+          built_with: {{ trans(key="built_with", lang="en") | json_encode() | safe }},
+          language_switch: {{ trans(key="language_switch", lang="en") | json_encode() | safe }},
+          language_switch_exact: {{ trans(key="language_switch_exact", lang="en") | json_encode() | safe }},
+          position: {{ trans(key="position", lang="en") | json_encode() | safe }},
+          affiliation: {{ trans(key="affiliation", lang="en") | json_encode() | safe }},
+          news: {{ trans(key="news", lang="en") | json_encode() | safe }},
+          selected_papers: {{ trans(key="selected_papers", lang="en") | json_encode() | safe }},
+          latest_posts: {{ trans(key="latest_posts", lang="en") | json_encode() | safe }},
+          see_all: {{ trans(key="see_all", lang="en") | json_encode() | safe }},
+          papers: {{ trans(key="papers", lang="en") | json_encode() | safe }},
+          archive: {{ trans(key="archive", lang="en") | json_encode() | safe }},
+          tags: {{ trans(key="tags", lang="en") | json_encode() | safe }},
+          tagged: {{ trans(key="tagged", lang="en") | json_encode() | safe }},
+          experiences: {{ trans(key="experiences", lang="en") | json_encode() | safe }},
+          skills: {{ trans(key="skills", lang="en") | json_encode() | safe }},
+          featured: {{ trans(key="featured", lang="en") | json_encode() | safe }},
+          photography: {{ trans(key="photography", lang="en") | json_encode() | safe }},
+          notes: {{ trans(key="notes", lang="en") | json_encode() | safe }},
+          music: {{ trans(key="music", lang="en") | json_encode() | safe }},
+          email: {{ trans(key="email", lang="en") | json_encode() | safe }},
+          scholar: {{ trans(key="scholar", lang="en") | json_encode() | safe }},
+          cv: {{ trans(key="cv", lang="en") | json_encode() | safe }}
+        },
+        zh: {
+          author_name: {{ trans(key="author_name", lang="zh") | json_encode() | safe }},
+          nav_about: {{ trans(key="nav_about", lang="zh") | json_encode() | safe }},
+          nav_papers: {{ trans(key="nav_papers", lang="zh") | json_encode() | safe }},
+          nav_blog: {{ trans(key="nav_blog", lang="zh") | json_encode() | safe }},
+          nav_outside: {{ trans(key="nav_outside", lang="zh") | json_encode() | safe }},
+          search: {{ trans(key="search", lang="zh") | json_encode() | safe }},
+          search_placeholder: {{ trans(key="search_placeholder", lang="zh") | json_encode() | safe }},
+          search_results: {{ trans(key="search_results", lang="zh") | json_encode() | safe }},
+          search_empty: {{ trans(key="search_empty", lang="zh") | json_encode() | safe }},
+          close: {{ trans(key="close", lang="zh") | json_encode() | safe }},
+          navigate: {{ trans(key="navigate", lang="zh") | json_encode() | safe }},
+          open: {{ trans(key="open", lang="zh") | json_encode() | safe }},
+          toc: {{ trans(key="toc", lang="zh") | json_encode() | safe }},
+          contents: {{ trans(key="contents", lang="zh") | json_encode() | safe }},
+          previous: {{ trans(key="previous", lang="zh") | json_encode() | safe }},
+          next: {{ trans(key="next", lang="zh") | json_encode() | safe }},
+          post_navigation: {{ trans(key="post_navigation", lang="zh") | json_encode() | safe }},
+          updated: {{ trans(key="updated", lang="zh") | json_encode() | safe }},
+          licensing: {{ trans(key="licensing", lang="zh") | json_encode() | safe }},
+          built_with: {{ trans(key="built_with", lang="zh") | json_encode() | safe }},
+          language_switch: {{ trans(key="language_switch", lang="zh") | json_encode() | safe }},
+          language_switch_exact: {{ trans(key="language_switch_exact", lang="zh") | json_encode() | safe }},
+          position: {{ trans(key="position", lang="zh") | json_encode() | safe }},
+          affiliation: {{ trans(key="affiliation", lang="zh") | json_encode() | safe }},
+          news: {{ trans(key="news", lang="zh") | json_encode() | safe }},
+          selected_papers: {{ trans(key="selected_papers", lang="zh") | json_encode() | safe }},
+          latest_posts: {{ trans(key="latest_posts", lang="zh") | json_encode() | safe }},
+          see_all: {{ trans(key="see_all", lang="zh") | json_encode() | safe }},
+          papers: {{ trans(key="papers", lang="zh") | json_encode() | safe }},
+          archive: {{ trans(key="archive", lang="zh") | json_encode() | safe }},
+          tags: {{ trans(key="tags", lang="zh") | json_encode() | safe }},
+          tagged: {{ trans(key="tagged", lang="zh") | json_encode() | safe }},
+          experiences: {{ trans(key="experiences", lang="zh") | json_encode() | safe }},
+          skills: {{ trans(key="skills", lang="zh") | json_encode() | safe }},
+          featured: {{ trans(key="featured", lang="zh") | json_encode() | safe }},
+          photography: {{ trans(key="photography", lang="zh") | json_encode() | safe }},
+          notes: {{ trans(key="notes", lang="zh") | json_encode() | safe }},
+          music: {{ trans(key="music", lang="zh") | json_encode() | safe }},
+          email: {{ trans(key="email", lang="zh") | json_encode() | safe }},
+          scholar: {{ trans(key="scholar", lang="zh") | json_encode() | safe }},
+          cv: {{ trans(key="cv", lang="zh") | json_encode() | safe }}
+        }
+      };
+
+      function storedLanguage() {
+        try {
+          var stored = localStorage.getItem('site-language');
+          return stored === 'en' || stored === 'zh' ? stored : null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function alternateFor(language) {
+        return document.querySelector('link[rel="alternate"][hreflang="' + language + '"]');
+      }
+
+      function apply(language) {
+        var copy = messages[language];
+        document.documentElement.setAttribute('data-site-language', language);
+        document.querySelectorAll('[data-i18n-text]').forEach(function(element) {
+          element.textContent = copy[element.getAttribute('data-i18n-text')];
+        });
+        document.querySelectorAll('[data-i18n-aria]').forEach(function(element) {
+          element.setAttribute('aria-label', copy[element.getAttribute('data-i18n-aria')]);
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(function(element) {
+          var suffix = element.getAttribute('data-title-suffix') || '';
+          element.title = copy[element.getAttribute('data-i18n-title')] + suffix;
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(element) {
+          element.placeholder = copy[element.getAttribute('data-i18n-placeholder')];
+        });
+        document.querySelectorAll('[data-i18n-empty]').forEach(function(element) {
+          element.setAttribute('data-empty-label', copy[element.getAttribute('data-i18n-empty')]);
+        });
+        document.querySelectorAll('[data-href-en][data-href-zh]').forEach(function(element) {
+          element.href = element.getAttribute('data-href-' + language);
+          var destinationLanguage = element.getAttribute('data-content-lang-' + language);
+          if (destinationLanguage) {
+            element.setAttribute('lang', destinationLanguage);
+            element.setAttribute('hreflang', destinationLanguage);
+          } else {
+            element.removeAttribute('lang');
+            element.removeAttribute('hreflang');
+          }
+        });
+        document.querySelectorAll('[data-title-en][data-title-zh]').forEach(function(element) {
+          element.textContent = element.getAttribute('data-title-' + language);
+        });
+
+        var target = language === 'zh' ? 'en' : 'zh';
+        var alternate = alternateFor(target);
+        var hasExactTranslation = alternate && alternate.href !== window.location.href;
+        var label = hasExactTranslation ? copy.language_switch_exact : copy.language_switch;
+        switcher.href = hasExactTranslation ? alternate.href : window.location.href;
+        switcher.textContent = target === 'zh' ? '中' : 'EN';
+        switcher.setAttribute('lang', target);
+        switcher.setAttribute('hreflang', target);
+        switcher.setAttribute('aria-label', label);
+        switcher.title = label;
+      }
+
+      switcher.addEventListener('click', function(event) {
+        event.preventDefault();
+        var current = storedLanguage() || document.documentElement.lang;
+        var target = current === 'zh' ? 'en' : 'zh';
+        try {
+          localStorage.setItem('site-language', target);
+        } catch (error) {
+          // The current interaction still applies even if storage is unavailable.
+        }
+        var alternate = alternateFor(target);
+        if (alternate && alternate.href !== window.location.href) {
+          window.location.assign(alternate.href);
+        } else {
+          apply(target);
+        }
+      }
+      );
+
+      document.querySelectorAll('[data-set-site-language]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          var target = link.getAttribute('data-set-site-language');
+          if (target !== 'en' && target !== 'zh') return;
+          try {
+            localStorage.setItem('site-language', target);
+          } catch (error) {
+            // The destination still opens when storage is unavailable.
+          }
+        });
+      });
+
+      apply(storedLanguage() || document.documentElement.lang);
+    })();
+  </script>
   <script>
     (function() {
       var btn = document.getElementById('theme-toggle');
@@ -185,7 +389,7 @@
       apply(current());
     })();
   </script>
-  {% if config.build_search_index %}
+  {% if config.build_search_index or lang == "zh" %}
   <script defer src="{{ get_url(path='js/search.js') | safe }}"></script>
   {% endif %}
   {% block scripts %}{% endblock scripts %}
