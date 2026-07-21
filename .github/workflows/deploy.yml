@@ -26,6 +26,23 @@ jobs:
         with:
           python-version: '3.11'
 
+      - uses: astral-sh/setup-uv@v8.3.2
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install locked Python dependencies
+        run: uv sync --locked
+
+      - name: Regenerate Chinese search index
+        run: uv run python scripts/build_zh_search_index.py
+
+      - name: Verify Chinese search index is committed
+        run: git diff --exit-code -- static/search_index.zh.json
+
+      - name: Run repository tests
+        run: uv run python -m unittest discover -s tests -v
+
       - name: Install scholarly (fallback when SERPAPI_KEY absent)
         if: github.event_name != 'push'
         run: pip install scholarly

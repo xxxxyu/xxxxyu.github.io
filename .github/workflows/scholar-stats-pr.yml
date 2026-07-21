@@ -36,10 +36,10 @@ jobs:
           title: "chore: refresh Google Scholar stats"
           commit-message: "chore: refresh Google Scholar stats"
           body: |
-            Automated monthly refresh of `static/gs/*.json` fallback values.
+            Automated monthly refresh of `data/gs/*.json` fallback values.
 
             These files act as fallback citation counts for deploys that fail to fetch from Google Scholar in real time. Merging keeps the fallback baseline current.
 
             Triggered by `.github/workflows/scholar-stats-pr.yml`.
-          add-paths: static/gs/**
+          add-paths: data/gs/**
           delete-branch: true
