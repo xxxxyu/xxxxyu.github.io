@@ -1,5 +1,13 @@
 [[news]]
 date = '2026/07'
+text = '**Cosmos Lite** released: deploy 16B/4B Cosmos 3 robot policies on a single 24GB RTX 4090 via quantized inference (acc. validated).'
+links = [
+  { label = 'Code', url = 'https://github.com/xxxxyu/cosmos-lite' },
+  { label = 'Models', url = 'https://huggingface.co/collections/XXXXyu/cosmos-lite' },
+]
+
+[[news]]
+date = '2026/07'
 text = '*DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models* accepted to **IEEE TMC**. Congrats to Weining Chen.'
 links = [
   { label = 'Paper', url = 'https://ieeexplore.ieee.org/document/11599643' },
