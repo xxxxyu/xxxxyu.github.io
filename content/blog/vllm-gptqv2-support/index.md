@@ -1,7 +1,7 @@
 +++
 title = "Enhancing GPTQv2 Format Support in vLLM: Analysis and Implementation"
 date = "2025-10-12"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "An analysis of GPTQv2 format limitations in vLLM and the CUDA kernel changes needed for low-bit asymmetric quantization inference."
 template = "blog-page.html"
 
@@ -258,8 +258,7 @@ dequant_2bit_16(load_int4.w, dq[3], size_n, zeros[3] + zero_offset);
 
 For the third requirement, both `GPTQMarlinLinearMethod` and `GPTQBitBLASLinearMethod` remain unchanged: they already support GPTQv2, although only for 4/8-bit symmetric quantization.
 
-> TODO: Add some performance benchmarks.
-> I found that 2-bit `gptq_gemm` is slower during decoding (GeMV) than during prefilling (GeMM).
+> I found that 2-bit `gptq_gemm` is slower during decoding (GeMV) than during prefilling (GeMM). A systematic performance benchmark remains future work.
 
 ## Conclusion
 
@@ -272,6 +271,7 @@ Questions and discussion are welcome.
 - Extend optimized kernels (Marlin, BitBLAS) to support 2/3-bit or asymmetric quantization.
 - Fix the 4-bit bug in `gptq_gemm`.
 - Improve the decoding speed with `gptq_gemm`.
+- Benchmark the fallback kernel across bit widths, quantization modes, and workload shapes.
 
 [^1]: Elias Frantar et al., ["GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers"](https://arxiv.org/abs/2210.17323), ICLR, 2023.
 

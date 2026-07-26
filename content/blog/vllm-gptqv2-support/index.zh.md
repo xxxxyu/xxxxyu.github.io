@@ -1,7 +1,7 @@
 +++
 title = "增强 vLLM 对 GPTQv2 格式的支持：分析与实现"
 date = "2025-10-12"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "分析 vLLM 对 GPTQv2 格式支持的局限，以及低比特非对称量化推理所需的 CUDA 内核改动。"
 template = "blog-page.html"
 
@@ -259,8 +259,7 @@ dequant_2bit_16(load_int4.w, dq[3], size_n, zeros[3] + zero_offset);
 
 对于第三项要求，`GPTQMarlinLinearMethod` 和 `GPTQBitBLASLinearMethod` 都不作改动：它们已经支持 GPTQv2，只是仅限于 4/8-bit 对称量化。
 
-> TODO：补充一些性能基准测试。
-> 我发现 2-bit `gptq_gemm` 在解码（GeMV）时比预填充（GeMM）时更慢。
+> 我发现 2-bit `gptq_gemm` 在解码（GeMV）时比预填充（GeMM）时更慢。针对其性能的系统性基准测试留作后续工作。
 
 ## 总结
 
@@ -273,6 +272,7 @@ dequant_2bit_16(load_int4.w, dq[3], size_n, zeros[3] + zero_offset);
 - 扩展优化内核（Marlin、BitBLAS），使其支持 2/3-bit 或非对称量化。
 - 修复 `gptq_gemm` 的 4-bit bug。
 - 提升 `gptq_gemm` 的解码速度。
+- 针对不同位宽、量化模式和工作负载形状，对 fallback 内核进行基准测试。
 
 [^1]: Elias Frantar 等，[“GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers”](https://arxiv.org/abs/2210.17323)，ICLR，2023。
 

@@ -1,7 +1,7 @@
 +++
 title = "Pi 设备配置速查表"
 date = "2025-01-03"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "适用于 Raspberry Pi 及类似单板计算机的实用配置清单。"
 path = "zh/blog/pi-setup-cheatsheet"
 weight = 10
@@ -56,7 +56,7 @@ tags = ["Development", "Linux", "Edge Device"]
 - 清华大学 TUNET 认证：[GoAuthing](https://github.com/z4yx/GoAuthing/)
   - 如果代理导致无法访问 GitHub，也可以从 [TUNA](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/) 获取发布版本
   - 预编译的 Linux ARM64 可执行文件：[auth-thu.linux.arm64](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/auth-thu.linux.arm64)
-- 配置代理：TODO
+- 代理：[nelvko/clash-for-linux-install](https://github.com/nelvko/clash-for-linux-install)
   - 使用公共网络时，不要允许来自局域网的连接
 
 ### 安装或更新必要的软件包
@@ -111,10 +111,6 @@ tags = ["Development", "Linux", "Edge Device"]
   - 在项目有要求时使用
   - 通过 apt 安装：`sudo apt install python3-venv`
 - 注意：如果同时安装了 conda 和 virtualenv，请确认激活了正确的环境（从终端里看，两者可能没有明显区别）
-
-### 容器
-
-- Docker：TODO
 
 ## 快速修复
 

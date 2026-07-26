@@ -1,7 +1,7 @@
 +++
 title = "Dario Amodei 博客阅读笔记"
 date = "2025-08-02"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "阅读 Dario Amodei 关于强大 AI、可解释性与 AI 政策文章的笔记。"
 template = "blog-page.html"
 
@@ -78,7 +78,7 @@ Anthropic 的研究文章[^7]更详细地介绍了这项工作。
 
 ## AI 与政治
 
-这一节尚待完成（这个话题也实在太大）——等有时间时我会补上。
+Amodei 对 AI 与政治的讨论涉及的问题超出了这篇阅读笔记的范围，本文就此收束，不再展开。
 
 [^1]: 我最初读到的是一篇介绍 [*On DeepSeek and Export Controls*](https://www.darioamodei.com/post/on-deepseek-and-export-controls) 的中文文章，之后又阅读了英文原文，以及 [Amodei 个人网站](https://www.darioamodei.com/)上的其他文章。
 

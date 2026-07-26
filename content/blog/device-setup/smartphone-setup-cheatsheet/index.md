@@ -1,7 +1,7 @@
 +++
 title = "Cheatsheet for Setting up Android Smartphones"
 date = "2025-01-09"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "A practical checklist for setting up Android smartphones for development."
 path = "blog/smartphone-setup-cheatsheet"
 weight = 20
@@ -96,11 +96,9 @@ How to install:
 - Install a downloaded APK (Android Application Package)
 - Install from host PC by ADB (APK required)
 
-### Clash for Android (CFA)
+### Proxy
 
-First, set up the proxy.
-
-TODO: details
+For a system-wide proxy, use [MetaCubeX/ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid).
 
 ### F-Droid
 

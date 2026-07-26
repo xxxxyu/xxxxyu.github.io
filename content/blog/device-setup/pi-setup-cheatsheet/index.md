@@ -1,7 +1,7 @@
 +++
 title = "Cheatsheet for Setting up Pi Devices"
 date = "2025-01-03"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "A practical setup checklist for Raspberry Pi and similar single-board computers."
 path = "blog/pi-setup-cheatsheet"
 weight = 10
@@ -55,7 +55,7 @@ For first-boot setup and local debugging
 - Tsinghua TUNET authentication: [GoAuthing](https://github.com/z4yx/GoAuthing/)
   - If a proxy prevents access to GitHub, releases are also available on [TUNA](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/)
   - Prebuilt Linux ARM64 binary: [auth-thu.linux.arm64](https://mirrors.tuna.tsinghua.edu.cn/github-release/z4yx/GoAuthing/LatestRelease/auth-thu.linux.arm64)
-- Set up the proxy: TODO
+- Proxy: [nelvko/clash-for-linux-install](https://github.com/nelvko/clash-for-linux-install)
   - Do not allow LAN connections on a public network
 
 ### Install/update necessary packages
@@ -110,10 +110,6 @@ For first-boot setup and local debugging
   - Use it when required by the project
   - Install via apt: `sudo apt install python3-venv`
 - Note: when both conda and virtualenv are installed, make sure the correct environment is activated (they seem the same from the terminal)
-
-### Containers
-
-- Docker: TODO
 
 ## Quick Fix
 

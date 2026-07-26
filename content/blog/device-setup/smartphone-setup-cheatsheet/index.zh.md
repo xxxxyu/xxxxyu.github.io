@@ -1,7 +1,7 @@
 +++
 title = "Android 智能手机配置速查表"
 date = "2025-01-09"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "面向开发工作的 Android 智能手机配置实用检查清单。"
 path = "zh/blog/smartphone-setup-cheatsheet"
 weight = 20
@@ -97,11 +97,9 @@ tags = ["Development", "Android", "Edge Device"]
 - 安装已下载的 APK（Android Application Package）
 - 通过 ADB 从主机安装（需要 APK）
 
-### Clash for Android（CFA）
+### 代理
 
-首先配置代理。
-
-TODO：补充细节
+系统全局代理可使用 [MetaCubeX/ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid)。
 
 ### F-Droid
 

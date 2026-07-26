@@ -1,7 +1,7 @@
 +++
 title = "Reading Notes of Dario Amodei's Blog"
 date = "2025-08-02"
-updated = "2026-07-11"
+updated = "2026-07-26"
 description = "Notes on Dario Amodei's essays about powerful AI, interpretability, and AI policy."
 template = "blog-page.html"
 
@@ -75,7 +75,7 @@ For now, I do not think our models are powerful enough to be "dangerous," althou
 
 ## AI and Politics
 
-This is a TODO section (also too large a topic to discuss) — I'll complete this part when time allows.
+Amodei's writing on AI and politics touches on questions that fall beyond the scope of these notes, so I will leave the discussion here.
 
 [^1]: I started with a Chinese article summarizing [*On DeepSeek and Export Controls*](https://www.darioamodei.com/post/on-deepseek-and-export-controls), then read the original English post and other writing on [Amodei's homepage](https://www.darioamodei.com/).
 
