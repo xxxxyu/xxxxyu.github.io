@@ -1,6 +1,6 @@
 +++
 title = "关于"
-description = "李翔宇的个人简介。"
+description = "李翔宇的研究方向、学术经历、近期动态与技术背景。"
 template = "about.html"
 +++
 

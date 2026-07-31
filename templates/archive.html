@@ -11,7 +11,11 @@
 {% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1 data-i18n-text="archive">{{ trans(key="archive", lang=section.lang) }}</h1>
+<header class="page-intro">
+  <p class="page-intro__eyebrow">{{ trans(key="archive_eyebrow", lang=section.lang) }}</p>
+  <h1 data-i18n-text="archive">{{ trans(key="archive", lang=section.lang) }}</h1>
+  {% if section.description %}<p class="page-intro__dek">{{ section.description }}</p>{% endif %}
+</header>
 
 {% set blog = get_section(path="blog/_index.md", lang=config.default_language) %}
 {% set pages = blog.pages %}
@@ -24,9 +28,10 @@
   {% endif %}
 {% endfor %}
 
+<div class="archive-index">
 {% for year in years %}
-<div class="archive-year">
-  <h2>{{ year }}</h2>
+<section class="archive-year" aria-labelledby="archive-{{ year }}">
+  <h2 id="archive-{{ year }}">{{ year }}</h2>
   <ul class="archive-list">
     {% for page in pages %}
     {% if page.date | date(format="%Y") == year %}
@@ -37,6 +42,7 @@
     {% endif %}
     {% endfor %}
   </ul>
-</div>
+</section>
 {% endfor %}
+</div>
 {% endblock content %}

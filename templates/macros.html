@@ -23,7 +23,7 @@
     {%- set year = pub.year | default(value="") | as_str -%}
     {%- set notes = pub.notes | default(value="") -%}
     {%- set has_venue = venue != "" -%}
-    {%- set has_year = year != "" -%}
+    {%- set has_year = year != "" and not venue is containing(year) -%}
     {%- set has_notes = notes != "" -%}
     {% if has_venue or has_year or has_notes %}
     <p class="pub-card__venue">
@@ -34,17 +34,17 @@
     </p>
     {% endif %}
     <div class="pub-card__links">
-      {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">Paper</a>{% endif %}
-      {% if pub.blog_url %}<a href="{{ pub.blog_url }}">Blog</a>{% endif %}
-      {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">Code</a>{% endif %}
-      {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">Page</a>{% endif %}
-      {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+      {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener"><span>Paper</span></a>{% endif %}
+      {% if pub.blog_url %}{% if pub.paper_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.blog_url }}"><span>Blog</span></a>{% endif %}
+      {% if pub.code_url %}{% if pub.paper_url or pub.blog_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener"><span>Code</span></a>{% endif %}
+      {% if pub.page_url %}{% if pub.paper_url or pub.blog_url or pub.code_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener"><span>Page</span></a>{% endif %}
+      {% if pub.slides_url %}{% if pub.paper_url or pub.blog_url or pub.code_url or pub.page_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener"><span>Slides</span></a>{% endif %}
     </div>
   </div>
 </div>
 {% endmacro pub_card %}
 
-{% macro outside_card(page, variant) %}
+{% macro outside_card(page, variant, priority) %}
 {% set kind = page.extra.kind | default(value="note") %}
 {% set kind_label = page.extra.kind_label | default(value="Outside") %}
 {% set cover = page.extra.cover | default(value="") %}
@@ -57,7 +57,12 @@
     {% if cover %}
     <picture>
       {% if cover_webp %}<source srcset="{{ cover_webp }}" type="image/webp">{% endif %}
-      <img src="{{ cover }}" alt="{{ page.title }}" loading="lazy">
+      <img
+        src="{{ cover }}"
+        alt="{{ page.title }}"
+        {% if priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+        decoding="async"
+      >
     </picture>
     {% else %}
     <div class="outside-card__placeholder" aria-hidden="true">
@@ -79,13 +84,13 @@
 </article>
 {% endmacro outside_card %}
 
-{% macro localized_outside_card(page, target_lang, default_language, variant) %}
+{% macro localized_outside_card(page, target_lang, default_language, variant, priority) %}
 {% set_global display_page = page %}
 {% for translation in page.translations %}
   {% set translation_lang = translation.lang | default(value=default_language) %}
   {% if translation_lang == target_lang %}{% set_global display_page = get_page(path=translation.path) %}{% endif %}
 {% endfor %}
-{{ self::outside_card(page=display_page, variant=variant) }}
+{{ self::outside_card(page=display_page, variant=variant, priority=priority) }}
 {% endmacro localized_outside_card %}
 
 {% macro localized_outside_list_item(page, target_lang, default_language) %}
@@ -186,7 +191,8 @@
   <article>
     <h2><a href="{{ display_page.permalink }}">{{ display_page.title }}</a></h2>
     <div class="series-list__meta">
-      <span>{% if target_lang == "zh" %}{{ trans(key="part", lang=target_lang) }} {{ position }} {{ trans(key="of", lang=target_lang) }} {{ total }} 篇{% else %}{{ trans(key="part", lang=target_lang) }} {{ position }} {{ trans(key="of", lang=target_lang) }} {{ total }}{% endif %}</span>
+      {% set count_suffix = trans(key="series_count_suffix", lang=target_lang) %}
+      <span>{{ trans(key="part", lang=target_lang) }} {{ position }} {{ trans(key="of", lang=target_lang) }} {{ total }}{% if count_suffix %} {{ count_suffix }}{% endif %}</span>
       {% if display_page.date %}<time datetime="{{ display_page.date }}">{{ display_page.date | date(format="%Y/%m/%d") }}</time>{% endif %}
     </div>
     {% if display_page.description %}<p>{{ display_page.description }}</p>{% endif %}

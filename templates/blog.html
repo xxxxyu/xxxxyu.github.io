@@ -11,11 +11,15 @@
 {% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1>{{ section.title }}</h1>
-{{ section.content | safe }}
+<header class="page-intro page-intro--title-only">
+  <h1>{{ section.title }}</h1>
+  {{ section.content | safe }}
+</header>
 
 {% set source_blog = get_section(path="blog/_index.md", lang=config.default_language) %}
+<div class="post-index">
 {% for page in source_blog.pages %}
 {{ macros::localized_post_preview(page=page, target_lang=section.lang, default_language=config.default_language, heading_level=2) }}
 {% endfor %}
+</div>
 {% endblock content %}

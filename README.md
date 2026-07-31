@@ -18,7 +18,7 @@ produces a fully static site in `public/`.
 
 ## Quick start
 
-Install Zola before starting local development; see the
+Install Zola 0.22.1 before starting local development; see the
 [Zola installation guide](https://www.getzola.org/documentation/getting-started/installation/).
 
 ### Unix (Linux and macOS)
@@ -42,11 +42,11 @@ Both scripts enable live reload, watch `data/` in addition to the normal Zola
 paths, and forward extra arguments to Zola. For example:
 
 ```bash
-./serve.sh
+./serve.sh --drafts
 ```
 
 ```powershell
-.\serve.ps1
+.\serve.ps1 --drafts
 ```
 
 Open the URL printed by Zola (normally `http://127.0.0.1:1111`). To create a
@@ -61,10 +61,10 @@ Run the lightweight content and feature checks through
 uv run python -m unittest discover -s tests -v
 ```
 
-The checks currently validate the post-series structure and are intended to
-grow alongside repository features. Run `zola build` as a separate production
-rendering check when templates, styles, configuration, or content structure
-change.
+The checks validate multilingual content pairs, translated metadata, search
+indexes, content safety conventions, and ordered post-series structure. Run
+`zola build` as a separate production rendering check when templates, styles,
+configuration, or content structure change.
 
 ## Project layout
 

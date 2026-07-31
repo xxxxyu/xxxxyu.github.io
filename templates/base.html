@@ -53,8 +53,13 @@
 
   <script>
     (function() {
-      var t = localStorage.getItem('theme');
-      var mode = (t === 'dark' || t === 'light') ? t : 'system';
+      var mode = 'system';
+      try {
+        var t = localStorage.getItem('theme');
+        mode = (t === 'dark' || t === 'light') ? t : 'system';
+      } catch (error) {
+        // Render with the system preference when storage is unavailable.
+      }
       if (mode !== 'system') {
         document.documentElement.setAttribute('data-theme', mode);
       }
@@ -63,6 +68,7 @@
   </script>
 
   <link rel="preload" href="/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/source-serif-4/SourceSerif4Variable-Roman.ttf.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/source-sans-3/SourceSans3VF-Upright.ttf.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
 
@@ -139,15 +145,11 @@
   {% endif %}
 
   <footer class="footer">
-    <p>&copy; {{ now() | date(format="%Y") }} <span data-i18n-text="author_name">{{ trans(key="author_name", lang=lang) }}</span> &middot; <a data-i18n-text="licensing" data-href-en="/licensing/" data-href-zh="/licensing/" data-content-lang-zh="en" href="/licensing/"{% if lang == "zh" %} hreflang="en" lang="en"{% endif %}>{{ trans(key="licensing", lang=lang) }}</a> &middot; <span data-i18n-text="built_with">{{ trans(key="built_with", lang=lang) }}</span> <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
+    <p>&copy; {{ now() | date(format="%Y") }} <span data-i18n-text="author_name">{{ trans(key="author_name", lang=lang) }}</span><span class="bullet-separator" aria-hidden="true"></span><a data-i18n-text="licensing" data-href-en="/licensing/" data-href-zh="/licensing/" data-content-lang-zh="en" href="/licensing/"{% if lang == "zh" %} hreflang="en" lang="en"{% endif %}>{{ trans(key="licensing", lang=lang) }}</a><span class="bullet-separator" aria-hidden="true"></span><span data-i18n-text="built_with">{{ trans(key="built_with", lang=lang) }}</span> <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
   </footer>
 
   <script>
-    (function() {
-      var switcher = document.getElementById('language-switch');
-      if (!switcher) return;
-
-      var messages = {
+    window.siteI18n = {
         en: {
           author_name: {{ trans(key="author_name", lang="en") | json_encode() | safe }},
           nav_about: {{ trans(key="nav_about", lang="en") | json_encode() | safe }},
@@ -234,161 +236,10 @@
           scholar: {{ trans(key="scholar", lang="zh") | json_encode() | safe }},
           cv: {{ trans(key="cv", lang="zh") | json_encode() | safe }}
         }
-      };
-
-      function storedLanguage() {
-        try {
-          var stored = localStorage.getItem('site-language');
-          return stored === 'en' || stored === 'zh' ? stored : null;
-        } catch (error) {
-          return null;
-        }
-      }
-
-      function alternateFor(language) {
-        return document.querySelector('link[rel="alternate"][hreflang="' + language + '"]');
-      }
-
-      function apply(language) {
-        var copy = messages[language];
-        document.documentElement.setAttribute('data-site-language', language);
-        document.querySelectorAll('[data-i18n-text]').forEach(function(element) {
-          element.textContent = copy[element.getAttribute('data-i18n-text')];
-        });
-        document.querySelectorAll('[data-i18n-aria]').forEach(function(element) {
-          element.setAttribute('aria-label', copy[element.getAttribute('data-i18n-aria')]);
-        });
-        document.querySelectorAll('[data-i18n-title]').forEach(function(element) {
-          var suffix = element.getAttribute('data-title-suffix') || '';
-          element.title = copy[element.getAttribute('data-i18n-title')] + suffix;
-        });
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(element) {
-          element.placeholder = copy[element.getAttribute('data-i18n-placeholder')];
-        });
-        document.querySelectorAll('[data-i18n-empty]').forEach(function(element) {
-          element.setAttribute('data-empty-label', copy[element.getAttribute('data-i18n-empty')]);
-        });
-        document.querySelectorAll('[data-href-en][data-href-zh]').forEach(function(element) {
-          element.href = element.getAttribute('data-href-' + language);
-          var destinationLanguage = element.getAttribute('data-content-lang-' + language);
-          if (destinationLanguage) {
-            element.setAttribute('lang', destinationLanguage);
-            element.setAttribute('hreflang', destinationLanguage);
-          } else {
-            element.removeAttribute('lang');
-            element.removeAttribute('hreflang');
-          }
-        });
-        document.querySelectorAll('[data-title-en][data-title-zh]').forEach(function(element) {
-          element.textContent = element.getAttribute('data-title-' + language);
-        });
-
-        var target = language === 'zh' ? 'en' : 'zh';
-        var alternate = alternateFor(target);
-        var hasExactTranslation = alternate && alternate.href !== window.location.href;
-        var label = hasExactTranslation ? copy.language_switch_exact : copy.language_switch;
-        switcher.href = hasExactTranslation ? alternate.href : window.location.href;
-        switcher.textContent = target === 'zh' ? '中' : 'EN';
-        switcher.setAttribute('lang', target);
-        switcher.setAttribute('hreflang', target);
-        switcher.setAttribute('aria-label', label);
-        switcher.title = label;
-      }
-
-      switcher.addEventListener('click', function(event) {
-        event.preventDefault();
-        var current = storedLanguage() || document.documentElement.lang;
-        var target = current === 'zh' ? 'en' : 'zh';
-        try {
-          localStorage.setItem('site-language', target);
-        } catch (error) {
-          // The current interaction still applies even if storage is unavailable.
-        }
-        var alternate = alternateFor(target);
-        if (alternate && alternate.href !== window.location.href) {
-          window.location.assign(alternate.href);
-        } else {
-          apply(target);
-        }
-      }
-      );
-
-      document.querySelectorAll('[data-set-site-language]').forEach(function(link) {
-        link.addEventListener('click', function() {
-          var target = link.getAttribute('data-set-site-language');
-          if (target !== 'en' && target !== 'zh') return;
-          try {
-            localStorage.setItem('site-language', target);
-          } catch (error) {
-            // The destination still opens when storage is unavailable.
-          }
-        });
-      });
-
-      apply(storedLanguage() || document.documentElement.lang);
-    })();
+    };
   </script>
-  <script>
-    (function() {
-      var btn = document.getElementById('theme-toggle');
-      var favicon = document.getElementById('favicon');
-      var systemDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-      var cycle = ['light', 'dark', 'system'];
-
-      function current() {
-        return localStorage.getItem('theme') || 'system';
-      }
-
-      function resolvedTheme(mode) {
-        if (mode === 'system') {
-          return systemDark && systemDark.matches ? 'dark' : 'light';
-        }
-        return mode;
-      }
-
-      function updateFavicon(mode) {
-        if (!favicon) return;
-        var theme = resolvedTheme(mode);
-        var href = favicon.getAttribute(theme === 'dark' ? 'data-dark' : 'data-light');
-        if (href) {
-          favicon.setAttribute('href', href);
-        }
-      }
-
-      function apply(mode) {
-        if (mode === 'system') {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.removeItem('theme');
-        } else {
-          document.documentElement.setAttribute('data-theme', mode);
-          localStorage.setItem('theme', mode);
-        }
-        document.documentElement.setAttribute('data-theme-mode', mode);
-        btn.setAttribute('aria-label', 'Theme: ' + mode + ' (click to change)');
-        updateFavicon(mode);
-      }
-
-      btn.addEventListener('click', function() {
-        var idx = cycle.indexOf(current());
-        apply(cycle[(idx + 1) % cycle.length]);
-      });
-
-      if (systemDark) {
-        var handleSystemThemeChange = function() {
-          if (current() === 'system') {
-            updateFavicon('system');
-          }
-        };
-        if (systemDark.addEventListener) {
-          systemDark.addEventListener('change', handleSystemThemeChange);
-        } else if (systemDark.addListener) {
-          systemDark.addListener(handleSystemThemeChange);
-        }
-      }
-
-      apply(current());
-    })();
-  </script>
+  <script defer src="{{ get_url(path='js/site-language.js') | safe }}"></script>
+  <script defer src="{{ get_url(path='js/theme.js') | safe }}"></script>
   {% if config.build_search_index or lang == "zh" %}
   <script defer src="{{ get_url(path='js/search.js') | safe }}"></script>
   {% endif %}

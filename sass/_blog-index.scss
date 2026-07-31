@@ -1,0 +1,137 @@
+// Blog indexes — archive, tags, and pagination
+// =============================================
+
+// ---------- Archive ----------
+.archive-index {
+  border-top: 1px solid var(--c-border);
+}
+
+.archive-year {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+
+  h2 {
+    margin: 0;
+    padding-top: 1.05rem;
+    color: var(--c-text-muted);
+    font-family: var(--f-sans);
+    font-size: var(--ui-meta-size);
+    font-weight: var(--fw-sans-strong);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.archive-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: var(--sp-4);
+    padding: 0.85rem 0;
+
+    & + li {
+      border-top: 1px solid color-mix(in srgb, var(--c-border) 82%, transparent);
+    }
+  }
+
+  time {
+    flex-shrink: 0;
+    font-family: var(--f-sans);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-sans-normal);
+    color: var(--c-text-muted);
+    min-width: 0;
+  }
+
+  a {
+    color: var(--c-text);
+    font-size: 1rem;
+    line-height: 1.45;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--c-text);
+      text-decoration: underline;
+    }
+  }
+}
+
+// ---------- Tags ----------
+.tags-index {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--sp-6);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--c-border);
+
+  li {
+    min-width: 0;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .tag-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-3) 0;
+    color: var(--c-text);
+    font-size: 1rem;
+
+    &:hover {
+      color: var(--c-text);
+      text-decoration: none;
+
+      .tags-index__name {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__count {
+    flex-shrink: 0;
+    color: var(--c-text-muted);
+    font-size: var(--ui-meta-size);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (max-width: 600px) {
+  .archive-year {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: var(--sp-4);
+
+    h2 {
+      padding: 0 0 var(--sp-2);
+    }
+  }
+
+  .archive-list li {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+  }
+
+  .tags-index {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ---------- Pagination ----------
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--c-border);
+  font-family: var(--f-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-sans-normal);
+}

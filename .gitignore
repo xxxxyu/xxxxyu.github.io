@@ -10,3 +10,4 @@ __pycache__/
 assets-src/
 static/img/**/raw/
 static/img/**/originals/
+static/img/**/*-original.*

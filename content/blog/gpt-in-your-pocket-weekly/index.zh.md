@@ -2,7 +2,7 @@
 title = '"口袋里的 GPT"，离我们还有多远？'
 date = "2023-11-21"
 updated = "2026-07-12"
-description = "唠一唠端侧大模型部署那些事。"
+description = "介绍端侧大语言模型部署面临的内存、计算效率与隐私挑战，以及模型压缩和推理优化方法。"
 template = "blog-page.html"
 
 [taxonomies]

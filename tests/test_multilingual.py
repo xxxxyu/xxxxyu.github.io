@@ -142,9 +142,10 @@ class MultilingualTests(unittest.TestCase):
 
     def test_language_preference_is_click_driven_and_keeps_untranslated_url(self) -> None:
         template = (REPO_ROOT / "templates" / "base.html").read_text(encoding="utf-8")
+        language_script = (REPO_ROOT / "static" / "js" / "site-language.js").read_text(encoding="utf-8")
         blog_template = (REPO_ROOT / "templates" / "blog-page.html").read_text(encoding="utf-8")
-        self.assertIn("localStorage.setItem('site-language', target)", template)
-        self.assertIn("switcher.href = hasExactTranslation ? alternate.href : window.location.href", template)
+        self.assertIn("localStorage.setItem('site-language', target)", language_script)
+        self.assertIn("switcher.href = hasExactTranslation ? alternate.href : window.location.href", language_script)
         self.assertNotIn("opens the Chinese home page", template)
         for key in ("toc", "contents", "previous", "next", "post_navigation", "updated"):
             self.assertIn(f'{key}:', template)
@@ -190,8 +191,9 @@ class MultilingualTests(unittest.TestCase):
         self.assertIn('hreflang="{{ ai_translation_source_lang }}"', template)
         self.assertIn('data-set-site-language="{{ ai_translation_source_lang }}"', template)
         base_template = (REPO_ROOT / "templates" / "base.html").read_text(encoding="utf-8")
-        self.assertIn("localStorage.setItem('site-language', target)", base_template)
-        self.assertIn("[data-set-site-language]", base_template)
+        language_script = (REPO_ROOT / "static" / "js" / "site-language.js").read_text(encoding="utf-8")
+        self.assertIn("localStorage.setItem('site-language', target)", language_script)
+        self.assertIn("[data-set-site-language]", language_script)
 
     def test_committed_chinese_search_index_is_current(self) -> None:
         result = subprocess.run(

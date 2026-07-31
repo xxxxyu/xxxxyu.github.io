@@ -33,9 +33,11 @@
     <h2 id="outside-featured" data-i18n-text="featured">{{ trans(key="featured", lang=section.lang) }}</h2>
   </div>
   <div class="outside-featured-grid">
+    {% set_global has_priority_cover = false %}
     {% for page in source_outside.pages %}
     {% if page.extra.featured | default(value=false) %}
-    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="featured") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="featured", priority=not has_priority_cover) }}
+    {% set_global has_priority_cover = true %}
     {% endif %}
     {% endfor %}
   </div>
@@ -48,7 +50,7 @@
   <div class="outside-grid">
     {% for page in source_outside.pages %}
     {% if page.extra.kind == "photography" %}
-    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard", priority=false) }}
     {% endif %}
     {% endfor %}
   </div>
@@ -77,7 +79,7 @@
   <div class="outside-grid outside-grid--compact">
     {% for page in source_outside.pages %}
     {% if page.extra.kind == "music" %}
-    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard") }}
+    {{ macros::localized_outside_card(page=page, target_lang=section.lang, default_language=config.default_language, variant="standard", priority=false) }}
     {% endif %}
     {% endfor %}
   </div>

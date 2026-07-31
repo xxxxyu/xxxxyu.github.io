@@ -2,6 +2,10 @@
 // ====================================
 
 // ---------- Paper Cards ----------
+.bullet-separator::before {
+  @extend %bullet-sep;
+}
+
 .pub-card {
   display: flex;
   gap: var(--sp-4);
@@ -66,28 +70,36 @@
   }
 
   &__sep {
-    @extend %bullet-sep;
     margin: 0 var(--bullet-gap);
+
+    &::before {
+      @extend %bullet-sep;
+    }
   }
 
   &__links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--bullet-gap);
     align-items: center;
 
     a {
       font-family: var(--f-sans);
-      font-size: var(--fs-base);
+      font-size: var(--fs-sm);
       font-weight: var(--fw-sans-medium);
       color: var(--c-accent);
       transition: color var(--transition);
+
+      &:hover {
+        text-decoration: none;
+
+        span {
+          text-decoration: underline;
+        }
+      }
     }
 
-    a + a::before {
-      content: "";
-      @extend %bullet-sep;
-      margin-right: var(--bullet-gap);
+    .bullet-separator {
+      margin: 0 var(--bullet-gap);
     }
   }
 
@@ -99,17 +111,20 @@
 // ---------- Profile Block (Homepage) ----------
 .profile {
   display: flex;
-  gap: var(--sp-6);
-  align-items: flex-start;
-  margin-bottom: var(--sp-8);
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 0;
 
   &__photo {
     flex-shrink: 0;
-    width: 180px;
+    width: var(--ui-profile-image);
 
     img {
       width: 100%;
+      padding: 2px;
+      border: 1px solid var(--c-border);
       border-radius: 50%;
+      background: var(--c-bg);
     }
   }
 
@@ -118,18 +133,24 @@
   }
 
   &__name {
-    font-size: var(--fs-2xl);
-    margin-bottom: var(--sp-1);
+    font-size: 2rem;
+    margin-bottom: 0.2rem;
   }
 
   &__title {
-    font-size: var(--fs-md);
+    font-family: var(--f-sans);
+    font-size: var(--ui-small-copy-size);
+    line-height: 1.45;
     color: var(--c-text-muted);
     margin-bottom: var(--sp-3);
   }
 
   &__bio {
-    margin-bottom: var(--sp-4);
+    margin-bottom: var(--sp-3);
+
+    p {
+      margin-bottom: var(--sp-3);
+    }
   }
 
   &__links {
@@ -141,14 +162,13 @@
     margin: 0;
 
     li:not(:last-child)::after {
-      content: "";
       @extend %bullet-sep;
       margin-left: var(--bullet-gap);
     }
 
     a {
       font-family: var(--f-sans);
-      font-size: var(--fs-md);
+      font-size: var(--ui-small-copy-size);
       font-weight: var(--fw-sans-normal);
       display: inline-flex;
       align-items: center;
@@ -169,58 +189,73 @@
   margin: 0 0 var(--sp-5);
 
   li {
-    padding: var(--sp-2) 0;
+    display: grid;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--sp-4);
+    padding-block: 0.5rem;
     border-bottom: 1px solid var(--c-border);
-    font-size: var(--fs-sm);
-    display: flex;
-    align-items: center;
-    gap: var(--bullet-gap);
+    font-size: var(--ui-small-copy-size);
+    line-height: 1.55;
   }
 
   &__date {
     flex-shrink: 0;
     color: var(--c-text-muted);
     font-family: var(--f-sans);
-    font-size: var(--fs-base);
+    font-size: var(--ui-meta-size);
     font-weight: var(--fw-sans-normal);
-    min-width: 4em;
-
-    &::after {
-      content: "";
-      @extend %bullet-sep;
-      margin-left: var(--bullet-gap);
-    }
+    min-width: 0;
+    font-variant-numeric: tabular-nums;
   }
 
   &__links {
     color: var(--c-text-muted);
     font-family: var(--f-sans);
-    font-size: var(--fs-base);
+    font-size: var(--fs-sm);
     font-weight: var(--fw-sans-normal);
     margin-left: var(--sp-2);
     white-space: nowrap;
 
-    a + a::before {
-      content: "";
-      @extend %bullet-sep;
+    .bullet-separator {
       margin: 0 var(--sp-2);
+    }
+
+    a:hover {
+      text-decoration: none;
+
+      span {
+        text-decoration: underline;
+      }
     }
   }
 }
 
 // ---------- About Details ----------
+.about-lede {
+  padding-top: var(--ui-row-space);
+  border-top: 1px solid var(--c-border);
+  font-size: var(--fs-base);
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
 .about-section {
-  margin-top: var(--sp-6);
+  margin-top: 2.75rem;
 
   > h2 {
-    margin-bottom: var(--sp-2);
+    margin-bottom: 0;
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--c-border);
+    font-size: var(--fs-xl);
   }
 }
 
 .about-detail {
-  margin-bottom: var(--sp-5);
-  border-top: 1px solid var(--c-border);
-  padding-top: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  padding-top: var(--sp-4);
 
   h3 {
     margin: var(--sp-6) 0 var(--sp-2);
@@ -278,7 +313,6 @@
   font-weight: var(--fw-sans-normal);
 
   > span + span::before {
-    content: "";
     @extend %bullet-sep;
     margin-right: var(--bullet-gap);
   }
@@ -345,6 +379,73 @@
   }
 }
 
+// ---------- Editorial Blog and Papers Indexes ----------
+.post-index,
+.papers-index {
+  border-top: 1px solid var(--c-border);
+}
+
+.post-index {
+  .post-preview {
+    padding: var(--ui-row-space) 0;
+
+    h2 {
+      margin: 0;
+      font-size: var(--ui-list-title-size);
+      line-height: 1.35;
+    }
+
+    &__meta {
+      margin: 0.35rem 0 0;
+      font-size: var(--ui-meta-size);
+      font-variant-numeric: tabular-nums;
+    }
+
+    p {
+      margin-top: var(--sp-2);
+      font-size: var(--ui-small-copy-size);
+      line-height: 1.55;
+    }
+  }
+}
+
+.papers-index {
+  min-width: 0;
+
+  .pub-card {
+    gap: var(--sp-5);
+    padding: var(--ui-row-space) 0;
+  }
+
+  .pub-card__title {
+    margin-bottom: 0.35rem;
+    font-size: var(--fs-md);
+    line-height: 1.38;
+  }
+
+  .pub-card__authors {
+    margin-bottom: 0.3rem;
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+
+  .pub-card__venue {
+    margin-bottom: 0.35rem;
+    font-family: var(--f-sans);
+    font-size: var(--ui-meta-size);
+    line-height: 1.45;
+  }
+
+  .pub-card__links a {
+    font-size: var(--fs-sm);
+  }
+}
+
+.post-preview,
+.pub-card {
+  border-bottom-color: color-mix(in srgb, var(--c-border) 82%, transparent);
+}
+
 // ---------- Responsive ----------
 @media (max-width: 768px) {
   .profile {
@@ -352,7 +453,7 @@
     align-items: center;
     text-align: center;
 
-    &__photo { width: 140px; }
+    &__photo { width: 136px; }
     &__links { justify-content: center; }
   }
 
@@ -361,6 +462,12 @@
 
     &__img { width: 100%; }
   }
+
+  .news-list li {
+    grid-template-columns: 1fr;
+    gap: var(--sp-1);
+  }
+
 }
 
 @media (max-width: 420px) {

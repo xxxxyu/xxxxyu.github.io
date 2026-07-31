@@ -25,11 +25,13 @@ html {
 }
 
 body {
-  font-family: var(--f-serif);
+  font-family: var(--f-prose);
   font-size: var(--fs-base);
   line-height: var(--lh-normal);
   color: var(--c-text);
   background-color: var(--c-bg);
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,13 +41,22 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--f-serif);
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);
+  letter-spacing: -0.018em;
   color: var(--c-text);
 }
 
-h1 { font-size: var(--fs-3xl); }
-h2 { font-size: var(--fs-2xl); }
-h3 { font-size: var(--fs-xl);  }
-h4 { font-size: var(--fs-lg);  }
+h1 { font-size: var(--ui-page-title-size); }
+h2 { font-size: var(--ui-section-title-size); }
+h3 { font-size: var(--fs-lg);  }
+h4 { font-size: var(--fs-base);  }
+
+strong {
+  font-weight: var(--fw-strong);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-accent) 22%, transparent);
+}
 
 // Links
 a {

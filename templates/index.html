@@ -8,6 +8,7 @@
 {% block twitter_title %}{{ config.title }}{% endblock twitter_title %}
 {% block twitter_description %}{{ config.description }}{% endblock twitter_description %}
 {% block alternates %}{{ pubmacros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
+{% block main_class %}content content--home{% endblock main_class %}
 
 {% block head_extra %}
 <script type="application/ld+json">
@@ -40,7 +41,7 @@
 {# ── Profile Block ── #}
 <div class="profile">
   <div class="profile__photo">
-    <img src="{{ config.extra.avatar }}" alt="{{ trans(key="author_name", lang=section.lang) }}">
+    <img src="{{ config.extra.avatar }}" alt="{{ trans(key="author_name", lang=section.lang) }}" width="{{ config.extra.avatar_width }}" height="{{ config.extra.avatar_height }}">
   </div>
   <div class="profile__info">
     <h1 class="profile__name">{{ trans(key="author_name", lang=section.lang) }}</h1>
@@ -71,7 +72,8 @@
       {% if item.links %}
       <span class="news-list__links">
         {%- for link in item.links -%}
-        <a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}>{{ link.label }}</a>
+        {% if not loop.first %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}
+        <a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}><span>{{ link.label }}</span></a>
         {%- endfor -%}
       </span>
       {% endif %}

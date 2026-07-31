@@ -10,12 +10,16 @@
 {% block alternates %}{{ pubmacros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1 data-i18n-text="papers">{{ trans(key="papers", lang=section.lang) }}</h1>
+<header class="page-intro page-intro--title-only">
+  <h1 data-i18n-text="papers">{{ trans(key="papers", lang=section.lang) }}</h1>
+</header>
 
 {% set pub_data = load_data(path="data/papers.toml") %}
 {% set pubs = pub_data.papers %}
 
+<div class="papers-index">
 {% for pub in pubs %}
-{{ pubmacros::pub_card(pub=pub) }}
+  {{ pubmacros::pub_card(pub=pub) }}
 {% endfor %}
+</div>
 {% endblock content %}

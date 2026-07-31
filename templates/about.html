@@ -10,28 +10,35 @@
 {% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
 
 {% block content %}
-<h1>{{ section.title }}</h1>
+<header class="page-intro page-intro--title-only">
+  <h1>{{ section.title }}</h1>
+</header>
 
-{{ section.content | safe }}
+<div class="about-lede">
+  {{ section.content | safe }}
+</div>
 
 {% set news_data = load_data(path="data/news.toml") %}
-<h2 id="news" data-i18n-text="news">{{ trans(key="news", lang=section.lang) }}</h2>
-<ul class="news-list">
-  {% for item in news_data.news %}
-  <li>
-    <span class="news-list__date">{{ item.date }}</span>
-    <span>{{ item.text | markdown(inline=true) | safe }}
-      {% if item.links %}
-      <span class="news-list__links">
-        {%- for link in item.links -%}
-        <a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}>{{ link.label }}</a>
-        {%- endfor -%}
+<section class="about-section" aria-labelledby="news">
+  <h2 id="news" data-i18n-text="news">{{ trans(key="news", lang=section.lang) }}</h2>
+  <ul class="news-list">
+    {% for item in news_data.news %}
+    <li>
+      <span class="news-list__date">{{ item.date }}</span>
+      <span>{{ item.text | markdown(inline=true) | safe }}
+        {% if item.links %}
+        <span class="news-list__links">
+          {%- for link in item.links -%}
+          {% if not loop.first %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}
+          <a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}><span>{{ link.label }}</span></a>
+          {%- endfor -%}
+        </span>
+        {% endif %}
       </span>
-      {% endif %}
-    </span>
-  </li>
-  {% endfor %}
-</ul>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
 
 <section class="about-section" aria-labelledby="experiences">
   <h2 id="experiences" data-i18n-text="experiences">{{ trans(key="experiences", lang=section.lang) }}</h2>

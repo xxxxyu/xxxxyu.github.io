@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock title %}
-{% block description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock description %}
+{% block description %}{{ trans(key="tag_index_meta_description", lang=lang) }}{% endblock description %}
 {% block robots %}noindex,follow{% endblock robots %}
 {% block og_title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock og_title %}
-{% block og_description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock og_description %}
+{% block og_description %}{{ trans(key="tag_index_meta_description", lang=lang) }}{% endblock og_description %}
 {% block twitter_title %}{{ trans(key="tags", lang=lang) }} — {{ config.title }}{% endblock twitter_title %}
-{% block twitter_description %}{% if lang == "zh" %}按主题浏览博客文章。{% else %}Browse blog posts by topic.{% endif %}{% endblock twitter_description %}
+{% block twitter_description %}{{ trans(key="tag_index_meta_description", lang=lang) }}{% endblock twitter_description %}
 {% block alternates %}
 <link rel="alternate" hreflang="en" href="{{ get_url(path='tags/', lang='en') }}">
 <link rel="alternate" hreflang="zh" href="{{ get_url(path='tags/', lang='zh') }}">
@@ -14,7 +14,11 @@
 {% endblock alternates %}
 
 {% block content %}
-<h1 data-i18n-text="tags">{{ trans(key="tags", lang=lang) }}</h1>
+<header class="page-intro">
+  <p class="page-intro__eyebrow">{{ trans(key="tag_index_eyebrow", lang=lang) }}</p>
+  <h1 data-i18n-text="tags">{{ trans(key="tags", lang=lang) }}</h1>
+  <p class="page-intro__dek">{{ trans(key="tag_index_intro", lang=lang) }}</p>
+</header>
 {% set_global source_terms = terms %}
 {% if lang != config.default_language %}
   {% set source_taxonomy = get_taxonomy(kind="tags", lang=config.default_language) %}
@@ -28,7 +32,12 @@
       {% if translated_term.name == source_term.name %}{% set_global display_term = translated_term %}{% endif %}
     {% endfor %}
   {% endif %}
-  <li><a href="{{ display_term.permalink }}" class="tag-link" lang="{% if display_term.permalink is containing('/zh/') %}zh{% else %}en{% endif %}">{{ source_term.name }} <span>({{ source_term.pages | length }})</span></a></li>
+  <li>
+    <a href="{{ display_term.permalink }}" class="tag-link" lang="{% if display_term.permalink is containing('/zh/') %}zh{% else %}en{% endif %}">
+      <span class="tags-index__name">{{ source_term.name }}</span>
+      <span class="tags-index__count">{{ source_term.pages | length }} {% if source_term.pages | length == 1 %}{{ trans(key="post_count_one", lang=lang) }}{% else %}{{ trans(key="post_count_other", lang=lang) }}{% endif %}</span>
+    </a>
+  </li>
   {% endfor %}
 </ul>
 {% endblock content %}

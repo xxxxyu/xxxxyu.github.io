@@ -1,13 +1,15 @@
 // SCSS Placeholders & Mixins
 // ===========================
 
-// Reusable bullet separator dot. Extenders set their own margin to position it.
-// Pseudo-element extenders must also declare `content: ""`.
+// Reusable typographic bullet. Using a glyph instead of a drawn circle lets
+// the UI font handle baseline alignment consistently at every metadata size.
 %bullet-sep {
-  display: inline-block;
-  width: 0.3em;
-  height: 0.3em;
-  border-radius: 50%;
-  background: var(--c-text-muted);
-  vertical-align: middle;
+  content: "•";
+  display: inline;
+  color: var(--c-text-muted);
+  font-family: var(--f-sans);
+  font-size: 1em;
+  font-weight: var(--fw-sans-normal);
+  line-height: inherit;
+  vertical-align: baseline;
 }

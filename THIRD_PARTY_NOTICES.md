@@ -30,6 +30,24 @@ branch:
 See [`licenses/OFL-1.1.txt`](licenses/OFL-1.1.txt) and the
 [official Source Sans repository](https://github.com/adobe-fonts/source-sans/tree/release).
 
+## Source Serif 4
+
+Files: `static/fonts/source-serif-4/*.woff2`
+
+Source Serif 4 is Copyright 2014–2023 Adobe, with Reserved Font Name “Source”.
+Source is a trademark of Adobe in the United States and/or other countries.
+The font is licensed under the SIL Open Font License, Version 1.1. These are
+the unmodified variable WOFF2 files distributed in Adobe's official release
+branch:
+
+- `SourceSerif4Variable-Roman.ttf.woff2` —
+  `940a76eda1388de39d38c8e7a79bf6ea058a387faee0a9f33c8d25c6ba05e1be`
+- `SourceSerif4Variable-Italic.woff2` —
+  `9d28b5749a1ad096a295cb607c521bd1af4cd9979b6f37332daf70143149fb44`
+
+See [`licenses/OFL-1.1.txt`](licenses/OFL-1.1.txt) and the
+[official Source Serif repository](https://github.com/adobe-fonts/source-serif/tree/release).
+
 ## Noto Sans SC and Noto Serif SC
 
 Files: `static/fonts/noto-sans-sc/*.woff2` and

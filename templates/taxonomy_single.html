@@ -2,12 +2,12 @@
 {% import "macros.html" as macros %}
 
 {% block title %}{{ term.name }} — {{ config.title }}{% endblock title %}
-{% block description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock description %}
+{% block description %}{{ trans(key="tag_topic_meta_description", lang=lang) }}{% endblock description %}
 {% block robots %}noindex,follow{% endblock robots %}
 {% block og_title %}{{ term.name }} — {{ config.title }}{% endblock og_title %}
-{% block og_description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock og_description %}
+{% block og_description %}{{ trans(key="tag_topic_meta_description", lang=lang) }}{% endblock og_description %}
 {% block twitter_title %}{{ term.name }} — {{ config.title }}{% endblock twitter_title %}
-{% block twitter_description %}{% if lang == "zh" %}包含此标签的博客文章。{% else %}Blog posts with this tag.{% endif %}{% endblock twitter_description %}
+{% block twitter_description %}{{ trans(key="tag_topic_meta_description", lang=lang) }}{% endblock twitter_description %}
 {% block alternates %}
 <link rel="alternate" hreflang="en" href="{{ get_taxonomy_url(kind='tags', name=term.name, lang='en') }}">
 <link rel="alternate" hreflang="zh" href="{{ get_taxonomy_url(kind='tags', name=term.name, lang='zh') }}">
@@ -15,7 +15,11 @@
 {% endblock alternates %}
 
 {% block content %}
-<h1><span data-i18n-text="tagged">{{ trans(key="tagged", lang=lang) }}</span>: {{ term.name }}</h1>
+<header class="page-intro">
+  <p class="page-intro__eyebrow"><span data-i18n-text="tagged">{{ trans(key="tagged", lang=lang) }}</span></p>
+  <h1>{{ term.name }}</h1>
+  <p class="page-intro__dek">{{ trans(key="tag_topic_intro", lang=lang) }}</p>
+</header>
 {% set_global source_pages = term.pages %}
 {% if lang != config.default_language %}
   {% set source_taxonomy = get_taxonomy(kind="tags", lang=config.default_language) %}
@@ -23,7 +27,9 @@
     {% if source_term.name == term.name %}{% set_global source_pages = source_term.pages %}{% endif %}
   {% endfor %}
 {% endif %}
-{% for page in source_pages %}
-{{ macros::localized_post_preview(page=page, target_lang=lang, default_language=config.default_language, heading_level=2) }}
-{% endfor %}
+<div class="post-index">
+  {% for page in source_pages %}
+  {{ macros::localized_post_preview(page=page, target_lang=lang, default_language=config.default_language, heading_level=2) }}
+  {% endfor %}
+</div>
 {% endblock content %}
