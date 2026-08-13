@@ -77,7 +77,9 @@ links for available translations, with English as `x-default`.
 After adding or changing a translation, run:
 
 ```bash
-uv run python scripts/build_zh_search_index.py
-uv run python -m unittest discover -s tests -v
-zola build
+uv run --locked python scripts/build_zh_search_index.py
+uv run --locked python -m unittest discover -s tests -v
+./build.sh
 ```
+
+On Windows, use `.\build.ps1` for the final production-build check.

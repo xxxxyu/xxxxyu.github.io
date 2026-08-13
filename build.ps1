@@ -7,7 +7,6 @@ param(
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $previousLocation = Get-Location
-$watcher = $null
 
 try {
     Set-Location $repositoryRoot
@@ -27,19 +26,16 @@ try {
         throw "CJK font subset generation failed with exit code $LASTEXITCODE."
     }
 
-    $watcher = Start-Process -FilePath $uvCommand.Source `
-        -ArgumentList @('run', '--locked', 'python', 'scripts/build_font_subsets.py', '--watch') `
-        -NoNewWindow -PassThru
-
-    & $zolaCommand.Source serve --extra-watch-path data @ZolaArgs
+    & $zolaCommand.Source build @ZolaArgs
     if ($LASTEXITCODE -ne 0) {
         throw "Zola exited with code $LASTEXITCODE."
     }
+
+    & $uvCommand.Source run --locked python scripts/build_font_subsets.py --check-rendered public
+    if ($LASTEXITCODE -ne 0) {
+        throw "Rendered CJK font coverage check failed with exit code $LASTEXITCODE."
+    }
 }
 finally {
-    if ($watcher -and -not $watcher.HasExited) {
-        & taskkill.exe /PID $watcher.Id /T /F 2>$null | Out-Null
-        $watcher.WaitForExit()
-    }
     Set-Location $previousLocation
 }

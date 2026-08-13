@@ -11,7 +11,7 @@
 
 {% block content %}
 <header class="page-intro page-intro--title-only">
-  <h1>{{ section.title }}</h1>
+  <h1>{{ section.extra.display_title | default(value=section.title) }}</h1>
 </header>
 
 <div class="about-lede">
@@ -40,6 +40,18 @@
   </ul>
 </section>
 
+<section class="about-section" aria-labelledby="awards">
+  <h2 id="awards" data-i18n-text="awards">{{ trans(key="awards", lang=section.lang) }}</h2>
+  {% if section.lang == "zh" %}
+    {% set awards = load_data(path="data/awards.zh.md", format="plain") %}
+  {% else %}
+    {% set awards = load_data(path="data/awards.md", format="plain") %}
+  {% endif %}
+  <div class="about-detail about-detail--awards">
+    {{ awards | markdown | safe }}
+  </div>
+</section>
+
 <section class="about-section" aria-labelledby="experiences">
   <h2 id="experiences" data-i18n-text="experiences">{{ trans(key="experiences", lang=section.lang) }}</h2>
   {% if section.lang == "zh" %}
@@ -49,18 +61,6 @@
   {% endif %}
   <div class="about-detail about-detail--experiences">
     {{ exp | markdown | safe }}
-  </div>
-</section>
-
-<section class="about-section" aria-labelledby="skills">
-  <h2 id="skills" data-i18n-text="skills">{{ trans(key="skills", lang=section.lang) }}</h2>
-  {% if section.lang == "zh" %}
-    {% set skills = load_data(path="data/skills.zh.md", format="plain") %}
-  {% else %}
-    {% set skills = load_data(path="data/skills.md", format="plain") %}
-  {% endif %}
-  <div class="about-detail about-detail--skills">
-    {{ skills | markdown | safe }}
   </div>
 </section>
 {% endblock content %}

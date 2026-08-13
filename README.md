@@ -5,7 +5,7 @@ homepage and long-form blog built with [Zola](https://www.getzola.org/).
 
 The site brings together:
 
-- a research profile, experience, news, and selected skills;
+- a research profile, news, awards, and experience;
 - publications with Google Scholar citation badges;
 - technical writing on on-device AI, efficient inference, and embodied AI,
   including ordered post series;
@@ -18,7 +18,8 @@ produces a fully static site in `public/`.
 
 ## Quick start
 
-Install Zola 0.22.1 before starting local development; see the
+Install Zola 0.22.1 and [uv](https://docs.astral.sh/uv/) before starting local
+development; see the
 [Zola installation guide](https://www.getzola.org/documentation/getting-started/installation/).
 
 ### Unix (Linux and macOS)
@@ -38,8 +39,9 @@ Make sure `zola.exe` is available on `PATH`, then run:
 .\serve.ps1
 ```
 
-Both scripts enable live reload, watch `data/` in addition to the normal Zola
-paths, and forward extra arguments to Zola. For example:
+Both scripts generate the site's CJK font subsets, keep them synchronized as
+content changes, enable live reload, watch `data/` in addition to the normal
+Zola paths, and forward extra arguments to Zola. For example:
 
 ```bash
 ./serve.sh --drafts
@@ -49,8 +51,13 @@ paths, and forward extra arguments to Zola. For example:
 .\serve.ps1 --drafts
 ```
 
+The first run after a fresh clone may spend about a minute generating the local
+font cache. Later starts normally reuse it and proceed in under a second.
+
 Open the URL printed by Zola (normally `http://127.0.0.1:1111`). To create a
-production build, run `zola build`; generated output is written to `public/`.
+production build, run `./build.sh` on Unix or `.\build.ps1` on Windows; generated
+output is written to `public/`. These wrappers also generate and validate the
+local CJK font subsets used by the rendered site.
 
 ## Repository checks
 
@@ -58,13 +65,13 @@ Run the lightweight content and feature checks through
 [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv run python -m unittest discover -s tests -v
+uv run --locked python -m unittest discover -s tests -v
 ```
 
 The checks validate multilingual content pairs, translated metadata, search
-indexes, content safety conventions, and ordered post-series structure. Run
-`zola build` as a separate production rendering check when templates, styles,
-configuration, or content structure change.
+indexes, content safety conventions, and ordered post-series structure. Run the
+platform's `build` wrapper as a separate production rendering check when
+templates, styles, configuration, or content structure change.
 
 ## Project layout
 
@@ -80,12 +87,16 @@ docs/          Maintainer documentation
 config.toml    Zola and site-wide configuration
 serve.sh       Unix development entry point
 serve.ps1      Windows development entry point
+build.sh       Unix production-build entry point
+build.ps1      Windows production-build entry point
 ```
 
 See the [post series convention](docs/post-series.md) before creating or
 reordering a series, and the
 [asset and gallery workflow](docs/assets-and-galleries.md) before adding large
-files or publishing an Outside photography collection.
+files or publishing an Outside photography collection. CJK font coverage is
+generated automatically; its design and validation are documented in the
+[font subsetting workflow](docs/font-subsetting.md).
 
 ## Deployment
 

@@ -69,7 +69,10 @@
 
   <link rel="preload" href="/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/source-serif-4/SourceSerif4Variable-Roman.ttf.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/source-serif-4/SourceSerif4Variable-Italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/source-sans-3/SourceSans3VF-Upright.ttf.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
 
   {% block head_extra %}{% endblock head_extra %}
@@ -183,8 +186,8 @@
           archive: {{ trans(key="archive", lang="en") | json_encode() | safe }},
           tags: {{ trans(key="tags", lang="en") | json_encode() | safe }},
           tagged: {{ trans(key="tagged", lang="en") | json_encode() | safe }},
+          awards: {{ trans(key="awards", lang="en") | json_encode() | safe }},
           experiences: {{ trans(key="experiences", lang="en") | json_encode() | safe }},
-          skills: {{ trans(key="skills", lang="en") | json_encode() | safe }},
           featured: {{ trans(key="featured", lang="en") | json_encode() | safe }},
           photography: {{ trans(key="photography", lang="en") | json_encode() | safe }},
           notes: {{ trans(key="notes", lang="en") | json_encode() | safe }},
@@ -226,8 +229,8 @@
           archive: {{ trans(key="archive", lang="zh") | json_encode() | safe }},
           tags: {{ trans(key="tags", lang="zh") | json_encode() | safe }},
           tagged: {{ trans(key="tagged", lang="zh") | json_encode() | safe }},
+          awards: {{ trans(key="awards", lang="zh") | json_encode() | safe }},
           experiences: {{ trans(key="experiences", lang="zh") | json_encode() | safe }},
-          skills: {{ trans(key="skills", lang="zh") | json_encode() | safe }},
           featured: {{ trans(key="featured", lang="zh") | json_encode() | safe }},
           photography: {{ trans(key="photography", lang="zh") | json_encode() | safe }},
           notes: {{ trans(key="notes", lang="zh") | json_encode() | safe }},

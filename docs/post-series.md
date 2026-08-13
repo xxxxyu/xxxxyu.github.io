@@ -51,9 +51,11 @@ Blog navigation component.
 After adding or reordering members, run:
 
 ```bash
-uv run python -m unittest discover -s tests -v
-zola build
+uv run --locked python -m unittest discover -s tests -v
+./build.sh
 ```
+
+On Windows, use `.\build.ps1` for the final production-build check.
 
 The repository tests validate the section convention, membership pointers,
 weights, and stable output paths. Also check the series overview, Blog

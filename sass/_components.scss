@@ -286,18 +286,31 @@
     line-height: var(--lh-normal);
   }
 
+  // Opt-in de-emphasis for supporting items. This reuses the site's existing
+  // accessible muted text color instead of creating a second gray scale.
+  .about-secondary,
+  .about-secondary a {
+    color: var(--c-text-muted);
+  }
+
+  .about-secondary a:hover {
+    color: var(--c-link-hover);
+  }
+
+  li > ul {
+    margin-top: var(--sp-2);
+    padding-left: var(--sp-4);
+    border-left: 2px solid var(--c-border);
+  }
+
+  li > ul > li {
+    padding: var(--sp-1) 0;
+    border-bottom: 0;
+  }
+
   strong {
     font-weight: var(--fw-bold);
     color: var(--c-text);
-  }
-}
-
-.about-detail--skills {
-  strong {
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    font-weight: var(--fw-bold);
   }
 }
 

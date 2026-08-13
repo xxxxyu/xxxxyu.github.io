@@ -1,4 +1,13 @@
 [[papers]]
+title = 'Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots'
+authors = 'Ling Xu, Borui Li†, Hao Wu†, Chuyu Han, Xiangyu Li, Mohan Hua, Shiqi Jiang, Ting Cao, Chuanyou Li, Sheng Zhong, Shuai Wang'
+venue = 'ArXiv preprint'
+year = 2026
+paper_url = 'https://arxiv.org/abs/2607.02501'
+code_url = 'https://github.com/SEU-PAISys/Embodied.cpp'
+featured = false
+
+[[papers]]
 title = 'DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models'
 authors = 'Weining Chen, Yongheng Deng, Xiang Wang, Ziyan Fu, Xiangyu Li, Ting Cao'
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
@@ -22,7 +31,7 @@ year = 2026
 paper_url = 'https://arxiv.org/abs/2606.08508'
 code_url = 'https://github.com/air-embodied-brain/actprobe'
 page_url = 'https://air-embodied-brain.github.io/actprobe'
-featured = true
+featured = false
 
 [[papers]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
@@ -30,6 +39,7 @@ authors = 'Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, 
 venue = 'ArXiv preprint'
 year = 2026
 paper_url = 'https://arxiv.org/abs/2605.10332'
+code_url = 'https://github.com/air-embodied-brain/EmbodiSkill'
 featured = false
 
 [[papers]]

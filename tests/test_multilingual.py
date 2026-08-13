@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import subprocess
-import sys
 import json
 import re
+import subprocess
+import sys
 import tomllib
 import unittest
 from collections import Counter
@@ -69,24 +69,35 @@ class MultilingualTests(unittest.TestCase):
         self.assertIn("atom.xml", zh.get("feed_filenames", []))
         self.assertIn("tags", {item.get("name") for item in zh.get("taxonomies", [])})
 
-    def test_chinese_profile_and_about_bios_cover_the_english_source(self) -> None:
-        home = CONTENT_ROOT / "_index.zh.md"
-        about = CONTENT_ROOT / "about" / "_index.zh.md"
-        home_body = markdown_body(home)
-        about_body = markdown_body(about)
-        self.assertNotIn("TODO", home_body)
-        self.assertNotIn("TODO", about_body)
-        self.assertIn("面向端侧智能的高效推理系统", home_body)
-        self.assertIn("具身智能的模型系统协同设计", home_body)
-        for term in ("刘云新", "曹婷", "FlexNN", "Vec-LUT", "OxyGen", "KV cache"):
-            self.assertIn(term, about_body)
-        self.assertEqual(load_front_matter(about).get("title"), "关于")
+    def test_chinese_profile_and_about_bios_match_source_structure(self) -> None:
+        pairs = (
+            (CONTENT_ROOT / "_index.md", CONTENT_ROOT / "_index.zh.md"),
+            (CONTENT_ROOT / "about" / "_index.md", CONTENT_ROOT / "about" / "_index.zh.md"),
+        )
+        for source, translation in pairs:
+            with self.subTest(source=source.relative_to(REPO_ROOT)):
+                source_body = markdown_body(source)
+                translation_body = markdown_body(translation)
+                self.assertNotIn("TODO", translation_body)
+                self.assertEqual(markdown_structure(translation_body), markdown_structure(source_body))
+                self.assertEqual(
+                    len([block for block in translation_body.split("\n\n") if block.strip()]),
+                    len([block for block in source_body.split("\n\n") if block.strip()]),
+                )
+
+        for path in (CONTENT_ROOT / "about" / "_index.md", CONTENT_ROOT / "about" / "_index.zh.md"):
+            metadata = load_front_matter(path)
+            display_title = metadata.get("extra", {}).get("display_title")
+            with self.subTest(display_title=path.relative_to(REPO_ROOT)):
+                self.assertIsInstance(display_title, str)
+                self.assertTrue(display_title.strip())
+                self.assertNotEqual(display_title, metadata.get("title"))
 
     def test_primary_section_labels_exist_in_both_languages(self) -> None:
         keys = {
             "position", "affiliation", "news", "selected_papers", "latest_posts",
             "see_all", "papers", "archive", "tags", "tagged", "experiences",
-            "skills", "featured", "photography", "notes", "music",
+            "awards", "featured", "photography", "notes", "music",
         }
         english = self.config.get("translations", {})
         chinese = self.config.get("languages", {}).get("zh", {}).get("translations", {})
@@ -96,15 +107,22 @@ class MultilingualTests(unittest.TestCase):
             self.assertTrue(english[key].strip(), key)
             self.assertTrue(chinese[key].strip(), key)
 
+    def test_about_structured_sections_are_wired_for_both_languages(self) -> None:
         about_template = (REPO_ROOT / "templates" / "about.html").read_text(encoding="utf-8")
-        self.assertIn('data/experiences.zh.md', about_template)
-        self.assertIn('data/skills.zh.md', about_template)
-        experiences = (REPO_ROOT / "data" / "experiences.zh.md").read_text(encoding="utf-8")
-        skills = (REPO_ROOT / "data" / "skills.zh.md").read_text(encoding="utf-8")
-        for heading in ("### 奖项", "### 实习", "### 助教", "### 其他"):
-            self.assertIn(heading, experiences)
-        for heading in ("### 编程语言", "### 框架"):
-            self.assertIn(heading, skills)
+        for section in ("awards", "experiences"):
+            with self.subTest(section=section):
+                self.assertIn(f'aria-labelledby="{section}"', about_template)
+                self.assertIn(f'data-i18n-text="{section}"', about_template)
+                english = REPO_ROOT / "data" / f"{section}.md"
+                chinese = REPO_ROOT / "data" / f"{section}.zh.md"
+                self.assertIn(f'data/{section}.md', about_template)
+                self.assertIn(f'data/{section}.zh.md', about_template)
+                self.assertTrue(english.read_text(encoding="utf-8").strip())
+                self.assertTrue(chinese.read_text(encoding="utf-8").strip())
+                self.assertEqual(
+                    markdown_structure(chinese.read_text(encoding="utf-8")),
+                    markdown_structure(english.read_text(encoding="utf-8")),
+                )
 
     def test_translation_catalog_has_no_unwired_keys(self) -> None:
         english = self.config.get("translations", {})

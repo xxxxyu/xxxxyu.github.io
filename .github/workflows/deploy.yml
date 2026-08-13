@@ -37,13 +37,28 @@ jobs:
         run: uv sync --locked
 
       - name: Regenerate Chinese search index
-        run: uv run python scripts/build_zh_search_index.py
+        run: uv run --locked python scripts/build_zh_search_index.py
 
       - name: Verify Chinese search index is committed
         run: git diff --exit-code -- static/search_index.zh.json
 
+      - name: Compute CJK font cache key
+        id: cjk-font-cache
+        run: echo "key=$(uv run --locked python scripts/build_font_subsets.py --print-cache-key)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore generated CJK font subsets
+        uses: actions/cache@v4
+        with:
+          path: |
+            .font-subsets-manifest.json
+            static/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2
+            static/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2
+          key: cjk-font-subsets-${{ runner.os }}-${{ steps.cjk-font-cache.outputs.key }}
+          restore-keys: |
+            cjk-font-subsets-${{ runner.os }}-
+
       - name: Run repository tests
-        run: uv run python -m unittest discover -s tests -v
+        run: uv run --locked python -m unittest discover -s tests -v
 
       - name: Install scholarly (fallback when SERPAPI_KEY absent)
         if: github.event_name != 'push'
@@ -63,7 +78,7 @@ jobs:
           zola --version
 
       - name: Build
-        run: zola build
+        run: ./build.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

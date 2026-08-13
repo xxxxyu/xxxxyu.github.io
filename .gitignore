@@ -5,6 +5,10 @@ public/
 .venv/
 .venv-scholar/
 __pycache__/
+.font-subsets.lock/
+.font-subsets-manifest.json
+static/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2
+static/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2
 
 # Local source assets. Keep camera originals and other large source files out of git.
 assets-src/
