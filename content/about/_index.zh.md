@@ -13,6 +13,6 @@ display_title = "关于「李翔宇」"
 
 > 博士期间工作概述：[MobiSys 2026 Rising Stars Forum](https://dl.acm.org/doi/10.1145/3812835.3814828)
 
-我的近期工作聚焦于具身智能领域，探索方向包括 VLA、WAM 等具身基础模型的**高效推理部署**，以及以此为基础的**自进化物理世界智能体**。
+我的近期工作聚焦于具身智能领域，探索方向包括 VLA、WAM 等具身基础模型的**高效推理部署**，以及**自进化物理智能**。
 
 欢迎通过邮件联系：[lixiangy22@mails.tsinghua.edu.cn](mailto:lixiangy22@mails.tsinghua.edu.cn)。

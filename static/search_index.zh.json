@@ -5,14 +5,14 @@
       "path": "/zh/",
       "title": "李翔宇",
       "description": "李翔宇的个人主页：端侧人工智能、具身智能、论文与技术笔记。",
-      "body": "我目前就读于清华大学智能产业研究院（AIR），博士四年级，研究方向为 面向端侧智能的高效推理系统 （博士阶段工作概述）。 目前，我主要关注 具身智能的模型系统协同设计 ，尤其是 VLA 的训练与部署。"
+      "body": "我目前就读于清华大学智能产业研究院（AIR），博士四年级，研究 端侧智能 （博士阶段工作概述）与 具身智能 。近期主要探索 VLA、WAM 等具身基础模型的高效部署，以及自进化物理智能。"
     },
     {
       "id": "https://xxxxyu.github.io/zh/about/",
       "path": "/zh/about/",
       "title": "关于",
       "description": "李翔宇的研究方向、近期动态、奖项与经历。",
-      "body": "我是清华大学智能产业研究院（AIR）2022 级直博生，师从刘云新教授，同时与曹婷教授密切合作。此前，我于清华大学电子工程系取得工学学士学位。 我在博士期间的研究专注于 端侧 AI 推理系统优化 ，致力于让前沿模型在资源受限的设备端高效运行。代表性工作有 FlexNN （MobiCom 2024）， Vec LUT （MobiSys 2026， Best Paper Award Runner Up ）， OxyGen （在投）。 博士期间工作概述：MobiSys 2026 Rising Stars Forum 我的近期工作聚焦于具身智能领域，探索方向包括 VLA、WAM 等具身基础模型的 高效推理部署 ，以及以此为基础的 自进化物理世界智能体 。 欢迎通过邮件联系：lixiangy22@mails.tsinghua.edu.cn。"
+      "body": "我是清华大学智能产业研究院（AIR）2022 级直博生，师从刘云新教授，同时与曹婷教授密切合作。此前，我于清华大学电子工程系取得工学学士学位。 我在博士期间的研究专注于 端侧 AI 推理系统优化 ，致力于让前沿模型在资源受限的设备端高效运行。代表性工作有 FlexNN （MobiCom 2024）， Vec LUT （MobiSys 2026， Best Paper Award Runner Up ）， OxyGen （在投）。 博士期间工作概述：MobiSys 2026 Rising Stars Forum 我的近期工作聚焦于具身智能领域，探索方向包括 VLA、WAM 等具身基础模型的 高效推理部署 ，以及 自进化物理智能 。 欢迎通过邮件联系：lixiangy22@mails.tsinghua.edu.cn。"
     },
     {
       "id": "https://xxxxyu.github.io/zh/blog/",

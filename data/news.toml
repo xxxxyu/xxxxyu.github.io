@@ -1,6 +1,16 @@
 [[news]]
 date = '2026/08'
-text = '**Embodied.cpp** v0.1 released: a portable C++ inference runtime for embodied AI models (VLA, WAM, etc.) on heterogeneous robots.'
+text = '**Zetta ζ** released: an efficient closed-loop embodied harness for self-evolving physical intelligence. Congrats to [team](https://github.com/orgs/air-embodied-brain)!'
+links = [
+  { label = 'Paper', url = 'https://arxiv.org/pdf/2608.16590' },
+  { label = 'Code', url = 'https://github.com/air-embodied-brain/Zetta-Embodiment' },
+  { label = 'Page', url = 'https://AIR-embodied-brain.github.io/zetta/' },
+  { label = '机器之心', url = 'https://mp.weixin.qq.com/s/dgrptmhUPzZwcubdwUAqFw' },
+]
+
+[[news]]
+date = '2026/08'
+text = '**Embodied.cpp** v0.1 released: a portable C++ inference runtime for embodied AI models (VLA, WAM, etc.) on heterogeneous robots. Congrats!'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2607.02501' },
   { label = 'Code', url = 'https://github.com/SEU-PAISys/Embodied.cpp' },

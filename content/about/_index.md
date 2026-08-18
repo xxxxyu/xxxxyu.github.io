@@ -13,6 +13,6 @@ My doctoral research focuses on **systems optimization for on-device AI inferenc
 
 > An overview of my doctoral work: [MobiSys 2026 Rising Stars Forum](https://dl.acm.org/doi/10.1145/3812835.3814828)
 
-I am currently working on embodied AI, exploring **efficient inference and deployment** of embodied foundation models (VLAs and WAMs), as well as **self-evolving physical-world agents** built on top of them.
+I am currently working on embodied AI, exploring **efficient inference and deployment** of embodied foundation models (VLAs and WAMs), as well as **self-evolving physical intelligence**.
 
 Feel free to reach out: [lixiangy22@mails.tsinghua.edu.cn](mailto:lixiangy22@mails.tsinghua.edu.cn).
