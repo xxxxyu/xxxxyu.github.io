@@ -1,10 +1,28 @@
 [[news]]
 date = '2026/08'
+text = '**Cosmos Lite** updated to v0.3.0: add RoboLab parallel rollout support and RoboLab-120 benchmark results.'
+links = [
+  { label = 'Blog', url = '/blog/cosmos-lite-v030' },
+  { label = 'Code', url = 'https://github.com/xxxxyu/cosmos-lite' },
+  { label = 'Models', url = 'https://huggingface.co/collections/XXXXyu/cosmos-lite' },
+]
+
+[[news]]
+date = '2026/08'
+text = '**OxyGen** updated: add suffix-only LoRA training and inference support, plus a LIBERO textual-memory example.'
+links = [
+  { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
+  { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
+  { label = 'Page', url = 'https://air-embodied-brain.github.io/OxyGen' },
+]
+
+[[news]]
+date = '2026/08'
 text = '**Zetta ζ** released: an efficient closed-loop embodied harness for self-evolving physical intelligence. Congrats to [team](https://github.com/orgs/air-embodied-brain)!'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/pdf/2608.16590' },
   { label = 'Code', url = 'https://github.com/air-embodied-brain/Zetta-Embodiment' },
-  { label = 'Page', url = 'https://AIR-embodied-brain.github.io/zetta/' },
+  { label = 'Page', url = 'https://AIR-embodied-brain.github.io/zetta' },
   { label = '机器之心', url = 'https://mp.weixin.qq.com/s/dgrptmhUPzZwcubdwUAqFw' },
 ]
 
@@ -36,7 +54,7 @@ date = '2026/06'
 text = '**Vec-LUT** received <strong class="highlight">Best Paper Award Runner-Up</strong> at **ACM MobiSys 2026**.'
 links = [
   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
-  { label = 'Blog', url = '/blog/vec-lut-parallel-low-bit-llm/' },
+  { label = 'Blog', url = '/blog/vec-lut-parallel-low-bit-llm' },
   { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
   { label = 'Slides', url = 'https://github.com/OpenBitSys/vlut.cpp/blob/master/media/veclut_slides_mobisys_2026.pdf' },
 ]
@@ -61,7 +79,7 @@ links = [
 
 [[news]]
 date = '2026/05'
-text = '**OxyGen** updated: released [ArXiv v2](https://arxiv.org/abs/2603.14371), and added PyTorch support (previously JAX-only) for on-board deployment (e.g., on Jetson AGX Thor).'
+text = '**OxyGen** updated: release [ArXiv v2](https://arxiv.org/abs/2603.14371), and add PyTorch support (previously JAX-only) for on-board deployment (e.g., on Jetson AGX Thor).'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
   { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
