@@ -83,7 +83,8 @@ music = "Music"
 email = "Email"
 scholar = "Scholar"
 cv = "CV"
-ai_translated_from = "This article was translated by AI from"
+ai_translated_by = "This article was translated by"
+ai_translated_from = "from"
 
 [languages.zh]
 title = "李翔宇"
@@ -154,7 +155,8 @@ music = "音乐"
 email = "邮箱"
 scholar = "学术主页"
 cv = "简历"
-ai_translated_from = "本文由 AI 翻译自"
+ai_translated_by = "本文由"
+ai_translated_from = "翻译自"
 
 [extra]
 author = "Xiangyu Li"

@@ -11,6 +11,9 @@ tags = ["Embodied AI", "Quantization", "Edge AI"]
 [extra]
 toc = true
 ai_translation_source = "en"
+ai_translation_harness = "OpenCode"
+ai_translation_model = "GLM-5.2"
+ai_translation_effort = "max"
 og_image = "/img/blog/cosmos-lite-v030/cover.jpg"
 og_image_alt = "Side-by-side closed-loop rollout comparison of Edge BF16 and Edge GenW8A8"
 +++

@@ -37,18 +37,24 @@ Translation pairs must keep `date`, `updated`, `weight`, `taxonomies.tags`, and
 `extra.series` identical. Titles and descriptions are translated. Assets stay
 shared unless a language-specific figure is necessary.
 
-For a translation produced by AI, record the source language on the translated
-page:
+For a translation produced by AI, record the source language and the generation
+setup on the translated page:
 
 ```toml
 [extra]
 ai_translation_source = "en"
+ai_translation_harness = "OpenCode"
+ai_translation_model = "GLM-5.2"
+ai_translation_effort = "max"
 ```
 
 Use `"zh"` when an English page was translated from a Chinese original. The
-post template then adds a localized disclosure at the beginning of the article
-and links the original title to its source page. Human translations omit this
-field.
+`ai_translation_harness`, `ai_translation_model`, and
+`ai_translation_effort` fields preserve the full generation setup for future
+writing-quality comparisons. Keep `ai_translation_effort` as an empty string
+when the original effort cannot be confirmed. The post template currently
+discloses only the model and links the original title to its source page. Human
+translations omit all four fields.
 
 All Blog posts currently have both English and Chinese versions. New posts
 should normally add the paired file at publication time; if one version must

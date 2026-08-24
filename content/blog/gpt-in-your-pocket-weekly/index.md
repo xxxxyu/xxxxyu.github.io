@@ -10,6 +10,9 @@ tags = ["LLM Inference", "Edge AI"]
 
 [extra]
 ai_translation_source = "zh"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 +++
 
 > WeChat version (in Chinese): [「口袋里的 GPT」，离我们还有多远？](https://mp.weixin.qq.com/s/3aPCYBfXCftxF6HtB4e2hw)

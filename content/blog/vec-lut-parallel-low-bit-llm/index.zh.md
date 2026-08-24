@@ -13,6 +13,9 @@ toc = true
 og_image = "/img/blog/vec-lut-parallel-low-bit-llm/scalar-vs-vector-lut.png"
 og_image_alt = "标量查表与向量查表在并行 LLM 推理中的对比示意图"
 ai_translation_source = "en"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 +++
 
 > 🏆 ACM MobiSys 2026 <strong class="highlight">最佳论文奖亚军</strong> \

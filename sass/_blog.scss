@@ -312,6 +312,11 @@
   font-family: var(--f-sans);
   font-size: var(--fs-sm);
 
+  &__model {
+    color: var(--c-text);
+    font-weight: var(--fw-sans-medium);
+  }
+
   a {
     color: var(--c-text);
   }

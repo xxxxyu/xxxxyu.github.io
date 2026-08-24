@@ -9,6 +9,9 @@ weight = 10
 [extra]
 series = "blog/device-setup/_index.md"
 ai_translation_source = "en"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 
 [taxonomies]
 tags = ["Development", "Linux", "Edge Device"]

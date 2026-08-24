@@ -13,6 +13,9 @@ toc = true
 katex = true
 mermaid = true
 ai_translation_source = "en"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 +++
 
 > Issue（已关闭）：[#26343](https://github.com/vllm-project/vllm/issues/26343) \

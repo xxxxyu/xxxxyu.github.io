@@ -13,6 +13,9 @@ katex = true
 og_image = "/img/blog/vla-models-review/quadrants.png"
 og_image_alt = "按动作表示和系统架构划分的近期 VLA 模型"
 ai_translation_source = "en"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 +++
 
 > 我刚开始接触这个领域，欢迎讨论，也欢迎提出任何问题！ \

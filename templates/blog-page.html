@@ -154,6 +154,8 @@ blog-post-layout{% if not has_footnotes %} blog-post-layout--no-footnotes{% endi
 
   {% if ai_translation_source %}
   <aside class="translation-notice" role="note">
+    {{ trans(key="ai_translated_by", lang=page.lang) }}
+    <strong class="translation-notice__model">{{ page.extra.ai_translation_model }}</strong>
     {{ trans(key="ai_translated_from", lang=page.lang) }}
     <a href="{{ ai_translation_source.permalink }}" hreflang="{{ ai_translation_source_lang }}" lang="{{ ai_translation_source_lang }}" data-set-site-language="{{ ai_translation_source_lang }}">{{ ai_translation_source.title }}</a>{% if page.lang == "zh" %}。{% else %}.{% endif %}
   </aside>

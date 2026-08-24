@@ -189,7 +189,13 @@ class MultilingualTests(unittest.TestCase):
             source_language = metadata.get("extra", {}).get("ai_translation_source")
             if source_language:
                 declared.append(page)
+                ai_translation = metadata["extra"]
                 self.assertIn(source_language, {"en", "zh"})
+                for field in ("ai_translation_harness", "ai_translation_model"):
+                    with self.subTest(page=page.relative_to(REPO_ROOT), field=field):
+                        self.assertIsInstance(ai_translation.get(field), str)
+                        self.assertTrue(ai_translation[field].strip())
+                self.assertIsInstance(ai_translation.get("ai_translation_effort"), str)
                 page_language = "zh" if page.name.endswith(".zh.md") else "en"
                 self.assertNotEqual(source_language, page_language)
                 source_name = "index.zh.md" if source_language == "zh" else "index.md"
@@ -205,6 +211,10 @@ class MultilingualTests(unittest.TestCase):
                 self.assertEqual(sum(bool(value) for value in declarations), 1)
         template = (REPO_ROOT / "templates" / "blog-page.html").read_text(encoding="utf-8")
         self.assertIn("ai_translation_source", template)
+        self.assertIn("page.extra.ai_translation_model", template)
+        self.assertNotIn("page.extra.ai_translation_harness", template)
+        self.assertNotIn("page.extra.ai_translation_effort", template)
+        self.assertIn('trans(key="ai_translated_by"', template)
         self.assertIn('trans(key="ai_translated_from"', template)
         self.assertIn('hreflang="{{ ai_translation_source_lang }}"', template)
         self.assertIn('data-set-site-language="{{ ai_translation_source_lang }}"', template)

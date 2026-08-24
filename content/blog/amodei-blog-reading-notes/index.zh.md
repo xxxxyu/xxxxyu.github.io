@@ -10,6 +10,9 @@ tags = ["Essay", "Reading"]
 
 [extra]
 ai_translation_source = "en"
+ai_translation_harness = "Codex"
+ai_translation_model = "GPT-5.6-Sol"
+ai_translation_effort = ""
 +++
 
 > 本文仍在更新，但现有笔记已经可以阅读。
