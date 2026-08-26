@@ -1,8 +1,8 @@
 +++
-title = "Running Cosmos 3 Robot Policies on a Single RTX 4090"
+title = "Deploying and Accelerating Cosmos 3 Robot Policy on RTX 4090s"
 date = "2026-08-21"
 updated = "2026-08-21"
-description = "How quantization, sampler tuning, and kernel work put NVIDIA's 16B Cosmos 3 robot policy on one 24 GB GPU — and turned the runtime into a parallel rollout engine."
+description = "How quantization, sampler tuning, kernel work, and rollout topology accelerate NVIDIA's 16B Cosmos 3 robot policies on 24 GB GPUs — from single-request serving to full 1,200-episode evaluations."
 template = "blog-page.html"
 
 [taxonomies]
@@ -19,7 +19,7 @@ og_image_alt = "Side-by-side closed-loop rollout comparison of Edge BF16 and Edg
 
 NVIDIA's Cosmos 3[^1] shipped with robot policies trained on DROID[^2]. Running them yourself is harder than it sounds: the 16B Nano policy needs about 33 GB just to load, and the [reference workflow](https://github.com/NVIDIA/Cosmos-Framework) assumes a datacenter GPU like an A100 or H100. A single RTX 4090 could not run it at all.
 
-[Cosmos Lite](https://github.com/xxxxyu/cosmos-lite) fills that gap. It is an efficient inference runtime for Cosmos 3 policies, built on top of [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework). It covers two use cases: **local serving** as a batch-one policy server for real-robot deployment, and **parallel rollout** as a shared server feeding multiple simulator lanes, exporting rollout trajectories for further training.
+[Cosmos Lite](https://github.com/xxxxyu/cosmos-lite) fills that gap. It is an efficient inference runtime for Cosmos 3 policies, built on top of [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework). It covers two use cases: **local serving** as a batch-one policy server for real-robot deployment, and **parallel rollout** as a shared server feeding multiple simulator lanes, exporting rollout trajectories for further training. On a single 8-GPU host, the fastest profile finishes all 1,200 RoboLab episodes in under five hours.
 
 {{ video(src="/videos/cosmos-lite-v030/demo.mp4", max_width="100%", caption="Edge BF16 with official defaults vs. Edge GenW8A8 with the optimized runtime, running closed-loop in RoboLab.") }}
 
@@ -75,7 +75,7 @@ The table also explains why guidance stays at 3: dropping it to 1 removes the CF
 
 ## Do it cheaper via kernels and compilation
 
-The last lever is the cost of the computation that remains. Early profiling invalidated two common assumptions here: attention took only ~4% of GPU kernel time, and weight-only quantization measured roughly neutral on Nano's real shapes and slightly negative on Edge. The changes that survived testing, in the order they landed:
+The next lever is the cost of the computation that remains. Early profiling invalidated two common assumptions here: attention took only ~4% of GPU kernel time, and weight-only quantization measured roughly neutral on Nano's real shapes and slightly negative on Edge. The changes that survived testing, in the order they landed:
 
 | Change                                                            | Measured effect                                    |
 | ----------------------------------------------------------------- | -------------------------------------------------- |
@@ -87,6 +87,24 @@ The last lever is the cost of the computation that remains. Early profiling inva
 | Sparse input transform (resize the observed frame, zero-fill the rest) | sample build ~37 ms → ~2 ms                    |
 
 About the Triton row: CUTLASS under-occupies Edge's dominant SM89 shapes, and the shape-tuned Triton kernel is ~8% faster end-to-end there. The same kernels were also faster on Nano, but Nano's paired rollout moved from 49/50 to 47/50. Two episodes is likely noise (needs further verification), yet with a 49/50 control there was no quality margin to trade for ~9% latency, so Nano kept CUTLASS.
+
+---
+
+## Scale out via rollout topology and recording
+
+The three levers above all live inside a single request. A full RoboLab-120 evaluation is 1,200 closed-loop rollouts, and simulator time does not shrink with the model: after all quantization, sampler, and kernel work, policy inference is a minority of measured lane time[^11]. The last lever is therefore not in the model, but in how simulators and policy servers share a multi-GPU host.
+
+On an 8-GPU host, 2 GPUs serve policy and 6 run simulator lanes (per-profile layouts in the [benchmark report](https://github.com/xxxxyu/cosmos-lite/blob/main/docs/benchmarks/robolab.md)). Each lane is one Isaac Sim process vectorizing 10 environments, so a task's 10 episodes run simultaneously — in single-GPU profiling this alone raised throughput from 3.51 to 18.24 environment steps/s. Tasks sharing a scene run back to back in the same lane, because a cross-scene rebuild costs an order of magnitude more than a same-scene switch (~100 s vs. ~10 s).
+
+With the 2 + 6 layout fixed, the inference-side gains carry through end to end — a full profile drops from **9 h 21 m to 4 h 51 m (1.93×)** when the sampler, quantization, and kernel work are stacked:
+
+| Configuration           | Wall time | GPU-hours | vs. BF16 g3/s4 |
+| ----------------------- | --------: | --------: | -------------: |
+| Edge BF16, g3/s4        |    9 h 21 m |      74.8 |              — |
+| Edge BF16, g3/s2        |    5 h 35 m |      44.7 |          1.67× |
+| **Edge GenW8A8, g3/s2** | **4 h 51 m** | **38.8** |      **1.93×** |
+
+To turn these rollouts into training data, successful episodes export as LeRobot v3 datasets ([data-generation guide](https://github.com/xxxxyu/cosmos-lite/blob/main/examples/robolab_quant/DATA_GENERATION.md)). Recording 10 parallel rollouts naively would not fit: the upstream recorder stack keeps per-step camera tensors on the GPU[^12], so VRAM grows linearly with the episode horizon, and a 600-step episode alone needs ~19 GB. The release recorder moves data to bounded CPU-side buffers with chunked HDF5 flushes and streaming H.264 encoding, which keeps 10 parallel rollouts within 24 GB VRAM — recording adds only ~0.5 GB of simulator VRAM and ~11 GB of host memory — at an **11.0%** wall-time cost over running without it.
 
 ---
 
@@ -103,6 +121,7 @@ Most of the exploration was coding-agent-driven, so failed attempts were cheap t
 - Edge condition K/V cache: numerically correct, no repeatable gain; the cache ships for Nano only.
 - torchao INT8 weight-only: 3–4× slower than BF16 on the model's real shapes.
 - Batching the CFG branches: fewer but larger attention calls, net slower end to end.
+- Native batch=2 inference: 9–21% slower than two serial requests on all four profiles, and actions deviate (up to ~0.1 max element error).
 - Shorter action chunks (32→16/8): lower nominal compute, worse measured latency, different control semantics.
 
 *Passed the kernels, failed the rollout:*
@@ -138,3 +157,5 @@ If you are working on policy deployment, simulation data generation, or inferenc
 [^8]: Jonathan Ho and Tim Salimans, ["Classifier-Free Diffusion Guidance"](https://arxiv.org/abs/2207.12598), arXiv, 2022.
 [^9]: vLLM, ["FP8 Quantization"](https://docs.vllm.ai/en/latest/features/quantization/fp8/), documentation.
 [^10]: Jinnian Zhang et al., ["SageAttention: Accurate 8-Bit Attention for Plug-and-Play Inference Acceleration"](https://arxiv.org/abs/2410.02367), arXiv, 2024.
+[^11]: In the full Edge GenW8A8 g3/s2 run, policy inference costs 7.80 lane-hours, while environment stepping costs 19.72 lane-hours.
+[^12]: IsaacLab's [EpisodeData](https://github.com/isaac-sim/IsaacLab/blob/main/source/isaaclab/isaaclab/utils/datasets/episode_data.py) keeps recorded tensors on the GPU until export; RoboLab's [recorder](https://github.com/NVlabs/RoboLab/blob/main/robolab/core/logging/recorder_manager.py) inherits this path. No upstream issue or fix exists as of RoboLab v0.3.1.
