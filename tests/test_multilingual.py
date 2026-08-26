@@ -11,6 +11,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -171,6 +172,22 @@ class MultilingualTests(unittest.TestCase):
         self.assertIn('data-i18n-text="next"', blog_template)
         search_script = (REPO_ROOT / "static" / "js" / "search.js").read_text(encoding="utf-8")
         self.assertIn("docsLanguage === lang", search_script)
+
+    def test_resume_preview_matches_the_selected_site_language(self) -> None:
+        index_template = (REPO_ROOT / "templates" / "index.html").read_text(encoding="utf-8")
+        extra = self.config.get("extra", {})
+
+        for language in ("en", "zh"):
+            url = extra.get(f"cv_{language}", "")
+            parsed = urlparse(url)
+            query = parse_qs(parsed.query)
+            with self.subTest(language=language):
+                self.assertEqual(parsed.netloc, "xxxxyu.github.io")
+                self.assertEqual(parsed.path, "/resume/")
+                self.assertEqual(query.get("locale"), [language])
+                self.assertEqual(query.get("edition"), ["complete"])
+                self.assertNotIn("palette", query)
+                self.assertIn(f'data-href-{language}="{{{{ config.extra.cv_{language} }}}}"', index_template)
 
     def test_generated_surfaces_include_multilingual_alternates(self) -> None:
         sitemap = (REPO_ROOT / "templates" / "sitemap.xml").read_text(encoding="utf-8")

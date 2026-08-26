@@ -53,7 +53,7 @@
       {% if config.extra.email %}<li><a href="mailto:{{ config.extra.email }}" data-i18n-text="email">{{ trans(key="email", lang=section.lang) }}</a></li>{% endif %}
       {% if config.extra.github %}<li><a href="{{ config.extra.github }}" target="_blank" rel="noopener">GitHub</a></li>{% endif %}
       {% if config.extra.google_scholar %}<li><a href="{{ config.extra.google_scholar }}" target="_blank" rel="noopener" data-i18n-text="scholar">{{ trans(key="scholar", lang=section.lang) }}</a></li>{% endif %}
-      {% if config.extra.cv %}<li><a href="{{ config.extra.cv }}" target="_blank" rel="noopener" data-i18n-text="cv">{{ trans(key="cv", lang=section.lang) }}</a></li>{% endif %}
+      {% if config.extra.cv_en and config.extra.cv_zh %}<li><a href="{% if section.lang == "zh" %}{{ config.extra.cv_zh }}{% else %}{{ config.extra.cv_en }}{% endif %}" target="_blank" rel="noopener" data-href-en="{{ config.extra.cv_en }}" data-href-zh="{{ config.extra.cv_zh }}" data-i18n-text="cv">{{ trans(key="cv", lang=section.lang) }}</a></li>{% endif %}
     </ul>
   </div>
 </div>
