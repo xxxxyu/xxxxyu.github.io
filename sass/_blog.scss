@@ -63,6 +63,10 @@
       }
 
       p { margin-bottom: var(--sp-1); }
+
+      // Inline code must follow the footnote text size, not the global
+      // body-level --fs-sm, which is larger than the footnote font.
+      code:not(pre code) { font-size: 1em; }
     }
 
     &--aligned {
