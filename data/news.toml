@@ -28,6 +28,13 @@ links = [
 
 [[news]]
 date = '2026/08'
+text = 'Invited talk and panel on the new paradigm of edge–cloud collaboration, co-hosted by **Next Capital** and **Z.ai**.'
+links = [
+  { label = 'Event', url = 'https://mp.weixin.qq.com/s/f78GpGYt599eXMAxvhVbfA' },
+]
+
+[[news]]
+date = '2026/08'
 text = '**Embodied.cpp** v0.1 released: a portable C++ inference runtime for embodied AI models (VLA, WAM, etc.) on heterogeneous robots. Congrats!'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2607.02501' },
