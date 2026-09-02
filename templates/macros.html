@@ -30,7 +30,7 @@
       {%- if has_venue %}{{ venue | markdown(inline=true) | safe }}{% endif -%}
       {%- if has_venue and has_year %}, {% endif -%}
       {%- if has_year %}{{ year }}{% endif -%}
-      {%- if has_notes %}{% if has_venue or has_year %}<span class="pub-card__sep"></span>{% endif %}<em>{{ notes | markdown(inline=true) | safe }}</em>{% endif -%}
+      {%- if has_notes %}{% if has_venue or has_year %}<span class="pub-card__sep"></span>{% endif %}{{ notes | markdown(inline=true) | safe }}{% endif -%}
     </p>
     {% endif %}
     <div class="pub-card__links">
@@ -39,6 +39,7 @@
       {% if pub.code_url %}{% if pub.paper_url or pub.blog_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener"><span>Code</span></a>{% endif %}
       {% if pub.page_url %}{% if pub.paper_url or pub.blog_url or pub.code_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener"><span>Page</span></a>{% endif %}
       {% if pub.slides_url %}{% if pub.paper_url or pub.blog_url or pub.code_url or pub.page_url %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener"><span>Slides</span></a>{% endif %}
+      {% for link in pub.press_links | default(value=[]) %}{% if pub.paper_url or pub.blog_url or pub.code_url or pub.page_url or pub.slides_url or not loop.first %}<span class="bullet-separator" aria-hidden="true"></span>{% endif %}<a href="{{ link.url }}"{% if not link.url is starting_with("/") %} target="_blank" rel="noopener"{% endif %}><span>{{ link.label }}</span></a>{% endfor %}
     </div>
   </div>
 </div>

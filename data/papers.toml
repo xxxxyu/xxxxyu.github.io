@@ -1,12 +1,29 @@
 [[papers]]
+title = 'Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation'
+authors = 'Fu Chen*, Xin Ding*, Bingjia Huang, Xiangyu Li, Mingju Wang, Jiawei He, Kun Li, Wei Sun, Yunxin Liu, Hao Wu, Ting Cao'
+venue = 'ArXiv preprint'
+year = 2026
+paper_url = 'https://arxiv.org/abs/2608.30880'
+code_url = 'https://github.com/air-embodied-brain/Zeva'
+page_url = 'https://air-embodied-brain.github.io/Zeva'
+press_links = [
+  { label = '量子位', url = 'https://mp.weixin.qq.com/s/OMrRnOtlDyjFXlZDPF-n4Q' },
+]
+featured = false
+
+[[papers]]
 title = 'Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
 authors = 'Xin Ding*, Liang Mi*, Mingzhe Huang*, Zixuan Wang*, Chao Zhang*, Zixu Hao*, Fu Chen, Xiangyu Li, Yikai Zheng, Yaoyu Guo, Weijun Wang, Kun Li, Hao Wu, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
-paper_url = 'https://arxiv.org/pdf/2608.16590'
+paper_url = 'https://arxiv.org/abs/2608.16590'
 code_url = 'https://github.com/air-embodied-brain/Zetta-Embodiment'
-page_url = 'https://AIR-embodied-brain.github.io/zetta/'
-featured = true
+page_url = 'https://AIR-embodied-brain.github.io/zetta'
+notes = '[Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/2026-08-20)'
+press_links = [
+  { label = '机器之心', url = 'https://mp.weixin.qq.com/s/dgrptmhUPzZwcubdwUAqFw' },
+]
+featured = false
 
 [[papers]]
 title = 'Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots'
@@ -123,6 +140,9 @@ paper_url = 'https://arxiv.org/abs/2401.05459'
 code_url = 'https://github.com/MobileLLM/Personal_LLM_Agents_Survey'
 gs_id = 'personal-llm-agents'
 notes = 'Survey & Position, "Efficiency" Section Lead'
+press_links = [
+  { label = '机器之心', url = 'https://mp.weixin.qq.com/s/JYB4BzsXhWF8pEUUkvn_GQ' },
+]
 # image = '/img/papers/personal-llm-agents.png'
 featured = true
 

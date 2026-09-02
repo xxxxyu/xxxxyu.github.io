@@ -48,6 +48,12 @@ class FrontendConventionTests(unittest.TestCase):
         self.assertNotIn("&middot;", template)
         self.assertEqual(template.count('class="bullet-separator"'), 2)
 
+    def test_paper_card_separates_press_links_from_unstyled_notes(self) -> None:
+        macros = (REPO_ROOT / "templates" / "macros.html").read_text(encoding="utf-8")
+
+        self.assertIn("for link in pub.press_links | default(value=[])", macros)
+        self.assertNotIn("<em>{{ notes", macros)
+
     def test_ci_uses_a_pinned_zola_release(self) -> None:
         workflow = (REPO_ROOT / ".github" / "workflows" / "deploy.yml").read_text(encoding="utf-8")
 
