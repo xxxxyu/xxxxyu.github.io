@@ -1,7 +1,7 @@
 - ACM MobiSys 2026 <strong><span class="highlight">Best Paper Award Runner-Up</span></strong>, 2026/06
 - ACM MobiSys 2026 Student Travel Grant, 2026/05
 - 清华之友-智能产业研究院清智奖学金, 2025/12
-- 清华之友-济宁英才奖学金, 2025/11
+- 清华之友-济宁英才奖学金, 2024/11
 - 清华大学社会工作优秀奖学金, 2021/12
 - <span class="about-secondary">第三十六届全国部分地区大学生物理竞赛非物理类A组特等奖（北京物理学会）, 2019/12</span>
 - <span class="about-secondary">优秀艺术博物馆讲解志愿者（[清华大学艺术博物馆](https://www.artmuseum.tsinghua.edu.cn)、[紫荆志愿者服务总队](https://www.tsinghua.edu.cn/xtw/sdfg/zjzyzfwzddf.htm)）, 2019/05</span>
