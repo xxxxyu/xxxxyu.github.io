@@ -58,6 +58,7 @@ authors = 'Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu
 venue = 'ArXiv preprint'
 year = 2026
 paper_url = 'https://arxiv.org/abs/2603.14371'
+blog_url = '/blog/oxygen-mot-vla-inference/'
 code_url = 'https://github.com/air-embodied-brain/OxyGen'
 page_url = 'https://air-embodied-brain.github.io/OxyGen'
 featured = true
