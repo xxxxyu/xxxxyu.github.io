@@ -68,7 +68,7 @@ The budget `k` caps how far each request advances per frame; anything unfinished
 
 ---
 
-## Results: from benchmarks to a humanoid
+## Results: from an RTX 4090 to a Jetson Thor
 
 We evaluated π<sub>0.5</sub> across LIBERO[^11], DROID[^12], and ALOHA[^13] configurations on an RTX 4090 and a Jetson AGX Thor, one new observation and one new language request per frame, sweeping `N` and `k`.
 
