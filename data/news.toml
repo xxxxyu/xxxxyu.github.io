@@ -21,6 +21,7 @@ links = [
 date = '2026/08'
 text = '**OxyGen** updated: add suffix-only LoRA training and inference support, plus a LIBERO textual-memory example.'
 links = [
+  { label = 'Blog', url = '/blog/oxygen-mot-vla-inference' },
   { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
   { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
   { label = 'Page', url = 'https://air-embodied-brain.github.io/OxyGen' },
