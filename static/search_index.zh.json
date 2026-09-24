@@ -125,6 +125,13 @@
       "title": "论文",
       "description": "李翔宇在端侧人工智能与具身智能方向的论文与预印本。",
       "body": ""
+    },
+    {
+      "id": "https://xxxxyu.github.io/zh/research/",
+      "path": "/zh/research/",
+      "title": "研究",
+      "description": "李翔宇的交互式研究地图：高效智能系统、具身智能与智能体。",
+      "body": "我研究资源受限设备上的高效智能系统，并探索如何以此支撑具身模型与自进化物理智能。"
     }
   ]
 }

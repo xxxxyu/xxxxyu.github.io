@@ -84,6 +84,7 @@
       <div class="nav__right">
         <ul class="nav__links">
           <li><a class="nav__link{% if current_path is containing("/about") %} nav__link--active{% endif %}" data-i18n-text="nav_about" data-href-en="/about/" data-href-zh="/zh/about/" href="{% if lang == "zh" %}/zh/about/{% else %}/about/{% endif %}">{{ trans(key="nav_about", lang=lang) }}</a></li>
+          <li><a class="nav__link{% if current_path is containing("/research") %} nav__link--active{% endif %}" data-i18n-text="nav_research" data-href-en="/research/" data-href-zh="/zh/research/" href="{% if lang == "zh" %}/zh/research/{% else %}/research/{% endif %}">{{ trans(key="nav_research", lang=lang) }}</a></li>
           <li><a class="nav__link{% if current_path is containing("/papers") %} nav__link--active{% endif %}" data-i18n-text="nav_papers" data-href-en="/papers/" data-href-zh="/zh/papers/" href="{% if lang == "zh" %}/zh/papers/{% else %}/papers/{% endif %}">{{ trans(key="nav_papers", lang=lang) }}</a></li>
           <li><a class="nav__link{% if current_path is containing("/blog") %} nav__link--active{% endif %}" data-i18n-text="nav_blog" data-href-en="/blog/" data-href-zh="/zh/blog/" href="{% if lang == "zh" %}/zh/blog/{% else %}/blog/{% endif %}">{{ trans(key="nav_blog", lang=lang) }}</a></li>
           <li><a class="nav__link{% if current_path is containing("/outside") %} nav__link--active{% endif %}" data-i18n-text="nav_outside" data-href-en="/outside/" data-href-zh="/zh/outside/" href="{% if lang == "zh" %}/zh/outside/{% else %}/outside/{% endif %}">{{ trans(key="nav_outside", lang=lang) }}</a></li>
@@ -156,6 +157,7 @@
         en: {
           author_name: {{ trans(key="author_name", lang="en") | json_encode() | safe }},
           nav_about: {{ trans(key="nav_about", lang="en") | json_encode() | safe }},
+          nav_research: {{ trans(key="nav_research", lang="en") | json_encode() | safe }},
           nav_papers: {{ trans(key="nav_papers", lang="en") | json_encode() | safe }},
           nav_blog: {{ trans(key="nav_blog", lang="en") | json_encode() | safe }},
           nav_outside: {{ trans(key="nav_outside", lang="en") | json_encode() | safe }},
@@ -199,6 +201,7 @@
         zh: {
           author_name: {{ trans(key="author_name", lang="zh") | json_encode() | safe }},
           nav_about: {{ trans(key="nav_about", lang="zh") | json_encode() | safe }},
+          nav_research: {{ trans(key="nav_research", lang="zh") | json_encode() | safe }},
           nav_papers: {{ trans(key="nav_papers", lang="zh") | json_encode() | safe }},
           nav_blog: {{ trans(key="nav_blog", lang="zh") | json_encode() | safe }},
           nav_outside: {{ trans(key="nav_outside", lang="zh") | json_encode() | safe }},

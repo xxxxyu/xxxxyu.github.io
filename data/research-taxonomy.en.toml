@@ -1,0 +1,499 @@
+# English editorial draft. Not wired into the public map until terminology review.
+schema_version = 1
+status = "draft"
+language = "en"
+reviewed_on = "2026-09-21"
+
+[[terms]]
+id = "inference"
+label = "Efficient Inference"
+parent = ""
+level = "theme"
+
+[[terms]]
+id = "robot-learning"
+label = "Robot Learning"
+parent = ""
+level = "theme"
+
+[[terms]]
+id = "agents-reasoning"
+label = "LLM Agents and Reasoning"
+parent = ""
+level = "theme"
+
+[[terms]]
+id = "data-processing"
+label = "Data Processing"
+parent = ""
+level = "theme"
+
+[[terms]]
+id = "memory-management"
+label = "Memory Management"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "kv-cache"
+label = "KV Cache Management"
+parent = "memory-management"
+level = "keyword"
+
+[[terms]]
+id = "quantization"
+label = "Quantization"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "low-bit-inference"
+label = "Low-bit Inference"
+parent = "quantization"
+level = "keyword"
+
+[[terms]]
+id = "kernel-optimization"
+label = "Kernel Optimization"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "matrix-multiplication"
+label = "Matrix Multiplication"
+parent = "kernel-optimization"
+level = "keyword"
+
+[[terms]]
+id = "scheduling"
+label = "Scheduling"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "batching"
+label = "Continuous Batching"
+parent = "scheduling"
+level = "keyword"
+
+[[terms]]
+id = "adaptive-inference"
+label = "Adaptive Inference"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "inference-runtimes"
+label = "Inference Runtimes"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "heterogeneous-computing"
+label = "Heterogeneous Computing"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
+id = "failure-detection"
+label = "Failure Detection"
+parent = "robot-learning"
+level = "keyword"
+
+[[terms]]
+id = "failure-recovery"
+label = "Failure Recovery"
+parent = "robot-learning"
+level = "keyword"
+
+[[terms]]
+id = "policy-adaptation"
+label = "Policy Adaptation"
+parent = "robot-learning"
+level = "keyword"
+
+[[terms]]
+id = "closed-loop-control"
+label = "Closed-loop Control"
+parent = "robot-learning"
+level = "keyword"
+
+[[terms]]
+id = "simulation"
+label = "Robot Simulation"
+parent = "robot-learning"
+level = "keyword"
+
+[[terms]]
+id = "llm-reasoning"
+label = "LLM Reasoning"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "test-time-scaling"
+label = "Test-time Scaling"
+parent = "llm-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "in-context-learning"
+label = "In-context Learning"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "test-time-adaptation"
+label = "Test-time Adaptation"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "in-context-adaptation"
+label = "In-context Adaptation"
+parent = "test-time-adaptation"
+level = "keyword"
+
+[[terms]]
+id = "interaction-memory"
+label = "Interaction Memory"
+parent = "test-time-adaptation"
+level = "keyword"
+
+[[terms]]
+id = "causal-representation"
+label = "Causal Representation Learning"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "agent-memory"
+label = "Agent Memory"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "personal-agents"
+label = "Personal Agents"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "security-privacy"
+label = "Security and Privacy"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "self-improvement"
+label = "Self-improvement"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "reflection"
+label = "Reflection"
+parent = "self-improvement"
+level = "keyword"
+
+[[terms]]
+id = "program-synthesis"
+label = "Program Synthesis"
+parent = "agents-reasoning"
+level = "keyword"
+
+[[terms]]
+id = "context-sensing"
+label = "Context Sensing"
+parent = "data-processing"
+level = "keyword"
+
+[[terms]]
+id = "stream-processing"
+label = "Stream Processing"
+parent = "data-processing"
+level = "keyword"
+
+[[terms]]
+id = "graph-mining"
+label = "Graph Mining"
+parent = "data-processing"
+level = "keyword"
+
+[[terms]]
+id = "near-memory"
+label = "Near-memory Computing"
+parent = "data-processing"
+level = "keyword"
+
+[[contexts]]
+id = "edge-ai"
+label = "Edge AI"
+
+[[contexts]]
+id = "llms"
+label = "Large Language Models (LLMs)"
+
+[[contexts]]
+id = "vla"
+label = "Vision-Language-Action Models (VLAs)"
+
+[[contexts]]
+id = "wam"
+label = "World-Action Models (WAMs)"
+
+[[contexts]]
+id = "embodied-agents"
+label = "Embodied Agents"
+
+[[contexts]]
+id = "personal-agents"
+label = "Personal Agents"
+
+[[contexts]]
+id = "video-analytics"
+label = "Video Analytics"
+
+[[sources]]
+id = "papers"
+kind = "repository_metadata"
+location = "data/papers.toml"
+note = "Local titles and author metadata; no formal keyword fields."
+
+[[sources]]
+id = "flexnn-repo"
+kind = "project_readme"
+location = "https://github.com/xxxxyu/FlexNN"
+note = "Memory management, layer slicing, memory planning, execution order."
+
+[[sources]]
+id = "vec-blog"
+kind = "blog_tags_and_body"
+location = "content/blog/vec-lut-parallel-low-bit-llm/index.md"
+note = "Tags: LLM Inference, Edge AI, Quantization, GeMM; body: low-bit lookup-table kernels."
+
+[[sources]]
+id = "oxygen-blog"
+kind = "blog_tags_and_body"
+location = "content/blog/oxygen-mot-vla-inference/index.md"
+note = "Tags: Embodied AI, VLA, LLM Inference."
+
+[[sources]]
+id = "cosmos-blog"
+kind = "blog_tags_and_body"
+location = "content/blog/cosmos-lite-v030/index.md"
+note = "Tags: Embodied AI, Quantization, Edge AI; body: kernels and parallel simulation rollouts."
+
+[[sources]]
+id = "vllm-blog"
+kind = "blog_tags_and_body"
+location = "content/blog/vllm-gptqv2-support/index.md"
+note = "Tags: vLLM, Development, Quantization, GPTQ, LLM; body: low-bit formats and CUDA kernel changes."
+
+[[sources]]
+id = "oxygen-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2603.14371v1"
+note = "Unified KV cache management, cross-task sharing, continuous batching and asymmetric deadlines. No formal keywords found."
+
+[[sources]]
+id = "actprobe-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2606.08508v1"
+note = "Early failure detection from action chunks of generative robot policies. No formal keywords found."
+
+[[sources]]
+id = "embodiskill-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2605.10332v1"
+note = "Training-free skill self-evolution, reflection and revision; base executor frozen. No formal keywords found."
+
+[[sources]]
+id = "zetta-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2608.16590v1"
+note = "Online critics, recovery skills, closed-loop governance; Z-Infra scheduling, heterogeneous resources and quantization. No formal keywords found."
+
+[[sources]]
+id = "zeva-paper"
+kind = "paper_index_terms_and_body"
+location = "https://arxiv.org/html/2608.30880v1"
+note = "Formal Index Terms verified; body covers causal memory and in-context policy injection."
+
+[[sources]]
+id = "embodied-cpp-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2607.02501v1"
+note = "Portable C++ runtime for VLAs/WAMs, heterogeneous hardware, multi-rate execution and fused inference. No formal keywords found."
+
+[[sources]]
+id = "chainstream-paper"
+kind = "paper_abstract_and_body"
+location = "https://arxiv.org/html/2412.15240v1"
+note = "Natural-language context sensing, unified stream abstraction and iterative program generation. No formal keywords found."
+
+[[sources]]
+id = "personal-paper"
+kind = "paper_body"
+location = "https://arxiv.org/html/2401.05459v1"
+note = "Section 5 Efficiency covers model compression, inference acceleration, memory reduction, energy optimization and customization."
+
+[[sources]]
+id = "length-paper"
+kind = "paper_abstract"
+location = "https://arxiv.org/abs/2504.14350"
+note = "Reasoning accuracy under output token budgets; test-time scaling and mappings to on-device latency."
+
+[[assignments]]
+work_id = "flexnn"
+primary = ["memory-management", "scheduling"]
+secondary = ["adaptive-inference"]
+contexts = ["edge-ai"]
+sources = ["flexnn-repo"]
+evidence_status = "review"
+note = "Adaptive inference describes response to memory budgets; it must not imply dynamic model-width selection."
+
+[[assignments]]
+work_id = "vec-lut"
+primary = ["low-bit-inference", "kernel-optimization"]
+secondary = ["matrix-multiplication"]
+contexts = ["llms", "edge-ai"]
+sources = ["vec-blog"]
+evidence_status = "supported"
+note = "GeMM normalized to Matrix Multiplication; LUT retained in description as the concrete technique."
+
+[[assignments]]
+work_id = "dwi"
+primary = ["adaptive-inference"]
+secondary = []
+contexts = ["llms", "edge-ai"]
+sources = ["papers"]
+evidence_status = "title_only"
+note = "Publisher content was unavailable. Dynamic width selection is explicit in the title; additional keywords need abstract/full-text verification."
+
+[[assignments]]
+work_id = "squeezer"
+primary = ["scheduling"]
+secondary = []
+contexts = ["edge-ai", "video-analytics"]
+sources = ["papers"]
+evidence_status = "title_only"
+note = "Cross-model scheduling and edge video analytics are explicit in the title; publisher content was unavailable."
+
+[[assignments]]
+work_id = "dimmining"
+primary = ["graph-mining", "near-memory"]
+secondary = []
+contexts = []
+sources = ["papers"]
+evidence_status = "title_only"
+note = "Only the local paper title was used; avoid interpreting pruning as neural-network pruning."
+
+[[assignments]]
+work_id = "doctoral-overview"
+primary = ["inference"]
+secondary = ["adaptive-inference", "inference-runtimes"]
+contexts = ["edge-ai"]
+sources = ["papers"]
+evidence_status = "overview"
+note = "Overview link spanning efficient inference systems; include in topical similarity as a synthesis node."
+
+[[assignments]]
+work_id = "oxygen"
+primary = ["kv-cache", "scheduling"]
+secondary = ["batching", "inference-runtimes"]
+contexts = ["vla", "edge-ai"]
+sources = ["oxygen-paper", "oxygen-blog"]
+evidence_status = "supported"
+note = "Specific relation: shared memory/scheduling with systems works and runtime concerns with embodied deployments."
+
+[[assignments]]
+work_id = "embodied-cpp"
+primary = ["inference-runtimes", "heterogeneous-computing"]
+secondary = ["kernel-optimization", "closed-loop-control"]
+contexts = ["vla", "wam", "edge-ai"]
+sources = ["embodied-cpp-paper"]
+evidence_status = "supported"
+note = "v1 paper is used only for subject evidence; current local authorship stays canonical."
+
+[[assignments]]
+work_id = "cosmos-lite"
+primary = ["low-bit-inference", "kernel-optimization", "inference-runtimes"]
+secondary = ["simulation", "scheduling"]
+contexts = ["wam"]
+sources = ["cosmos-blog"]
+evidence_status = "supported"
+note = "Do not infer on-robot deployment from a workstation-GPU evaluation; source blog tag Edge AI is retained in source evidence, not assigned automatically."
+
+[[assignments]]
+work_id = "vllm-gptqv2"
+primary = ["low-bit-inference", "kernel-optimization"]
+secondary = []
+contexts = ["llms"]
+sources = ["vllm-blog"]
+evidence_status = "supported"
+note = "Format compatibility and correctness are described in the summary; vLLM and GPTQv2 remain implementation names."
+
+[[assignments]]
+work_id = "actprobe"
+primary = ["failure-detection"]
+secondary = []
+contexts = ["vla"]
+sources = ["actprobe-paper"]
+evidence_status = "supported"
+note = "Robot policies are the scope; VLA is a studied model family, not the only supported family. RL fine-tuning is an application, not a primary tag."
+
+[[assignments]]
+work_id = "zeva"
+primary = ["in-context-adaptation", "interaction-memory", "causal-representation"]
+secondary = ["policy-adaptation", "test-time-scaling"]
+contexts = ["vla", "wam"]
+sources = ["zeva-paper"]
+evidence_status = "review"
+note = "Keep Interaction Memory distinct from Agent Memory: Zeva uses deployment-time in-context causal adaptation, closer to test-time adaptation/scaling than to a persistent agent memory subsystem. Causal Representation is the normalized form of the paper's formal term. Keep raw formal Index Terms separately."
+author_keywords = ["Embodied Foundation Models", "Interaction Memory", "Test-time Scaling", "Causal Representation"]
+
+[[assignments]]
+work_id = "zetta"
+primary = ["self-improvement", "failure-recovery", "closed-loop-control"]
+secondary = ["failure-detection", "simulation", "scheduling", "heterogeneous-computing", "quantization"]
+contexts = ["embodied-agents"]
+sources = ["zetta-paper"]
+evidence_status = "review"
+note = "System-level terms describe Z-Infra; confirm whether they should appear on the main node or only in details. No claim of weight-updating online learning."
+
+[[assignments]]
+work_id = "embodiskill"
+primary = ["reflection", "self-improvement"]
+secondary = []
+contexts = ["embodied-agents"]
+sources = ["embodiskill-paper"]
+evidence_status = "review"
+note = "Self-improvement is shared with Zetta. Do not label the reusable procedural skill store as Agent Memory: it is a skill representation revised through reflection. Avoid Skill Learning if it suggests policy training."
+
+[[assignments]]
+work_id = "personal-agents"
+primary = ["personal-agents", "inference"]
+secondary = ["security-privacy"]
+contexts = ["personal-agents", "llms"]
+sources = ["personal-paper", "papers"]
+evidence_status = "review"
+note = "Position this work using the whole survey's Personal Agents scope, while retaining Efficient Inference and Agent Memory for the sections led or covered by the site owner. Security and Privacy is a documented survey branch, not a claim of a separate personal research program."
+
+[[assignments]]
+work_id = "chainstream"
+primary = ["context-sensing", "program-synthesis"]
+secondary = ["stream-processing"]
+contexts = ["llms"]
+sources = ["chainstream-paper"]
+evidence_status = "supported"
+note = "Remove speculative Personal Agents assignment; context sensing and generated programs are directly supported."
+
+[[assignments]]
+work_id = "length-constraint"
+primary = ["llm-reasoning", "test-time-scaling"]
+secondary = []
+contexts = ["llms", "edge-ai"]
+sources = ["length-paper"]
+evidence_status = "supported"
+note = "Token budgets and latency constraints remain descriptive attributes; do not equate this with quantization or runtime optimization."

@@ -1,0 +1,17 @@
+{% set zh = section.lang == "zh" %}
+<a class="research-teaser" href="{% if zh %}/zh{% endif %}/research/">
+  <div class="research-teaser__copy">
+    <span class="research-teaser__eyebrow">{% if zh %}研究地图{% else %}Research landscape{% endif %}</span>
+    <strong>{% if zh %}系统与智能，交汇之处。{% else %}Connected research questions.{% endif %}</strong>
+    <span>{% if zh %}端侧推理、具身模型与智能体之间的联系。{% else %}Efficient systems, embodied AI, and agents—linked by the problems they share.{% endif %}</span>
+    <span class="research-teaser__link">{% if zh %}探索研究版图{% else %}Explore the landscape{% endif %} →</span>
+  </div>
+  <svg viewBox="0 0 230 190" aria-hidden="true">
+    <path d="M28 70 C34 24 96 18 132 48 C147 62 142 112 112 139 C78 158 28 133 28 70Z" class="research-region research-region--systems"/>
+    <path d="M103 52 C131 19 198 35 202 82 C207 126 167 158 129 142 C107 132 96 78 103 52Z" class="research-region research-region--embodied"/>
+    <path d="M57 113 C75 88 145 91 176 116 C193 131 169 169 119 171 C73 173 41 145 57 113Z" class="research-region research-region--agents"/>
+    <path d="M48 66 L112 91 L171 62 M112 91 L148 137 M112 91 L77 125" class="research-teaser__edges"/>
+    <g class="research-teaser__nodes"><circle cx="48" cy="66" r="4"/><circle cx="112" cy="91" r="6"/><circle cx="171" cy="62" r="4"/><circle cx="148" cy="137" r="4"/><circle cx="77" cy="125" r="4"/></g>
+    <g class="research-teaser__labels"><text x="25" y="49">Systems</text><text x="94" y="113">Shared themes</text><text x="151" y="48">Embodied AI</text><text x="119" y="159">Agents</text></g>
+  </svg>
+</a>

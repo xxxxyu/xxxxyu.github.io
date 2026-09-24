@@ -1,0 +1,352 @@
+# Authored thematic map with English taxonomy assignments.
+
+[[works]]
+id = "flexnn"
+label = "FlexNN"
+paper_url = "https://dl.acm.org/doi/10.1145/3636534.3649391"
+x = 130
+y = 190
+topics = ["systems"]
+role = "author"
+role_en = "First author"
+role_zh = "第一作者"
+summary_en = "Adaptive DNN inference under tight device-memory budgets."
+summary_zh = "在内存受限的端侧设备上实现高效、自适应的 DNN 推理。"
+primary_terms = ["Memory Management", "Scheduling"]
+secondary_terms = ["Adaptive Inference"]
+contexts = ["Edge AI"]
+contribution_weight = 1.0
+author_rank = "1/5"
+term_ids = ["memory-management", "scheduling", "adaptive-inference"]
+node_radius = 10.8
+
+[[works]]
+id = "vec-lut"
+label = "Vec-LUT"
+paper_url = "https://dl.acm.org/doi/10.1145/3745756.3809200"
+x = 220
+y = 255
+topics = ["systems"]
+role = "author"
+role_en = "Co-first author"
+role_zh = "共同第一作者"
+summary_en = "Vector table lookup makes parallel ultra-low-bit LLM inference fast on edge CPUs."
+summary_zh = "通过向量查表加速端侧 CPU 上的并行超低比特 LLM 推理。"
+primary_terms = ["Low-bit Inference", "Kernel Optimization"]
+secondary_terms = ["Matrix Multiplication"]
+contexts = ["Large Language Models (LLMs)", "Edge AI"]
+contribution_weight = 0.94
+author_rank = "1/6"
+term_ids = ["low-bit-inference", "kernel-optimization", "matrix-multiplication"]
+node_radius = 10.4
+
+[[works]]
+id = "dwi"
+label = "DWI"
+paper_url = "https://ieeexplore.ieee.org/document/11599643"
+x = 255
+y = 165
+topics = ["systems"]
+role = "collaborator"
+role_en = "Third author"
+role_zh = "合作作者"
+summary_en = "Dynamic width selection on nested models for efficient on-device LLM decoding."
+summary_zh = "通过嵌套模型的动态宽度选择提升端侧 LLM 解码效率。"
+primary_terms = ["Adaptive Inference"]
+secondary_terms = []
+contexts = ["Large Language Models (LLMs)", "Edge AI"]
+contribution_weight = 0.58
+author_rank = "3/6"
+term_ids = ["adaptive-inference"]
+node_radius = 8.4
+
+[[works]]
+id = "squeezer"
+label = "Squeezer"
+paper_url = "https://ieeexplore.ieee.org/abstract/document/11096018"
+x = 105
+y = 330
+topics = ["systems"]
+role = "collaborator"
+role_en = "Fifth author"
+role_zh = "合作作者"
+summary_en = "Cross-model scheduling for efficient multi-DNN edge video analytics."
+summary_zh = "通过跨模型调度优化端侧视频分析中的多 DNN 推理。"
+primary_terms = ["Scheduling"]
+secondary_terms = []
+contexts = ["Edge AI", "Video Analytics"]
+contribution_weight = 0.43
+author_rank = "5/8"
+term_ids = ["scheduling"]
+node_radius = 7.5
+
+[[works]]
+id = "dimmining"
+label = "DIMMining"
+paper_url = "https://dl.acm.org/doi/10.1145/3470496.3527388"
+x = 120
+y = 420
+topics = ["systems"]
+role = "collaborator"
+role_en = "Sixth author"
+role_zh = "合作作者"
+summary_en = "Pruning-efficient, parallel graph mining with near-memory computing."
+summary_zh = "面向近存计算的高效剪枝与并行图挖掘。"
+primary_terms = ["Graph Mining", "Near-memory Computing"]
+secondary_terms = []
+contexts = []
+contribution_weight = 0.38
+author_rank = "6/9"
+term_ids = ["graph-mining", "near-memory"]
+node_radius = 7.2
+
+[[works]]
+id = "doctoral-overview"
+label = "Doctoral overview"
+paper_url = "https://dl.acm.org/doi/10.1145/3812835.3814828"
+x = 330
+y = 270
+topics = ["systems"]
+role = "author"
+role_en = "Sole author"
+role_zh = "独立作者 · 博士工作概述"
+summary_en = "A synthesis of inference systems for resource-constrained edge AI deployment."
+summary_zh = "总结面向资源受限端侧智能部署的高效推理系统研究。"
+primary_terms = ["Efficient Inference"]
+secondary_terms = ["Adaptive Inference", "Inference Runtimes"]
+contexts = ["Edge AI"]
+contribution_weight = 1.0
+author_rank = "1/1"
+term_ids = ["inference", "adaptive-inference", "inference-runtimes"]
+node_radius = 10.8
+
+[[works]]
+id = "oxygen"
+label = "OxyGen"
+paper_url = "https://arxiv.org/abs/2603.14371"
+x = 450
+y = 220
+topics = ["systems", "embodied"]
+role = "author"
+role_en = "First author"
+role_zh = "第一作者"
+summary_en = "One shared KV cache coordinates concurrent action and language generation in VLAs."
+summary_zh = "统一 KV 缓存管理，协调 VLA 中动作与语言的并发生成。"
+primary_terms = ["KV Cache Management", "Scheduling"]
+secondary_terms = ["Continuous Batching", "Inference Runtimes"]
+contexts = ["Vision-Language-Action Models (VLAs)", "Edge AI"]
+contribution_weight = 1.0
+author_rank = "1/6"
+term_ids = ["kv-cache", "scheduling", "batching", "inference-runtimes"]
+node_radius = 10.8
+
+[[works]]
+id = "embodied-cpp"
+label = "Embodied.cpp"
+paper_url = "https://arxiv.org/abs/2607.02501"
+x = 505
+y = 125
+topics = ["systems", "embodied"]
+role = "collaborator"
+role_en = "Fifth author"
+role_zh = "合作作者"
+summary_en = "A portable inference runtime for embodied models across heterogeneous robots."
+summary_zh = "面向异构机器人的可移植具身模型推理运行时。"
+primary_terms = ["Inference Runtimes", "Heterogeneous Computing"]
+secondary_terms = ["Kernel Optimization", "Closed-loop Control"]
+contexts = ["Vision-Language-Action Models (VLAs)", "World-Action Models (WAMs)", "Edge AI"]
+contribution_weight = 0.42
+author_rank = "5/11"
+term_ids = ["inference-runtimes", "heterogeneous-computing", "kernel-optimization", "closed-loop-control"]
+node_radius = 7.4
+
+[[works]]
+id = "actprobe"
+label = "ActProbe"
+paper_url = "https://arxiv.org/abs/2606.08508"
+x = 610
+y = 300
+topics = ["embodied"]
+role = "author"
+role_en = "Co-first author"
+role_zh = "共同第一作者"
+summary_en = "Action-space probes detect failures early in generative robot policies."
+summary_zh = "利用动作空间探针提前检测生成式机器人策略的失败。"
+primary_terms = ["Failure Detection"]
+secondary_terms = []
+contexts = ["Vision-Language-Action Models (VLAs)"]
+contribution_weight = 0.94
+author_rank = "2/11"
+term_ids = ["failure-detection"]
+node_radius = 10.4
+
+[[works]]
+id = "zeva"
+label = "Zeva"
+paper_url = "https://arxiv.org/abs/2608.30880"
+x = 680
+y = 180
+topics = ["embodied"]
+role = "collaborator"
+role_en = "Fifth author"
+role_zh = "合作作者"
+summary_en = "In-context causal learning for generalizable embodied manipulation."
+summary_zh = "通过上下文因果学习提升具身操作的泛化能力。"
+primary_terms = ["In-context Adaptation", "Interaction Memory", "Causal Representation Learning"]
+secondary_terms = ["Policy Adaptation", "Test-time Scaling"]
+contexts = ["Vision-Language-Action Models (VLAs)", "World-Action Models (WAMs)"]
+contribution_weight = 0.36
+author_rank = "5/11"
+term_ids = ["in-context-adaptation", "interaction-memory", "causal-representation", "policy-adaptation", "test-time-scaling"]
+node_radius = 7.0
+
+[[works]]
+id = "zetta"
+label = "Zetta"
+paper_url = "https://arxiv.org/abs/2608.16590"
+x = 620
+y = 420
+topics = ["embodied", "agents"]
+role = "collaborator"
+role_en = "Seventh author"
+role_zh = "合作作者"
+summary_en = "A closed-loop embodied harness for self-evolving physical intelligence."
+summary_zh = "面向自进化物理智能的闭环具身框架。"
+primary_terms = ["Self-improvement", "Failure Recovery", "Closed-loop Control"]
+secondary_terms = ["Failure Detection", "Robot Simulation", "Scheduling", "Heterogeneous Computing", "Quantization"]
+contexts = ["Embodied Agents"]
+contribution_weight = 0.32
+author_rank = "7/15"
+term_ids = ["self-improvement", "failure-recovery", "closed-loop-control", "failure-detection", "simulation", "scheduling", "heterogeneous-computing", "quantization"]
+node_radius = 6.8
+
+[[works]]
+id = "embodiskill"
+label = "EmbodiSkill"
+paper_url = "https://arxiv.org/abs/2605.10332"
+x = 690
+y = 500
+topics = ["embodied", "agents"]
+role = "collaborator"
+role_en = "Ninth author"
+role_zh = "合作作者"
+summary_en = "Skill-aware reflection helps embodied agents evolve through experience."
+summary_zh = "通过技能感知反思推动具身智能体自进化。"
+primary_terms = ["Reflection", "Self-improvement"]
+secondary_terms = []
+contexts = ["Embodied Agents"]
+contribution_weight = 0.24
+author_rank = "9/15"
+term_ids = ["reflection", "self-improvement"]
+node_radius = 6.4
+
+[[works]]
+id = "personal-agents"
+label = "Personal LLM Agents"
+paper_url = "https://arxiv.org/abs/2401.05459"
+x = 350
+y = 500
+topics = ["systems", "agents"]
+role = "section"
+role_en = "Fourth author · efficiency section lead"
+role_zh = "效率章节负责人"
+summary_en = "A survey of personal LLM agents, with a focus on capability, efficiency and security."
+summary_zh = "综述个人 LLM 智能体的能力、效率与安全，负责效率章节。"
+primary_terms = ["Personal Agents", "Efficient Inference"]
+secondary_terms = ["Security and Privacy"]
+contexts = ["Personal Agents", "Large Language Models (LLMs)"]
+contribution_weight = 0.58
+author_rank = "4/25"
+term_ids = ["personal-agents", "inference", "security-privacy"]
+node_radius = 8.4
+
+[[works]]
+id = "chainstream"
+label = "ChainStream"
+paper_url = "https://arxiv.org/abs/2412.15240"
+x = 500
+y = 560
+topics = ["agents"]
+role = "collaborator"
+role_en = "Sixth author"
+role_zh = "合作作者"
+summary_en = "An LLM-based framework that unifies synthetic sensing."
+summary_zh = "基于 LLM 的统一合成感知框架。"
+primary_terms = ["Context Sensing", "Program Synthesis"]
+secondary_terms = ["Stream Processing"]
+contexts = ["Large Language Models (LLMs)"]
+contribution_weight = 0.4
+author_rank = "6/9"
+term_ids = ["context-sensing", "program-synthesis", "stream-processing"]
+node_radius = 7.3
+
+[[works]]
+id = "length-constraint"
+label = "Length-constrained reasoning"
+paper_url = "https://arxiv.org/abs/2504.14350"
+x = 220
+y = 560
+topics = ["agents"]
+role = "collaborator"
+role_en = "Sixth author"
+role_zh = "合作作者"
+summary_en = "An empirical study of LLM reasoning with strict output-length budgets."
+summary_zh = "研究严格输出长度约束下 LLM 的推理能力。"
+primary_terms = ["LLM Reasoning", "Test-time Scaling"]
+secondary_terms = []
+contexts = ["Large Language Models (LLMs)", "Edge AI"]
+contribution_weight = 0.4
+author_rank = "6/11"
+term_ids = ["llm-reasoning", "test-time-scaling"]
+node_radius = 7.3
+
+[[works]]
+id = "cosmos-lite"
+label = "Cosmos Lite"
+title = "Cosmos Lite: Efficient inference for Cosmos 3 robot policies"
+year = 2026
+venue = "Open-source project"
+kind = "project"
+x = 455
+y = 335
+topics = ["systems", "embodied"]
+role = "project"
+role_en = "Project maintainer"
+role_zh = "项目维护"
+summary_en = "Quantization, kernels and parallel rollouts bring world-action models to 24 GB GPUs."
+summary_zh = "结合量化、内核优化与并行 rollout，在 24 GB GPU 上部署世界动作模型。"
+code_url = "https://github.com/xxxxyu/cosmos-lite"
+blog_url = "/blog/cosmos-lite-v030/"
+primary_terms = ["Low-bit Inference", "Kernel Optimization", "Inference Runtimes"]
+secondary_terms = ["Robot Simulation", "Scheduling"]
+contexts = ["World-Action Models (WAMs)"]
+contribution_weight = 1.0
+author_rank = "project"
+term_ids = ["low-bit-inference", "kernel-optimization", "inference-runtimes", "simulation", "scheduling"]
+node_radius = 10.8
+
+[[works]]
+id = "vllm-gptqv2"
+label = "GPTQv2 × vLLM"
+title = "GPTQv2 format support in vLLM"
+year = 2025
+venue = "Merged upstream contribution"
+kind = "contribution"
+x = 180
+y = 100
+topics = ["systems"]
+role = "project"
+role_en = "Open-source contributor"
+role_zh = "开源贡献者"
+summary_en = "Correct zero-point handling for low-bit and asymmetric GPTQv2 inference in vLLM."
+summary_zh = "修正 vLLM 中低比特与非对称 GPTQv2 推理的零点处理。"
+code_url = "https://github.com/vllm-project/vllm/pull/26092"
+blog_url = "/blog/vllm-gptqv2-support/"
+primary_terms = ["Low-bit Inference", "Kernel Optimization"]
+secondary_terms = []
+contexts = ["Large Language Models (LLMs)"]
+contribution_weight = 0.48
+author_rank = "contribution"
+term_ids = ["low-bit-inference", "kernel-optimization"]
+node_radius = 7.7
+

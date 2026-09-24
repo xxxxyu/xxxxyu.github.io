@@ -32,6 +32,7 @@ anchors = "on"
 [translations]
 author_name = "Xiangyu Li"
 nav_about = "About"
+nav_research = "Research"
 nav_papers = "Papers"
 nav_blog = "Blog"
 nav_outside = "Outside"
@@ -104,6 +105,7 @@ include_content = true
 [languages.zh.translations]
 author_name = "李翔宇"
 nav_about = "关于"
+nav_research = "研究"
 nav_papers = "论文"
 nav_blog = "博客"
 nav_outside = "之外"

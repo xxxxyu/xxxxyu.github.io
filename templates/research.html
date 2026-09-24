@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description }}{% endblock description %}
+{% block og_title %}{{ section.title }} — {{ config.title }}{% endblock og_title %}
+{% block og_description %}{{ section.description }}{% endblock og_description %}
+{% block twitter_title %}{{ section.title }} — {{ config.title }}{% endblock twitter_title %}
+{% block twitter_description %}{{ section.description }}{% endblock twitter_description %}
+{% block alternates %}{{ macros::hreflang(translations=section.translations, current_permalink=section.permalink, current_lang=section.lang, default_language=config.default_language) }}{% endblock alternates %}
+{% block main_class %}content content--research{% endblock main_class %}
+{% block content %}
+{% set zh = section.lang == "zh" %}
+{% set research = load_data(path="data/research.toml") %}
+{% set papers = load_data(path="data/papers.toml") %}
+<header class="research-intro">
+  <div>
+    <p class="page-intro__eyebrow">{% if zh %}系统 · 模型 · 物理智能{% else %}Systems · Models · Physical intelligence{% endif %}</p>
+    <h1>{% if zh %}研究的交汇处{% else %}Research, in context.{% endif %}</h1>
+    <div class="research-intro__dek">{{ section.content | safe }} <a class="research-intro__papers" href="{% if zh %}/zh{% endif %}/papers/">{% if zh %}论文列表{% else %}Full paper list{% endif %} →</a></div>
+  </div>
+</header>
+<section class="research-explorer" data-research lang="{{ section.lang }}" aria-label="{% if zh %}探索研究地图{% else %}Explore the research map{% endif %}">
+  <div class="research-controls" hidden>
+    <div class="research-controls__top">
+      <div class="research-themes" role="group" aria-label="{% if zh %}研究领域{% else %}Research field{% endif %}">
+        <button type="button" data-topic="all" aria-pressed="true">{% if zh %}全部领域{% else %}All fields{% endif %}</button>
+        <button type="button" data-topic="systems" aria-pressed="false"><i class="theme-dot theme-dot--systems" aria-hidden="true"></i>{% if zh %}高效系统{% else %}Efficient systems{% endif %}</button>
+        <button type="button" data-topic="embodied" aria-pressed="false"><i class="theme-dot theme-dot--embodied" aria-hidden="true"></i>{% if zh %}具身智能{% else %}Embodied AI{% endif %}</button>
+        <button type="button" data-topic="agents" aria-pressed="false"><i class="theme-dot theme-dot--agents" aria-hidden="true"></i>{% if zh %}智能体{% else %}Agents{% endif %}</button>
+      </div>
+
+    </div>
+    <div class="research-controls__bottom">
+      <label class="research-search"><span aria-hidden="true">⌕</span><input type="search" data-search placeholder="{% if zh %}查找工作、主题…{% else %}Find a work, an idea…{% endif %}" aria-label="{% if zh %}查找研究工作{% else %}Find research works{% endif %}"></label>
+      <label class="research-select"><span>{% if zh %}角色{% else %}Role{% endif %}</span><select data-role><option value="all">{% if zh %}全部{% else %}All roles{% endif %}</option><option value="author">{% if zh %}一作 / 共同一作 / 独立作者{% else %}First / co-first / sole author{% endif %}</option><option value="collaborator">{% if zh %}合作作者{% else %}Co-author{% endif %}</option><option value="project">{% if zh %}开源项目与贡献{% else %}Open-source work{% endif %}</option></select></label>
+      <label class="research-select"><span>{% if zh %}类型{% else %}Type{% endif %}</span><select data-kind><option value="all">{% if zh %}全部{% else %}All works{% endif %}</option><option value="paper">{% if zh %}论文{% else %}Papers{% endif %}</option><option value="project">{% if zh %}开源{% else %}Open source{% endif %}</option></select></label>
+      <button class="research-reset" type="button" data-reset>{% if zh %}重置{% else %}Reset{% endif %}</button>
+    </div>
+  </div>
+  <div class="research-workspace">
+    <div class="research-main">
+      <div class="research-map" hidden>
+        <div class="research-map__scroll" tabindex="0" role="region" aria-label="{% if zh %}研究地图，可横向滚动{% else %}Research map, horizontally scrollable{% endif %}">
+          <svg class="research-map__svg" viewBox="0 0 820 400" role="group" aria-label="{% if zh %}研究工作链接{% else %}Research work links{% endif %}">
+            <g class="research-hulls" data-hulls aria-hidden="true">
+              <path class="research-hull research-hull--systems" data-hull="systems" hidden/>
+              <path class="research-hull research-hull--embodied" data-hull="embodied" hidden/>
+              <path class="research-hull research-hull--agents" data-hull="agents" hidden/>
+            </g>
+            <g data-edges aria-hidden="true"></g>
+            {% for work in research.works %}
+            <a class="research-node research-node--{{ work.role }}" href="{% if work.paper_url %}{{ work.paper_url }}{% elif work.code_url %}{{ work.code_url }}{% elif work.page_url %}{{ work.page_url }}{% elif work.blog_url %}{{ work.blog_url }}{% else %}#work-{{ work.id }}{% endif %}"{% if work.paper_url or work.code_url or work.page_url or work.blog_url %} target="_blank" rel="noopener"{% endif %} data-node="{{ work.id }}" data-topics="{{ work.topics | join(sep=' ') }}" data-terms="{{ work.term_ids | join(sep=' ') }}" data-term-labels="{% for term in work.primary_terms %}{{ term }}{% if not loop.last or work.secondary_terms | length > 0 %} · {% endif %}{% endfor %}{% for term in work.secondary_terms %}{{ term }}{% if not loop.last %} · {% endif %}{% endfor %}" data-x="{{ work.x }}" data-y="{{ work.y }}" data-weight="{{ work.contribution_weight }}" transform="translate({{ work.x }} {{ work.y }})" aria-label="{{ work.label }} — {% if zh %}打开对应内容{% else %}open related content{% endif %}">
+              <circle class="research-node__target" r="26"/>
+              <circle class="research-node__halo" r="{{ work.node_radius }}"/>
+              {% if work.role == "project" %}<path class="research-node__dot research-node__dot--project" d="M0,-{{ work.node_radius }} L{{ work.node_radius }},0 L0,{{ work.node_radius }} L-{{ work.node_radius }},0Z"/>{% else %}<circle class="research-node__dot" r="{{ work.node_radius }}"/>{% endif %}
+              <text y="28" text-anchor="middle">{{ work.label }}</text>
+              <text class="research-node__subline" y="43" text-anchor="middle">{{ work.primary_terms | first }}</text>
+            </a>
+            {% endfor %}
+          </svg>
+        </div>
+        <div class="research-map__legend"><span><i class="legend-symbol legend-symbol--filled" aria-hidden="true"></i>{% if zh %}一作 / 共同一作 / 独立作者 / 章节负责{% else %}First / co-first / sole author / section lead{% endif %}</span><span><i class="legend-symbol" aria-hidden="true"></i>{% if zh %}合作作者{% else %}Co-author{% endif %}</span><span><i class="legend-symbol legend-symbol--diamond" aria-hidden="true"></i>{% if zh %}开源{% else %}Open source{% endif %}</span></div>
+      </div>
+      <div class="research-list" aria-label="{% if zh %}全部研究工作{% else %}All research works{% endif %}">
+      {% for work in research.works %}
+        {% if work.paper_url %}{% set pub = papers.papers | filter(attribute="paper_url", value=work.paper_url) | first %}{% else %}{% set pub = work %}{% endif %}
+        <article class="research-work" id="work-{{ work.id }}" data-work="{{ work.id }}" data-topics="{{ work.topics | join(sep=' ') }}" data-terms="{{ work.term_ids | join(sep=' ') }}" data-term-labels="{% for term in work.primary_terms %}{{ term }}{% if not loop.last or work.secondary_terms | length > 0 %} · {% endif %}{% endfor %}{% for term in work.secondary_terms %}{{ term }}{% if not loop.last %} · {% endif %}{% endfor %}" data-role="{{ work.role }}" data-kind="{% if work.paper_url %}paper{% else %}project{% endif %}" data-label="{{ work.label }}">
+          <p class="research-work__meta">{{ pub.year }} <span aria-hidden="true">/</span> {% if work.paper_url %}{{ pub.venue }}{% elif zh %}{% if work.kind == 'contribution' %}已合入上游的开源贡献{% else %}开源项目{% endif %}{% else %}{{ pub.venue }}{% endif %}</p>
+          <h2 class="research-work__title"><a href="{% if pub.paper_url %}{{ pub.paper_url }}{% elif pub.code_url %}{{ pub.code_url }}{% elif pub.page_url %}{{ pub.page_url }}{% else %}{{ pub.blog_url }}{% endif %}"{% if pub.paper_url or pub.code_url or pub.page_url %} target="_blank" rel="noopener"{% endif %}>{{ pub.title }}</a></h2>
+          <p class="research-work__role">{% if zh %}{{ work.role_zh }}{% else %}{{ work.role_en }}{% endif %} <span class="research-work__rank">({{ work.author_rank }})</span></p>
+          <p class="research-work__summary">{% if zh %}{{ work.summary_zh }}{% else %}{{ work.summary_en }}{% endif %}</p>
+          <ul class="research-work__topics">{% for term in work.primary_terms %}<li>{{ term }}</li>{% endfor %}{% for term in work.secondary_terms %}<li class="is-secondary">{{ term }}</li>{% endfor %}</ul>
+          <p class="research-work__contexts">{% for context in work.contexts %}{{ context }}{% if not loop.last %}<span aria-hidden="true"> · </span>{% endif %}{% endfor %}</p>
+          <div class="research-work__links">
+            {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{% if zh %}论文{% else %}Paper{% endif %} ↗</a>{% endif %}
+            {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">{% if zh %}代码{% else %}Code{% endif %} ↗</a>{% endif %}
+            {% if pub.blog_url %}<a href="{% if zh %}/zh{% endif %}{{ pub.blog_url }}">{% if zh %}博客{% else %}Blog{% endif %} →</a>{% endif %}
+            {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">{% if zh %}项目页{% else %}Project{% endif %} ↗</a>{% endif %}
+            {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">{% if zh %}幻灯片{% else %}Slides{% endif %} ↗</a>{% endif %}
+          </div>
+          <a class="research-work__locate" href="#work-{{ work.id }}" data-locate="{{ work.id }}">{% if zh %}在地图中查看{% else %}Locate on map{% endif %} ↗</a>
+        </article>
+      {% endfor %}
+      </div>
+      <p class="research-empty" hidden role="status">{% if zh %}没有符合条件的工作。尝试其他关键词或重置筛选。{% else %}No matching works. Try another search or reset the filters.{% endif %}</p>
+    </div>
+  </div>
+  <div class="research-preview" hidden role="region" aria-label="{% if zh %}工作预览{% else %}Work preview{% endif %}"></div>
+</section>
+
+{% endblock content %}
+{% block scripts %}{% for lib in ["d3-quadtree", "d3-dispatch", "d3-timer", "d3-force"] %}<script defer src="{{ get_url(path='js/vendor/' ~ lib ~ '.min.js') | safe }}"></script>{% endfor %}<script defer src="{{ get_url(path='js/research.js') | safe }}"></script>{% endblock scripts %}

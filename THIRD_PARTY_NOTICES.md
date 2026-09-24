@@ -75,3 +75,10 @@ are retained as supplied by Font Awesome.
 Font Awesome Free applies CC BY 4.0 to icons, SIL OFL 1.1 to fonts, and MIT to
 code; this repository redistributes only the two SVG icons listed above. See
 the [Font Awesome Free license](https://fontawesome.com/license/free).
+
+## D3 force layout modules
+
+Bundled in `static/js/vendor/`: d3-force 3.0.0, d3-quadtree 3.0.1,
+d3-dispatch 3.0.1, and d3-timer 3.0.1. Copyright Mike Bostock;
+ISC licensed. Each module's full license is included alongside its script.
+Source: https://github.com/d3/d3-force and the corresponding d3 repositories.
