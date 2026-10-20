@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import time
+import tempfile
 import tomllib
 import urllib.parse
 import urllib.request
@@ -18,23 +19,18 @@ AUTHOR_ID = 'IjoWeIMAAAAJ'
 SERPAPI_KEY = os.environ.get('SERPAPI_KEY')
 ROOT = Path(__file__).resolve().parent.parent
 PAPERS_TOML = ROOT / 'data' / 'papers.toml'
-OUT_DIR = ROOT / 'data' / 'gs'
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+OUT_FILE = ROOT / 'data' / 'scholar.json'
 SCHOLARLY_PAPERS_KEY = 'public' + 'ations'
 
 def log(msg):
     print(msg, flush=True)
 
 def norm(s):
-    return re.sub(r'\s+', ' ', s.strip().lower())
-
-with PAPERS_TOML.open('rb') as f:
-    papers = tomllib.load(f).get('papers', [])
-wanted = {norm(p['title']): p['gs_id'] for p in papers if p.get('gs_id')}
-log(f"Tracking {len(wanted)} papers: {sorted(wanted.values())}")
+    return re.sub(r'\W+', '', s.casefold())
 
 def fetch_serpapi():
     log("  fetching via SerpApi...")
+    # One author-list request supplies total and per-paper counts; never fetch details.
     params = {
         'engine': 'google_scholar_author',
         'author_id': AUTHOR_ID,
@@ -80,42 +76,65 @@ def fetch_scholarly():
             by_title[norm(title)] = pub.get('num_citations', 0) or 0
     return total, by_title
 
-def write_badge(name, citations):
-    payload = {
-        "schemaVersion": 1, "label": "citations", "message": str(citations),
-        "color": "1a5276", "namedLogo": "Google Scholar", "logoColor": "white",
-    }
-    (OUT_DIR / f"{name}.json").write_text(json.dumps(payload))
-
-last_error = None
-for attempt in range(1, 3):
+def write_stats(payload):
+    """Replace the complete cache atomically so readers never see partial JSON."""
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
     try:
-        log(f"Attempt {attempt}...")
-        if SERPAPI_KEY:
-            total, by_title = fetch_serpapi()
-        else:
-            total, by_title = fetch_scholarly()
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8',
+                                         dir=OUT_FILE.parent, suffix='.tmp', delete=False) as f:
+            temporary = Path(f.name)
+            f.write(json.dumps(payload, indent=2, sort_keys=True) + '\n')
+        temporary.replace(OUT_FILE)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
-        if not total:
-            raise RuntimeError("fetch returned empty citedby")
-
-        matched = 0
-        for title_key, gs_id in wanted.items():
-            if title_key in by_title:
-                write_badge(gs_id, by_title[title_key])
-                matched += 1
-                log(f"  matched {gs_id}: {by_title[title_key]} citations")
+def main():
+    with PAPERS_TOML.open('rb') as f:
+        papers = tomllib.load(f).get('papers', [])
+    wanted = [p for p in papers if p.get('gs_id')]
+    log(f"Tracking {len(wanted)} papers")
+    last_error = None
+    for attempt in range(1, 3):
+        try:
+            log(f"Attempt {attempt}...")
+            if SERPAPI_KEY:
+                total, by_title = fetch_serpapi()
             else:
-                log(f"  WARN no match for {gs_id} (title: {title_key!r})")
+                total, by_title = fetch_scholarly()
 
-        write_badge('total', total)
-        log(f"Total: {total}, matched {matched}/{len(wanted)} papers")
-        break
-    except Exception as exc:
-        last_error = exc
-        log(f"Attempt {attempt} failed: {exc}")
-        if attempt < 2:
-            time.sleep(10)
-else:
-    log(f"All attempts failed. Last error: {last_error}")
-    sys.exit(1)
+            if not total:
+                raise RuntimeError("fetch returned empty citedby")
+
+            previous = json.loads(OUT_FILE.read_text()) if OUT_FILE.exists() else {}
+            cached = previous.get('papers', {})
+            # Retain unmatched counts, but drop works removed from the paper list.
+            counts = {p['gs_id']: cached[p['gs_id']] for p in wanted if p['gs_id'] in cached}
+            matched = 0
+            for paper in wanted:
+                gs_id = paper['gs_id']
+                keys = [norm(paper['title']), norm(paper.get('gs_title', paper['title']))]
+                title_key = next((key for key in keys if key in by_title), None)
+                if title_key is not None:
+                    counts[gs_id] = by_title[title_key]
+                    matched += 1
+                    log(f"  matched {gs_id}: {by_title[title_key]} citations")
+                else:
+                    log(f"  WARN no match for {gs_id} (title: {paper['title']!r})")
+
+            write_stats({'author_id': AUTHOR_ID, 'total': total, 'papers': counts})
+            log(f"Total: {total}, matched {matched}/{len(wanted)} papers")
+            break
+        except Exception as exc:
+            last_error = exc
+            log(f"Attempt {attempt} failed: {exc}")
+            if attempt < 2:
+                time.sleep(10)
+    else:
+        log(f"All attempts failed. Last error: {last_error}")
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

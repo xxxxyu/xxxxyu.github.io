@@ -13,9 +13,12 @@
   {% endif %}
   <div class="pub-card__body">
     <h3 class="pub-card__title">{% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{{ pub.title | markdown(inline=true) | safe }}</a>{% else %}{{ pub.title | markdown(inline=true) | safe }}{% endif %}{% if pub.gs_id %}
-      {%- set gs_data = load_data(path="data/gs/" ~ pub.gs_id ~ ".json", required=false) -%}
+      {%- set gs_data = load_data(path="data/scholar.json", required=false) -%}
       {%- if gs_data -%}
-      <a class="pub-card__citations" href="https://scholar.google.com/scholar?q={{ pub.title | urlencode }}" target="_blank" rel="noopener" aria-label="Google Scholar citations"><img src="https://img.shields.io/badge/citations-{{ gs_data.message }}-1a5276?logo=Google%20Scholar&logoColor=white&style=flat" alt="Citations: {{ gs_data.message }}" loading="lazy"></a>
+      {%- set citations = gs_data.papers | get(key=pub.gs_id, default=0) -%}
+      {%- if citations >= 10 -%}
+      <a class="pub-card__citations" href="https://scholar.google.com/scholar?q={{ pub.title | urlencode }}" target="_blank" rel="noopener" aria-label="Google Scholar citations"><img src="https://img.shields.io/badge/citations-{{ citations }}-1a5276?logo=Google%20Scholar&logoColor=white&style=flat" alt="Citations: {{ citations }}" loading="lazy"></a>
+      {%- endif -%}
       {%- endif -%}
     {% endif %}</h3>
     <p class="pub-card__authors">{{ authors | safe }}</p>

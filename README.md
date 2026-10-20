@@ -105,6 +105,9 @@ Pushes to `main` are built and deployed to GitHub Pages by
 on its scheduled and manual runs, falling back to committed values if the
 external lookup is unavailable.
 
+See the [Scholar citation workflow](docs/scholar-stats.md) for cache updates
+and citation badge rules.
+
 For a new fork, select **GitHub Actions** as the Pages source under
 **Settings > Pages**.
 

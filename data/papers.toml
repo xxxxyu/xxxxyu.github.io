@@ -1,5 +1,6 @@
 [[papers]]
 title = 'Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation'
+gs_id = 'zeva'
 authors = 'Fu Chen*, Xin Ding*, Bingjia Huang, Xiangyu Li, Mingju Wang, Jiawei He, Kun Li, Wei Sun, Yunxin Liu, Hao Wu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -13,6 +14,8 @@ featured = false
 
 [[papers]]
 title = 'Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
+gs_id = 'zetta'
+gs_title = 'Zetta : An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
 authors = 'Xin Ding*, Liang Mi*, Mingzhe Huang*, Zixuan Wang*, Chao Zhang*, Zixu Hao*, Fu Chen, Xiangyu Li, Yikai Zheng, Yaoyu Guo, Weijun Wang, Kun Li, Hao Wu, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -27,6 +30,7 @@ featured = false
 
 [[papers]]
 title = 'Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots'
+gs_id = 'embodied-cpp'
 authors = 'Ling Xu, Borui Li†, Hao Wu†, Chuyu Han, Xiangyu Li, Mohan Hua, Shiqi Jiang, Ting Cao, Chuanyou Li, Sheng Zhong, Shuai Wang'
 venue = 'ArXiv preprint'
 year = 2026
@@ -36,6 +40,7 @@ featured = false
 
 [[papers]]
 title = 'DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models'
+gs_id = 'dwi'
 authors = 'Weining Chen, Yongheng Deng, Xiang Wang, Ziyan Fu, Xiangyu Li, Ting Cao'
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2026
@@ -44,6 +49,7 @@ featured = false
 
 [[papers]]
 title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
+gs_id = 'doctoral-overview'
 authors = 'Xiangyu Li'
 venue = 'ACM MobiSys Companion 2026'
 year = 2026
@@ -52,6 +58,7 @@ featured = false
 
 [[papers]]
 title = 'ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies'
+gs_id = 'actprobe'
 authors = 'Bingjia Huang*, Xiangyu Li*, Xiang Wang, Liang Mi, Zixu Hao, Weijun Wang, Hao Wu, Kun Li, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -62,6 +69,7 @@ featured = false
 
 [[papers]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
+gs_id = 'embodiskill'
 authors = 'Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, Qianxi Zhang, Hao Wen, Xiangyu Li, Weijun Wang, Kun Li, Yunxin Liu, Haipeng Dai, Wei Wang, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -71,6 +79,7 @@ featured = false
 
 [[papers]]
 title = 'OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism'
+gs_id = 'oxygen'
 authors = 'Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu'
 venue = 'NeurIPS 2026'
 year = 2026
@@ -83,6 +92,7 @@ featured = true
 
 [[papers]]
 title = 'Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices'
+gs_id = 'vec-lut'
 authors = 'Xiangyu Li*, Chengyu Yin*, Weijun Wang, Jianyu Wei, Ting Cao, Yunxin Liu'
 venue = 'ACM MobiSys 2026'
 year = 2026
@@ -95,6 +105,7 @@ featured = true
 
 [[papers]]
 title = 'An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint'
+gs_id = 'length-constraint'
 authors = 'Yi Sun, Han Wang, Jiaqiang Li, Jiacheng Liu, Xiangyu Li, Hao Wen, Yizhen Yuan, Huiwen Zheng, Yan Liang, Yuanchun Li, Yunxin Liu'
 venue = 'EMNLP 2025'
 year = 2025
@@ -105,6 +116,7 @@ featured = false
 
 [[papers]]
 title = 'Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling'
+gs_id = 'squeezer'
 authors = 'Xiang Wang, Lingxiao Ma, Ziyan Fu, Xiangyu Li, Yuanchun Li, Ju Ren, Yaoxue Zhang, Yunxin Liu'
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2025
@@ -113,6 +125,7 @@ featured = false
 
 [[papers]]
 title = 'ChainStream: An LLM-based Framework for Unified Synthetic Sensing'
+gs_id = 'chainstream'
 authors = 'Jiacheng Liu, Yuanchun Li, Liangyan Li, Yi Sun, Hao Wen, Xiangyu Li, Yao Guo, Yunxin Liu'
 venue = 'ArXiv preprint'
 year = 2024
