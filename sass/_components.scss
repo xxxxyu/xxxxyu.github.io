@@ -459,8 +459,41 @@
   border-bottom-color: color-mix(in srgb, var(--c-border) 82%, transparent);
 }
 
+// ---------- Editorial marks ----------
+.pub-card__mark {
+  // A zero-width inline box shares the title baseline without moving its text.
+  display: inline-block;
+  position: relative;
+  // Libre Baskerville 600 P: 770 units; Noto star: 768 units (both 1000 UPM).
+  // Match ink height; its rightmost contour is at 819 units. Offset that
+  // contour plus 0.75 title em, independent of the zero-width inline box.
+  left: -1.567052em;
+  top: -0.042em; // Noto's star extends 42/1000 em below its baseline.
+  width: 0;
+  font-family: "Site Symbols", sans-serif;
+  font-size: 1.002604em; // 770 / 768, not a nominal font-size approximation.
+  font-weight: 400;
+  line-height: 0;
+  vertical-align: baseline;
+  text-align: right;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-arrow {
+  font-family: "Site Symbols", sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+  line-height: inherit;
+}
+
 // ---------- Responsive ----------
 @media (max-width: 768px) {
+  .pub-card__mark {
+    // Keep the same cap height; reduce only the visible gap to 0.05 title em
+    // so the mark fits in the existing 16px gutter without moving the text.
+    left: -0.86887em;
+  }
   .profile {
     flex-direction: column;
     align-items: center;

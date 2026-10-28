@@ -3,6 +3,16 @@
 This project redistributes the following third-party assets. Their licenses
 apply only to the identified assets, not to the project as a whole.
 
+## Site symbols (Noto Sans Symbols 2 subset)
+
+File: `static/fonts/site-symbols/site-symbols.woff2`
+
+Copyright 2022 The Noto Project Authors (https://github.com/notofonts/symbols).
+Subset from Google Fonts' `ofl/notosanssymbols2/NotoSansSymbols2-Regular.ttf`,
+retaining U+2726 and U+1F862 for publication marks and navigation arrows.
+Licensed under the SIL Open Font License 1.1; the original notice and license
+are preserved in `static/fonts/site-symbols/OFL.txt`.
+
 ## Libre Baskerville
 
 Files: `static/fonts/libre-baskerville/*.woff2`

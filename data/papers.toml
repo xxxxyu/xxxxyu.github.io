@@ -1,4 +1,13 @@
 [[papers]]
+title = 'Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation'
+gs_id = 'patchwork'
+authors = 'Zixu Hao, Weijun Wang, Xiangyu Li, Liang Mi, Hao Wu, Yunxin Liu, Ting Cao'
+venue = 'ArXiv preprint'
+year = 2026
+paper_url = 'https://arxiv.org/abs/2610.33582'
+featured = false
+
+[[papers]]
 title = 'Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation'
 gs_id = 'zeva'
 authors = 'Fu Chen*, Xin Ding*, Bingjia Huang, Xiangyu Li, Mingju Wang, Jiawei He, Kun Li, Wei Sun, Yunxin Liu, Hao Wu, Ting Cao'
@@ -11,6 +20,7 @@ press_links = [
   { label = '量子位', url = 'https://mp.weixin.qq.com/s/OMrRnOtlDyjFXlZDPF-n4Q' },
 ]
 featured = false
+highlight = true
 
 [[papers]]
 title = 'Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
@@ -26,7 +36,8 @@ notes = '[Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/20
 press_links = [
   { label = '机器之心', url = 'https://mp.weixin.qq.com/s/dgrptmhUPzZwcubdwUAqFw' },
 ]
-featured = false
+featured = true
+highlight = true
 
 [[papers]]
 title = 'Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots'
@@ -66,6 +77,7 @@ paper_url = 'https://arxiv.org/abs/2606.08508'
 code_url = 'https://github.com/air-embodied-brain/actprobe'
 page_url = 'https://air-embodied-brain.github.io/actprobe'
 featured = false
+highlight = true
 
 [[papers]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
@@ -76,6 +88,7 @@ year = 2026
 paper_url = 'https://arxiv.org/abs/2605.10332'
 code_url = 'https://github.com/air-embodied-brain/EmbodiSkill'
 featured = false
+highlight = true
 
 [[papers]]
 title = 'OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism'
@@ -89,6 +102,7 @@ blog_url = '/blog/oxygen-mot-vla-inference/'
 code_url = 'https://github.com/air-embodied-brain/OxyGen'
 page_url = 'https://air-embodied-brain.github.io/OxyGen'
 featured = true
+highlight = true
 
 [[papers]]
 title = 'Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices'
@@ -102,6 +116,7 @@ blog_url = '/blog/vec-lut-parallel-low-bit-llm/'
 code_url = 'https://github.com/OpenBitSys/vlut.cpp'
 slides_url = 'https://github.com/OpenBitSys/vlut.cpp/blob/master/media/veclut_slides_mobisys_2026.pdf'
 featured = true
+highlight = true
 
 [[papers]]
 title = 'An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint'
@@ -112,7 +127,6 @@ year = 2025
 notes = 'Main Conference'
 paper_url = 'https://arxiv.org/abs/2504.14350'
 page_url = 'https://time-is-up.github.io'
-featured = false
 
 [[papers]]
 title = 'Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling'
@@ -121,7 +135,6 @@ authors = 'Xiang Wang, Lingxiao Ma, Ziyan Fu, Xiangyu Li, Yuanchun Li, Ju Ren, Y
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2025
 paper_url = 'https://ieeexplore.ieee.org/abstract/document/11096018'
-featured = false
 
 [[papers]]
 title = 'ChainStream: An LLM-based Framework for Unified Synthetic Sensing'
@@ -132,7 +145,6 @@ year = 2024
 paper_url = 'https://arxiv.org/abs/2412.15240'
 code_url = 'https://github.com/MobileLLM/ChainStream'
 page_url = 'https://mobilellm.github.io/ChainStream'
-featured = false
 
 [[papers]]
 title = 'FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices'
@@ -169,4 +181,3 @@ venue = 'ISCA 2022'
 year = 2022
 paper_url = 'https://dl.acm.org/doi/10.1145/3470496.3527388'
 gs_id = 'dimmining'
-featured = false

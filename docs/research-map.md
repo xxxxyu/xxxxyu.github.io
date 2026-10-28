@@ -7,6 +7,13 @@ an interactive thematic landscape for the publications and projects in
 
 ## Editorial data
 
+Publication cards use two independent flags in `data/papers.toml`: `featured`
+selects homepage papers, while `highlight` adds a small four-point star in both
+the full publication list and the homepage. Highlights are manually curated
+for recency, impact, and relevance to current research: the works readers
+should notice first. They are not derived from citation thresholds, author
+order, or the research map's contribution weights. Omitted flags are false.
+
 `data/research.toml` is the source for the map. Each work has a stable `id`, a
 short label, role, contribution weight, topics, taxonomy terms, localized
 summaries, and destination links. The English taxonomy lives in

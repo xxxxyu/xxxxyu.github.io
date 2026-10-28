@@ -16,7 +16,7 @@
   <div>
     <p class="page-intro__eyebrow">{% if zh %}系统 · 模型 · 物理智能{% else %}Systems · Models · Physical intelligence{% endif %}</p>
     <h1>{% if zh %}研究的交汇处{% else %}Research, in context.{% endif %}</h1>
-    <div class="research-intro__dek">{{ section.content | safe }} <a class="research-intro__papers" href="{% if zh %}/zh{% endif %}/papers/">{% if zh %}论文列表{% else %}Full paper list{% endif %} →</a></div>
+    <div class="research-intro__dek">{{ section.content | safe }} <a class="research-intro__papers" href="{% if zh %}/zh{% endif %}/papers/">{% if zh %}论文列表{% else %}Full paper list{% endif %} <span class="nav-arrow" aria-hidden="true">🡢</span></a></div>
   </div>
 </header>
 <section class="research-explorer" data-research lang="{{ section.lang }}" aria-label="{% if zh %}探索研究地图{% else %}Explore the research map{% endif %}">
@@ -74,7 +74,7 @@
           <div class="research-work__links">
             {% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{% if zh %}论文{% else %}Paper{% endif %} ↗</a>{% endif %}
             {% if pub.code_url %}<a href="{{ pub.code_url }}" target="_blank" rel="noopener">{% if zh %}代码{% else %}Code{% endif %} ↗</a>{% endif %}
-            {% if pub.blog_url %}<a href="{% if zh %}/zh{% endif %}{{ pub.blog_url }}">{% if zh %}博客{% else %}Blog{% endif %} →</a>{% endif %}
+            {% if pub.blog_url %}<a href="{% if zh %}/zh{% endif %}{{ pub.blog_url }}">{% if zh %}博客{% else %}Blog{% endif %} <span class="nav-arrow" aria-hidden="true">🡢</span></a>{% endif %}
             {% if pub.page_url %}<a href="{{ pub.page_url }}" target="_blank" rel="noopener">{% if zh %}项目页{% else %}Project{% endif %} ↗</a>{% endif %}
             {% if pub.slides_url %}<a href="{{ pub.slides_url }}" target="_blank" rel="noopener">{% if zh %}幻灯片{% else %}Slides{% endif %} ↗</a>{% endif %}
           </div>

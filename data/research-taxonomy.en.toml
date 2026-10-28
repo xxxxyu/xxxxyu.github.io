@@ -497,3 +497,18 @@ contexts = ["llms", "edge-ai"]
 sources = ["length-paper"]
 evidence_status = "supported"
 note = "Token budgets and latency constraints remain descriptive attributes; do not equate this with quantization or runtime optimization."
+
+[[sources]]
+id = "patchwork-paper"
+kind = "paper_abstract"
+location = "https://arxiv.org/abs/2610.33582"
+note = "Shared templates and per-environment patches reduce duplicated resources in domain-randomized embodied simulation."
+
+[[assignments]]
+work_id = "patchwork"
+primary = ["memory-management", "simulation"]
+secondary = []
+contexts = ["embodied-agents"]
+sources = ["patchwork-paper"]
+evidence_status = "supported"
+note = "Memory sharing and robot simulation are supported by the abstract; mutable simulation state remains private to each instance."

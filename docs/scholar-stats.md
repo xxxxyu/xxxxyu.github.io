@@ -25,7 +25,7 @@ Unmatched papers keep their previous count; papers removed from the tracked list
 are removed from the cache on a successful refresh. The script replaces the JSON
 atomically, preserving the previous file if fetching or writing fails.
 
-The current 15 papers fit in one response. Revisit pagination if the Scholar
+The current 16 tracked papers fit in one response. Revisit pagination if the Scholar
 profile exceeds 100 entries; do not introduce per-paper requests.
 
 ## Automation

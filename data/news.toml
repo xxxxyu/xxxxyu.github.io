@@ -1,4 +1,18 @@
 [[news]]
+date = '2026/10'
+text = '*Personal LLM Agents* (survey & position paper) has reached **500 citations** on Google Scholar! Congrats to [Prof. Yuanchun Li](https://yuanchun-li.github.io).'
+links = [
+  { label = 'Paper', url = 'https://arxiv.org/abs/2401.05459' },
+  { label = 'Page', url = 'https://github.com/MobileLLM/Personal_LLM_Agents_Survey' },
+  { label = '机器之心', url = 'https://mp.weixin.qq.com/s/JYB4BzsXhWF8pEUUkvn_GQ' },
+]
+
+[[news]]
+date = '2026/10'
+text = '*Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation* released.'
+links = [{ label = 'Paper', url = 'https://arxiv.org/abs/2610.33582' }]
+
+[[news]]
 date = '2026/09'
 text = '*OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism* accepted to **NeurIPS 2026**.'
 links = [
@@ -10,31 +24,12 @@ links = [
 
 [[news]]
 date = '2026/08'
-text = '*Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation* released. Congrats to Fu Chen and [Xin Ding](https://xinding-bot.github.io).'
+text = '*Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation* released. Congrats to [Fu Chen](https://dsdfasfaac.github.io/) and [Xin Ding](https://xinding-bot.github.io).'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2608.30880' },
   { label = 'Code', url = 'https://github.com/air-embodied-brain/Zeva' },
   { label = 'Page', url = 'https://air-embodied-brain.github.io/Zeva' },
   { label = '量子位', url = 'https://mp.weixin.qq.com/s/OMrRnOtlDyjFXlZDPF-n4Q' },
-]
-
-[[news]]
-date = '2026/08'
-text = '**Cosmos Lite** updated to v0.3.0: add RoboLab parallel rollout support and RoboLab-120 benchmark results.'
-links = [
-  { label = 'Blog', url = '/blog/cosmos-lite-v030' },
-  { label = 'Code', url = 'https://github.com/xxxxyu/cosmos-lite' },
-  { label = 'Models', url = 'https://huggingface.co/collections/XXXXyu/cosmos-lite' },
-]
-
-[[news]]
-date = '2026/08'
-text = '**OxyGen** updated: add suffix-only LoRA training and inference support, plus a LIBERO textual-memory example.'
-links = [
-  { label = 'Blog', url = '/blog/oxygen-mot-vla-inference' },
-  { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
-  { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
-  { label = 'Page', url = 'https://air-embodied-brain.github.io/OxyGen' },
 ]
 
 [[news]]
@@ -56,7 +51,7 @@ links = [
 
 [[news]]
 date = '2026/08'
-text = '**Embodied.cpp** v0.1 released: a portable C++ inference runtime for embodied AI models. Congrats to [Borui Li](https://www.liborui.cn) and [Hao Wu](https://hackhao.github.io).'
+text = '**Embodied.cpp** v1.0 released: a portable C++ inference runtime for embodied AI models. Congrats to [Borui Li](https://www.liborui.cn) and [Hao Wu](https://hackhao.github.io).'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2607.02501' },
   { label = 'Code', url = 'https://github.com/SEU-PAISys/Embodied.cpp' },
@@ -64,8 +59,9 @@ links = [
 
 [[news]]
 date = '2026/07'
-text = '**Cosmos Lite** released: deploy 16B/4B Cosmos 3 robot policies on a single 24GB RTX 4090 via quantized inference (acc. validated).'
+text = '**Cosmos Lite** released: efficient deployment and rollout on consumer-grade GPUs for Cosmos 3 robot policies.'
 links = [
+  { label = 'Blog', url = '/blog/cosmos-lite-v030' },
   { label = 'Code', url = 'https://github.com/xxxxyu/cosmos-lite' },
   { label = 'Models', url = 'https://huggingface.co/collections/XXXXyu/cosmos-lite' },
 ]
@@ -96,23 +92,6 @@ links = [
   { label = 'Page', url = 'https://air-embodied-brain.github.io/actprobe' },
 ]
 
-# [[news]]
-# date = '2026/05'
-# text = '**Vec-LUT** selected as <strong class="highlight">featured paper</strong> for the [On-Device AI](https://www.sigmobile.org/mobisys/2026/program/#session-7-on-device-ai) session of ACM MobiSys 2026.'
-# links = [
-#   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3745756.3809200' },
-#   { label = 'Blog', url = '/blog/vec-lut-parallel-low-bit-llm/' },
-#   { label = 'Code', url = 'https://github.com/OpenBitSys/vlut.cpp' },
-# ]
-
-# [[news]]
-# date = '2026/05'
-# text = '**OxyGen** updated: release [ArXiv v2](https://arxiv.org/abs/2603.14371), and add PyTorch support (previously JAX-only) for on-board deployment (e.g., on Jetson AGX Thor).'
-# links = [
-#   { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
-#   { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
-# ]
-
 [[news]]
 date = '2026/05'
 text = '*EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents* released.'
@@ -123,17 +102,9 @@ links = [
 
 [[news]]
 date = '2026/04'
-text = '*Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment* (short paper) accepted to the **Rising Stars Forum of ACM MobiSys 2026**.'
+text = '*Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment* accepted to the **Rising Stars Forum of ACM MobiSys 2026**.'
 links = [
   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3812835.3814828' },
-]
-
-[[news]]
-date = '2026/03'
-text = '*OxyGen: Unified KV Cache Management for Vision-Language-Action Models under Multi-Task Parallelism* released.'
-links = [
-  { label = 'Paper', url = 'https://arxiv.org/abs/2603.14371' },
-  { label = 'Code', url = 'https://github.com/air-embodied-brain/OxyGen' },
 ]
 
 [[news]]
@@ -160,20 +131,6 @@ links = [
   { label = 'Paper', url = 'https://ieeexplore.ieee.org/document/11096018' },
 ]
 
-# [[news]]
-# date = '2024/11'
-# text = 'Presented FlexNN at **ACM MobiCom 2024**, Washington D.C.'
-# links = [
-#   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3636534.3649391' },
-#   { label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' },
-#   { label = 'Slides', url = 'https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf' },
-# ]
-
-# [[news]]
-# date = '2024/04'
-# text = 'FlexNN awarded **4 badges** in artifact evaluation.'
-# links = [{ label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' }]
-
 [[news]]
 date = '2024/01'
 text = '*Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security* (survey & position paper) released.'
@@ -190,4 +147,11 @@ links = [
   { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3636534.3649391' },
   { label = 'Code', url = 'https://github.com/xxxxyu/FlexNN' },
   { label = 'Slides', url = 'https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf' },
+]
+
+[[news]]
+date = '2022/03'
+text = '*DIMMining: Pruning-Efficient and Parallel Graph Mining on Near-Memory-Computing* accepted to **ISCA 2022**. Congrats to [Guohao Dai](https://scholar.google.com/citations?user=gz3Tkl0AAAAJ) and [Zhenhua Zhu](https://scholar.google.com/citations?hl=zh-CN&user=Y3IiQmQAAAAJ&view_op=list_works&sortby=pubdate).'
+links = [
+  { label = 'Paper', url = 'https://dl.acm.org/doi/10.1145/3470496.3527388' },
 ]

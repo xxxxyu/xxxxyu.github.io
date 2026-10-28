@@ -5,14 +5,14 @@
   | replace(from="‡", to="<sup>‡</sup>")
   | replace(from="§", to="<sup>§</sup>")
   | replace(from="Xiangyu Li", to="<strong><u>Xiangyu Li</u></strong>") %}
-<div class="pub-card{% if not pub.image %} pub-card--compact{% endif %}">
+<div class="pub-card{% if not pub.image %} pub-card--compact{% endif %}{% if pub.highlight | default(value=false) %} pub-card--highlight{% endif %}">
   {% if pub.image %}
   <div class="pub-card__img">
     <img src="{{ pub.image }}" alt="{{ pub.title }}" loading="lazy">
   </div>
   {% endif %}
   <div class="pub-card__body">
-    <h3 class="pub-card__title">{% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{{ pub.title | markdown(inline=true) | safe }}</a>{% else %}{{ pub.title | markdown(inline=true) | safe }}{% endif %}{% if pub.gs_id %}
+    <h3 class="pub-card__title">{% if pub.highlight | default(value=false) %}<span class="pub-card__mark" aria-hidden="true">✦</span>{% endif %}{% if pub.paper_url %}<a href="{{ pub.paper_url }}" target="_blank" rel="noopener">{{ pub.title | markdown(inline=true) | safe }}</a>{% else %}{{ pub.title | markdown(inline=true) | safe }}{% endif %}{% if pub.gs_id %}
       {%- set gs_data = load_data(path="data/scholar.json", required=false) -%}
       {%- if gs_data -%}
       {%- set citations = gs_data.papers | get(key=pub.gs_id, default=0) -%}

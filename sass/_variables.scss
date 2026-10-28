@@ -2,6 +2,14 @@
 // ==========================================================
 
 // ---------- Font Face Declarations ----------
+@font-face {
+  font-family: "Site Symbols";
+  src: url("/fonts/site-symbols/site-symbols.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2726, U+1F862;
+}
 
 // Source Serif 4 (variable)
 @font-face {

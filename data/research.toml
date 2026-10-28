@@ -1,6 +1,26 @@
 # Authored thematic map with English taxonomy assignments.
 
 [[works]]
+id = "patchwork"
+label = "Patchwork"
+paper_url = "https://arxiv.org/abs/2610.33582"
+x = 390
+y = 300
+topics = ["systems", "embodied"]
+role = "collaborator"
+role_en = "Third author"
+role_zh = "合作作者"
+summary_en = "Shared templates and per-environment patches reduce memory duplication in domain-randomized simulation."
+summary_zh = "通过共享模板与逐环境补丁，减少域随机化仿真中的内存重复占用。"
+primary_terms = ["Memory Management", "Robot Simulation"]
+secondary_terms = []
+contexts = ["Embodied Agents"]
+contribution_weight = 0.58
+author_rank = "3/7"
+term_ids = ["memory-management", "simulation"]
+node_radius = 8.4
+
+[[works]]
 id = "flexnn"
 label = "FlexNN"
 paper_url = "https://dl.acm.org/doi/10.1145/3636534.3649391"

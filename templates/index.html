@@ -66,7 +66,7 @@
 {% set news_data = load_data(path="data/news.toml") %}
 <div class="section-heading">
   <h2 data-i18n-text="news">{{ trans(key="news", lang=section.lang) }}</h2>
-  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/about/#news{% else %}/about/#news{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/about/#news{% else %}/about/#news{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> <span class="nav-arrow" aria-hidden="true">🡢</span></a>
 </div>
 <ul class="news-list">
   {% for item in news_data.news | slice(end=3) %}
@@ -92,10 +92,10 @@
 
 <div class="section-heading">
   <h2 data-i18n-text="selected_papers">{{ trans(key="selected_papers", lang=section.lang) }}</h2>
-  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/papers/{% else %}/papers/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/papers/{% else %}/papers/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> <span class="nav-arrow" aria-hidden="true">🡢</span></a>
 </div>
 {% for pub in pubs %}
-{% if pub.featured %}
+{% if pub.featured | default(value=false) %}
 {{ pubmacros::pub_card(pub=pub) }}
 {% endif %}
 {% endfor %}
@@ -105,7 +105,7 @@
 
 <div class="section-heading">
   <h2 data-i18n-text="latest_posts">{{ trans(key="latest_posts", lang=section.lang) }}</h2>
-  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/blog/{% else %}/blog/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> &rarr;</a>
+  <a class="section-heading__more" href="{% if section.lang == "zh" %}/zh/blog/{% else %}/blog/{% endif %}"><span data-i18n-text="see_all">{{ trans(key="see_all", lang=section.lang) }}</span> <span class="nav-arrow" aria-hidden="true">🡢</span></a>
 </div>
 {% for page in blog.pages | slice(end=3) %}
 {{ pubmacros::localized_post_preview(page=page, target_lang=section.lang, default_language=config.default_language, heading_level=3) }}

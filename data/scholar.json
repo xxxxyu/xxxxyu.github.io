@@ -1,21 +1,21 @@
 {
   "author_id": "IjoWeIMAAAAJ",
-  "total": 749,
   "papers": {
-    "actprobe": 6,
+    "actprobe": 8,
     "chainstream": 4,
-    "dimmining": 87,
+    "dimmining": 90,
     "doctoral-overview": 0,
     "dwi": 0,
     "embodied-cpp": 1,
-    "embodiskill": 20,
-    "flexnn": 77,
-    "length-constraint": 22,
+    "embodiskill": 21,
+    "flexnn": 78,
+    "length-constraint": 24,
     "oxygen": 8,
-    "personal-llm-agents": 495,
-    "squeezer": 3,
-    "vec-lut": 4,
-    "zetta": 17,
-    "zeva": 5
-  }
+    "personal-llm-agents": 500,
+    "squeezer": 4,
+    "vec-lut": 5,
+    "zetta": 23,
+    "zeva": 6
+  },
+  "total": 772
 }
