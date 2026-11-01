@@ -6,16 +6,16 @@
     "dimmining": 90,
     "doctoral-overview": 0,
     "dwi": 0,
-    "embodied-cpp": 1,
-    "embodiskill": 21,
+    "embodied-cpp": 2,
+    "embodiskill": 22,
     "flexnn": 78,
-    "length-constraint": 24,
+    "length-constraint": 26,
     "oxygen": 8,
-    "personal-llm-agents": 500,
+    "personal-llm-agents": 504,
     "squeezer": 4,
     "vec-lut": 5,
-    "zetta": 23,
-    "zeva": 6
+    "zetta": 26,
+    "zeva": 7
   },
-  "total": 772
+  "total": 784
 }
