@@ -25,7 +25,7 @@ ai_translation_effort = ""
 
 **并不必然如此。** 更低的位宽可以减少内存占用，但只有底层推理内核与数据表示和工作负载相匹配时，才能真正转化为速度优势。**查找表**（lookup table, LUT）内核在单 token 生成时表现很好，但并行处理大量 token 时，这种优势会大幅减弱。Vec-LUT 针对的正是这种并行访问模式。在五款 x86 和 ARM 设备上，与每权重位数（bits per weight, BPW）相近的基线相比，它将端到端预填充加速至多 **4.2 倍**；在 Snapdragon 8 Elite 上，其 CPU 实现甚至只用两个 CPU 核心，就超过了手机 NPU（llama.cpp 的 Hexagon 后端）。
 
-{{ video(src="/videos/vec-lut-parallel-low-bit-llm/demo.mp4", autoplay=true, loop=true, max_width="80%", caption="Vec-LUT 与 llama.cpp 对比：在单个 CPU 核心上进行 32 路并行解码，端到端速度提升 3 倍。") }}
+{{ video(src="/videos/vec-lut-parallel-low-bit-llm/demo.mp4", poster="/videos/vec-lut-parallel-low-bit-llm/poster.webp", autoplay=true, loop=true, max_width="80%", caption="Vec-LUT 与 llama.cpp 对比：在单个 CPU 核心上进行 32 路并行解码，端到端速度提升 3 倍。") }}
 
 ---
 

@@ -3,19 +3,6 @@
   var content = document.querySelector('.blog-post__content');
   if (!content) return;
 
-  function prefersReducedMotion() {
-    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  function initMotionPreferences() {
-    if (!prefersReducedMotion()) return;
-
-    content.querySelectorAll('video[autoplay]').forEach(function(video) {
-      video.removeAttribute('autoplay');
-      video.pause();
-    });
-  }
-
   function getAnchorOffset() {
     var styles = window.getComputedStyle(document.documentElement);
     var offset = parseFloat(styles.scrollPaddingTop);
@@ -105,7 +92,6 @@
     }
   }
 
-  initMotionPreferences();
   initSectionAnchors();
   initActiveToc();
 })();

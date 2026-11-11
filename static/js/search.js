@@ -6,7 +6,6 @@
   const input = document.getElementById('search-input');
   const closeBtn = document.getElementById('search-close');
   const resultsEl = document.getElementById('search-results');
-  const emptyLabel = modal.dataset.emptyLabel || 'No results found.';
 
   const MAX_RESULTS = 8;
   const SNIPPET_LEN = 140;
@@ -19,19 +18,23 @@
   let currentItems = [];
 
   function loadDocs() {
-    const preferredLang = localStorage.getItem('site-language');
+    let preferredLang;
+    try { preferredLang = localStorage.getItem('site-language'); } catch (_) {}
     const lang = preferredLang === 'zh' || preferredLang === 'en'
       ? preferredLang
       : (document.documentElement.lang || 'en');
     if (docsPromise && docsLanguage === lang) return docsPromise;
     docsLanguage = lang;
     docs = null;
-    docsPromise = fetch('/search_index.' + lang + '.json')
-      .then((r) => r.json())
+    const request = fetch('/search_index.' + lang + '.json')
+      .then((r) => {
+        if (!r.ok) throw new Error('Search index: HTTP ' + r.status);
+        return r.json();
+      })
       .then((idx) => {
-        const storedDocs = idx.documents || Object.values(idx.documentStore.docs);
-        docs = storedDocs.map((d) => ({
-          id: d.id,
+        const storedDocs = Array.isArray(idx) ? idx : (idx.documents || Object.values(idx.documentStore.docs));
+        const loadedDocs = storedDocs.map((d) => ({
+          id: d.id || d.url,
           title: d.title || '',
           description: d.description || '',
           body: d.body || '',
@@ -39,14 +42,20 @@
           descLower: (d.description || '').toLowerCase(),
           bodyLower: (d.body || '').toLowerCase(),
         }));
-        return docs;
+        // Only the latest request may update the active document collection.
+        if (docsPromise === request) docs = loadedDocs;
+        return loadedDocs;
       })
       .catch((err) => {
         console.error('Failed to load search index', err);
-        docs = [];
-        return docs;
+        if (docsPromise === request) {
+          docs = [];
+          docsPromise = null; // A later open retries temporary network failures.
+        }
+        return [];
       });
-    return docsPromise;
+    docsPromise = request;
+    return request;
   }
 
   function escapeHtml(s) {
@@ -122,6 +131,7 @@
       .slice(0, MAX_RESULTS);
 
     if (!matches.length) {
+      const emptyLabel = modal.dataset.emptyLabel || 'No results found.';
       resultsEl.innerHTML =
         '<div class="search-modal__empty">' + escapeHtml(emptyLabel) + '</div>';
       return;

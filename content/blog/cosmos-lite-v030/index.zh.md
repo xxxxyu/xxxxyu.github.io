@@ -25,7 +25,7 @@ NVIDIA 的 Cosmos 3[^1] 带来了在 DROID[^2] 上训练的机器人策略。不
 
 [Cosmos Lite](https://github.com/xxxxyu/cosmos-lite) 就是为此做的。它构建在 [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework) 之上，是一个面向 Cosmos 3 策略的高效推理 runtime，覆盖两类用法：一是**本地部署**，以 batch-one 方式提供策略推理，可直接对接真机；二是**并行 rollout**，由一个共享的推理服务同时驱动多个仿真环境，并把 rollout 轨迹导出用于后续训练。一台 8 卡主机上，最快的 profile 跑完全部 1,200 个 RoboLab episode 不到五小时。
 
-{{ video(src="/videos/cosmos-lite-v030/demo.mp4", max_width="100%", caption="Edge BF16（官方默认配置）对比 Edge GenW8A8（优化 runtime），在 RoboLab 中闭环 rollout。") }}
+{{ video(src="/videos/cosmos-lite-v030/demo.mp4", poster="/videos/cosmos-lite-v030/poster.webp", max_width="100%", caption="Edge BF16（官方默认配置）对比 Edge GenW8A8（优化 runtime），在 RoboLab 中闭环 rollout。") }}
 
 评测覆盖 RoboLab[^3] 全部 120 个任务，每任务 10 个 episode；所有 profile 用同一组采样参数（guidance 3、两步 UniPC 去噪、shift 5）。延迟统计的是单张 RTX 4090 上每个动作请求的耗时。
 

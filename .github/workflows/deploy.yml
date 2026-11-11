@@ -42,23 +42,29 @@ jobs:
       - name: Verify Chinese search index is committed
         run: git diff --exit-code -- static/search_index.zh.json
 
-      - name: Compute CJK font cache key
-        id: cjk-font-cache
+      - name: Compute web-font cache key
+        id: web-font-cache
         run: echo "key=$(uv run --locked python scripts/build_font_subsets.py --print-cache-key)" >> "$GITHUB_OUTPUT"
 
-      - name: Restore generated CJK font subsets
+      - name: Restore generated web-font subsets
         uses: actions/cache@v4
         with:
           path: |
             .font-subsets-manifest.json
-            static/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2
-            static/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2
-          key: cjk-font-subsets-${{ runner.os }}-${{ steps.cjk-font-cache.outputs.key }}
+            static/fonts/generated/
+          key: web-font-subsets-${{ runner.os }}-${{ steps.web-font-cache.outputs.key }}
           restore-keys: |
-            cjk-font-subsets-${{ runner.os }}-
+            web-font-subsets-${{ runner.os }}-
 
       - name: Run repository tests
         run: uv run --locked python -m unittest discover -s tests -v
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check loading behavior
+        run: node --test tests/js/*.test.cjs
 
       - name: Install scholarly (fallback when SERPAPI_KEY absent)
         if: github.event_name != 'push'

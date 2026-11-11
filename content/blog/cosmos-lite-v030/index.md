@@ -21,7 +21,7 @@ NVIDIA's Cosmos 3[^1] shipped with robot policies trained on DROID[^2]. Running 
 
 [Cosmos Lite](https://github.com/xxxxyu/cosmos-lite) fills that gap. It is an efficient inference runtime for Cosmos 3 policies, built on top of [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework). It covers two use cases: **local serving** as a batch-one policy server for real-robot deployment, and **parallel rollout** as a shared server feeding multiple simulator lanes, exporting rollout trajectories for further training. On a single 8-GPU host, the fastest profile finishes all 1,200 RoboLab episodes in under five hours.
 
-{{ video(src="/videos/cosmos-lite-v030/demo.mp4", max_width="100%", caption="Edge BF16 with official defaults vs. Edge GenW8A8 with the optimized runtime, running closed-loop in RoboLab.") }}
+{{ video(src="/videos/cosmos-lite-v030/demo.mp4", poster="/videos/cosmos-lite-v030/poster.webp", max_width="100%", caption="Edge BF16 with official defaults vs. Edge GenW8A8 with the optimized runtime, running closed-loop in RoboLab.") }}
 
 The benchmark covers all 120 RoboLab[^3] tasks, 10 episodes each, all with the same sampler settings (guidance 3, two UniPC denoise steps, shift 5), and latency is measured per action request on a single RTX 4090.
 

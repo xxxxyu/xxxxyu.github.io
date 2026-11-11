@@ -1,9 +1,4 @@
-"""Build self-hosted Noto CJK subsets from the site's textual sources.
-
-The source fonts remain available as a defensive fallback. Normal pages use the
-small generated subsets; development and deployment entry points regenerate
-them automatically whenever the set of CJK characters changes.
-"""
+"""Build versioned web-font subsets from the site's textual sources."""
 
 from __future__ import annotations
 
@@ -44,7 +39,10 @@ TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".md", ".scss", ".toml", ".txt
 RENDERED_SUFFIXES = {".html", ".json", ".txt", ".xml"}
 MANIFEST_PATH = REPO_ROOT / ".font-subsets-manifest.json"
 LOCK_PATH = REPO_ROOT / ".font-subsets.lock"
-SUBSET_FORMAT_VERSION = 1
+SUBSET_FORMAT_VERSION = 2
+GENERATED_ROOT = REPO_ROOT / "static/fonts/generated"
+FONT_CSS = GENERATED_ROOT / "fonts.css"
+FONT_CATALOG = GENERATED_ROOT / "manifest.json"
 
 
 @dataclass(frozen=True)
@@ -52,18 +50,36 @@ class FontTarget:
     label: str
     source: Path
     output: Path
+    family: str
+    weight: str
+    style: str = "normal"
+    cjk: bool = False
 
 
 FONT_TARGETS = (
     FontTarget(
         "Noto Serif SC",
         REPO_ROOT / "static/fonts/noto-serif-sc/NotoSerifSC-VariableFont_wght.woff2",
-        REPO_ROOT / "static/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2",
+        GENERATED_ROOT / "noto-serif.woff2",
+        "Noto Serif SC Site", "200 900", cjk=True,
     ),
     FontTarget(
         "Noto Sans SC",
         REPO_ROOT / "static/fonts/noto-sans-sc/NotoSansSC-VariableFont_wght.woff2",
-        REPO_ROOT / "static/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2",
+        GENERATED_ROOT / "noto-sans.woff2",
+        "Noto Sans SC Site", "100 900", cjk=True,
+    ),
+    *(
+        FontTarget(family, REPO_ROOT / "static/fonts" / source,
+                   GENERATED_ROOT / output, family, weight, style)
+        for family, source, output, weight, style in (
+            ("Libre Baskerville", "libre-baskerville/LibreBaskerville-VariableFont_wght.woff2", "display.woff2", "400 700", "normal"),
+            ("Libre Baskerville", "libre-baskerville/LibreBaskerville-Italic-VariableFont_wght.woff2", "display-italic.woff2", "400 700", "italic"),
+            ("Source Serif 4", "source-serif-4/SourceSerif4Variable-Roman.ttf.woff2", "prose.woff2", "200 900", "normal"),
+            ("Source Serif 4", "source-serif-4/SourceSerif4Variable-Italic.woff2", "prose-italic.woff2", "200 900", "italic"),
+            ("Source Sans 3", "source-sans-3/SourceSans3VF-Upright.ttf.woff2", "sans.woff2", "200 900", "normal"),
+            ("Source Sans 3", "source-sans-3/SourceSans3VF-Italic.ttf.woff2", "sans-italic.woff2", "200 900", "italic"),
+        )
     ),
 )
 
@@ -98,10 +114,11 @@ def textual_files(root: Path, suffixes: set[str]) -> list[Path]:
 
 
 def characters_from_texts(sources: list[str]) -> set[int]:
-    characters: set[int] = set()
+    # Search input and runtime-formatted dates/numbers need printable ASCII.
+    characters: set[int] = set(range(0x20, 0x7F))
     for source in sources:
         normalized = unicodedata.normalize("NFC", html.unescape(source))
-        characters.update(ord(character) for character in normalized if is_cjk_character(character))
+        characters.update(ord(character) for character in normalized if character.isprintable())
     return characters
 
 
@@ -118,6 +135,22 @@ def characters_in(paths: list[Path]) -> set[int]:
 
 def source_characters() -> set[int]:
     return characters_in(source_text_files())
+
+
+def target_characters(target: FontTarget, required: set[int]) -> set[int]:
+    """Partition one source snapshot without rereading files for every face."""
+    return {point for point in required if is_cjk_character(chr(point)) == target.cjk}
+
+
+def unicode_range(codepoints: set[int]) -> str:
+    ranges = []
+    for point in sorted(codepoints):
+        if ranges and ranges[-1][1] + 1 == point:
+            ranges[-1][1] = point
+        else:
+            ranges.append([point, point])
+    return ",".join(f"U+{start:X}" if start == end else f"U+{start:X}-{end:X}"
+                    for start, end in ranges)
 
 
 def source_text_files() -> list[Path]:
@@ -290,30 +323,57 @@ def subsets_are_current(required: set[int]) -> bool:
     outputs = manifest.get("outputs")
     if not isinstance(outputs, dict):
         return False
-    for target in FONT_TARGETS:
-        relative = str(target.output.relative_to(REPO_ROOT))
-        if not target.output.is_file() or outputs.get(relative) != sha256(target.output):
+    for output in generated_paths():
+        relative = str(output.relative_to(REPO_ROOT))
+        if not output.is_file() or outputs.get(relative) != sha256(output):
             return False
     return True
+
+
+def generated_paths() -> tuple[Path, ...]:
+    return tuple(target.output for target in FONT_TARGETS) + (FONT_CSS, FONT_CATALOG)
+
+
+def write_web_assets() -> None:
+    """Emit the CSS and preload catalog from the same generated font files."""
+    fonts = []
+    faces = []
+    for target in FONT_TARGETS:
+        path = "/" + target.output.relative_to(REPO_ROOT / "static").as_posix()
+        url = path + "?v=" + sha256(target.output)[:12]
+        fonts.append({"url": url, "cjk": target.cjk, "style": target.style})
+        faces.append(
+            f'@font-face{{font-family:"{target.family}";font-style:{target.style};'
+            f'font-weight:{target.weight};font-display:swap;src:url("{url}") format("woff2");'
+            f'unicode-range:{unicode_range(font_codepoints(target.output))}}}'
+        )
+    atomic_write(FONT_CSS, ("\n".join(faces) + "\n").encode())
+    atomic_write(FONT_CATALOG, (json.dumps({"fonts": fonts}) + "\n").encode())
 
 
 def write_manifest(required: set[int]) -> None:
     manifest = {
         "inputs": input_fingerprint(required),
         "outputs": {
-            str(target.output.relative_to(REPO_ROOT)): sha256(target.output)
-            for target in FONT_TARGETS
+            str(output.relative_to(REPO_ROOT)): sha256(output)
+            for output in generated_paths()
         },
     }
     rendered = json.dumps(manifest, indent=2, sort_keys=True) + "\n"
-    MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    handle, temporary_name = tempfile.mkstemp(suffix=".json", dir=MANIFEST_PATH.parent)
+    atomic_write(MANIFEST_PATH, rendered.encode("utf-8"))
+
+
+def atomic_write(path: Path, data: bytes) -> None:
+    if path.is_file() and path.read_bytes() == data:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle, name = tempfile.mkstemp(dir=path.parent)
     os.close(handle)
-    temporary = Path(temporary_name)
+    temporary = Path(name)
     try:
-        temporary.write_text(rendered, encoding="utf-8", newline="\n")
+        temporary.write_bytes(data)
         temporary.chmod(0o644)
-        temporary.replace(MANIFEST_PATH)
+        temporary.replace(path)
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -355,22 +415,22 @@ def ignore_interrupt_in_worker() -> None:
 
 def build_subsets(required: set[int]) -> list[Path]:
     if not required:
-        raise RuntimeError("No CJK characters were found in the site sources")
+        raise RuntimeError("No printable characters were found in the site sources")
     validate_source_fonts()
     jobs: list[tuple[FontTarget, set[int]]] = []
     for target in FONT_TARGETS:
-        supported = required & font_codepoints(target.source)
+        supported = target_characters(target, required) & font_codepoints(target.source)
         if not supported:
-            raise RuntimeError(f"{target.label} supports none of the CJK characters used by the site")
+            raise RuntimeError(f"{target.label} supports none of the characters used by the site")
         jobs.append((target, supported))
 
     changed: list[Path] = []
-    pool = Pool(processes=len(jobs), initializer=ignore_interrupt_in_worker)
+    pool = Pool(processes=min(4, len(jobs)), initializer=ignore_interrupt_in_worker)
     try:
         generated_fonts = pool.map(subset_job, jobs)
     except KeyboardInterrupt:
         # The parent owns interruption. Stop workers promptly instead of
-        # waiting for both large font jobs to finish during shell startup.
+        # waiting for the font jobs to finish during shell startup.
         pool.terminate()
         pool.join()
         raise
@@ -380,7 +440,7 @@ def build_subsets(required: set[int]) -> list[Path]:
     for target, generated in generated_fonts:
         current = target.output.read_bytes() if target.output.is_file() else None
         if current != generated:
-            target.output.write_bytes(generated)
+            atomic_write(target.output, generated)
             changed.append(target.output)
     return changed
 
@@ -392,8 +452,9 @@ def ensure_subsets(required: set[int]) -> tuple[list[Path], bool]:
         # A concurrent process may have completed while this one waited.
         if subsets_are_current(required):
             return [], True
-        print("CJK character set changed; rebuilding font subsets…", flush=True)
+        print("Font inputs changed; rebuilding font subsets…", flush=True)
         changed = build_subsets(required)
+        write_web_assets()
         write_manifest(required)
         return changed, False
 
@@ -404,7 +465,7 @@ def validate_subsets(required: set[int], *, context: str) -> None:
             raise RuntimeError(
                 f"Missing generated font: {target.output.relative_to(REPO_ROOT)}; run this script"
             )
-        expected = required & font_codepoints(target.source)
+        expected = target_characters(target, required) & font_codepoints(target.source)
         missing = expected - font_codepoints(target.output)
         if missing:
             raise RuntimeError(
@@ -419,14 +480,14 @@ def print_summary(required: set[int], changed: list[Path], *, cached: bool = Fal
         f"{target.output.name} {target.output.stat().st_size / 1024:.0f} KiB"
         for target in FONT_TARGETS
     )
-    print(f"CJK font subsets {state}: {len(required)} characters; {sizes}", flush=True)
+    print(f"Web-font subsets {state}: {len(required)} characters; {sizes}", flush=True)
 
 
 def watch(interval: float) -> int:
     previous_fingerprint: tuple[tuple[str, bytes], ...] | None = None
     previous: frozenset[int] | None = None
     last_error: str | None = None
-    print("Watching site sources for new CJK characters…", flush=True)
+    print("Watching site sources for new characters…", flush=True)
     try:
         while True:
             snapshot = source_snapshot()
@@ -489,18 +550,19 @@ def main() -> int:
 
         if args.check:
             if not subsets_are_current(required):
-                raise RuntimeError("CJK font subsets are stale; run this script without --check")
+                raise RuntimeError("Web-font subsets are stale; run this script without --check")
             validate_subsets(required, context="site sources")
             return 0
 
         if args.check_rendered is not None:
-            validate_subsets(required, context="the rendered site" if args.check_rendered else "site sources")
+            validate_subsets(required, context="the rendered site")
             return 0
 
         if args.force:
             with generation_lock():
-                print("Forcing CJK font subset rebuild…", flush=True)
+                print("Forcing web-font subset rebuild…", flush=True)
                 changed = build_subsets(required)
+                write_web_assets()
                 write_manifest(required)
             cached = False
         else:

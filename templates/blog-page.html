@@ -215,15 +215,18 @@ blog-post-layout{% if not has_footnotes %} blog-post-layout--no-footnotes{% endi
 {% endblock content %}
 
 {% block scripts %}
-<script defer src="{{ get_url(path='js/blog-post.js') | safe }}"></script>
+<script defer src="{{ get_url(path='js/blog-post.js', cachebust=true) | safe }}"></script>
+{% if page.content is containing('<video') %}
+<script defer src="{{ get_url(path='js/blog-video.js', cachebust=true) | safe }}"></script>
+{% endif %}
 {% set has_footnotes = page.content is containing('class="footnote-definition"') %}
 {% if has_footnotes %}
-<script defer src="{{ get_url(path='js/blog-footnotes.js') | safe }}"></script>
+<script defer src="{{ get_url(path='js/blog-footnotes.js', cachebust=true) | safe }}"></script>
 {% endif %}
 {% if page.extra.katex | default(value=false) %}
-<script defer src="{{ get_url(path='js/blog-math.js') | safe }}"></script>
+<script defer src="{{ get_url(path='js/blog-math.js', cachebust=true) | safe }}"></script>
 {% endif %}
 {% if page.extra.mermaid | default(value=false) %}
-<script defer src="{{ get_url(path='js/blog-mermaid.js') | safe }}"></script>
+<script defer src="{{ get_url(path='js/blog-mermaid.js', cachebust=true) | safe }}"></script>
 {% endif %}
 {% endblock scripts %}

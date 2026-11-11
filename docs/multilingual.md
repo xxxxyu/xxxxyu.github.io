@@ -73,7 +73,9 @@ yet point to the English section and are marked `lang="en"`.
 ## Generated language surfaces
 
 Both languages generate an Atom feed. Zola writes the feeds as `/atom.xml` and
-`/zh/atom.xml`, and generates `/search_index.en.json` for English. The standard
+`/zh/atom.xml`, and generates a compact Fuse-format document list at
+`/search_index.en.json` for English. The frontend uses its own substring scoring,
+so it does not download an unused Elasticlunr inverted index. The standard
 Zola binary is not built with its optional Chinese tokenizer, so the repository
 generates the Chinese document store at `/search_index.zh.json`; the search UI
 performs substring matching for it. Sitemap entries include both language URLs.

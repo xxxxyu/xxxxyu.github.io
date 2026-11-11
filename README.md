@@ -39,7 +39,7 @@ Make sure `zola.exe` is available on `PATH`, then run:
 .\serve.ps1
 ```
 
-Both scripts generate the site's CJK font subsets, keep them synchronized as
+Both scripts generate the site's web-font subsets, keep them synchronized as
 content changes, enable live reload, watch `data/` in addition to the normal
 Zola paths, and forward extra arguments to Zola. For example:
 
@@ -57,7 +57,7 @@ font cache. Later starts normally reuse it and proceed in under a second.
 Open the URL printed by Zola (normally `http://127.0.0.1:1111`). To create a
 production build, run `./build.sh` on Unix or `.\build.ps1` on Windows; generated
 output is written to `public/`. These wrappers also generate and validate the
-local CJK font subsets used by the rendered site.
+local web-font subsets used by the rendered site.
 
 ## Repository checks
 
@@ -72,6 +72,16 @@ The checks validate multilingual content pairs, translated metadata, search
 indexes, content safety conventions, and ordered post-series structure. Run the
 platform's `build` wrapper as a separate production rendering check when
 templates, styles, configuration, or content structure change.
+
+For changes to video loading or search, run the browser-behavior regression
+tests with Node.js 22+ (built-in test runner, no npm dependencies):
+
+```bash
+node --test tests/js/*.test.cjs
+```
+
+CI runs both suites. The JavaScript checks exercise delayed media events,
+reader preferences, search request ordering, and retry after network failure.
 
 ## Project layout
 
@@ -94,7 +104,7 @@ build.ps1      Windows production-build entry point
 See the [post series convention](docs/post-series.md) before creating or
 reordering a series, and the
 [asset and gallery workflow](docs/assets-and-galleries.md) before adding large
-files or publishing an Outside photography collection. CJK font coverage is
+files or publishing an Outside photography collection. Web-font coverage is
 generated automatically; its design and validation are documented in the
 [font subsetting workflow](docs/font-subsetting.md).
 

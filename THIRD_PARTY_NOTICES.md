@@ -69,8 +69,10 @@ Open Font License, Version 1.1. See
 [`licenses/OFL-1.1.txt`](licenses/OFL-1.1.txt) and the
 [Noto CJK project](https://github.com/notofonts/noto-cjk).
 
-Files ending in `SiteSubset.woff2` are automatically generated subsets of the
-corresponding variable fonts. They remain covered by the same license.
+Web-ready subsets of the font families above are generated in
+`static/fonts/generated/`. Their embedded copyright and license metadata are
+preserved, and they remain covered by the same SIL Open Font License. The full
+source fonts are build inputs and are excluded from the deployed site.
 
 ## Font Awesome Free icons
 

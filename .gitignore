@@ -15,3 +15,5 @@ assets-src/
 static/img/**/raw/
 static/img/**/originals/
 static/img/**/*-original.*
+
+static/fonts/generated/

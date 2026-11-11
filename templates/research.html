@@ -89,4 +89,4 @@
 </section>
 
 {% endblock content %}
-{% block scripts %}{% for lib in ["d3-quadtree", "d3-dispatch", "d3-timer", "d3-force"] %}<script defer src="{{ get_url(path='js/vendor/' ~ lib ~ '.min.js') | safe }}"></script>{% endfor %}<script defer src="{{ get_url(path='js/research.js') | safe }}"></script>{% endblock scripts %}
+{% block scripts %}{% for lib in ["d3-quadtree", "d3-dispatch", "d3-timer", "d3-force"] %}<script defer src="{{ get_url(path='js/vendor/' ~ lib ~ '.min.js', cachebust=true) | safe }}"></script>{% endfor %}<script defer src="{{ get_url(path='js/research.js', cachebust=true) | safe }}"></script>{% endblock scripts %}

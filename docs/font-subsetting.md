@@ -1,58 +1,49 @@
-# CJK font subsetting
+# Web-font subsetting and loading
 
-The site serves generated Noto Sans SC and Noto Serif SC subsets so that pages
-do not need to download the complete 7–10 MB CJK variable fonts.
+`scripts/build_font_subsets.py` generates Noto Sans/Serif SC, Libre Baskerville,
+Source Sans 3, and Source Serif 4 subsets from site-owned text. The original
+variable fonts stay in their existing source directories, with their license
+metadata intact. Zola excludes those build inputs from deployment; only the
+generated subsets and the small Site Symbols font are served.
 
-## Automatic coverage
+## Automatic coverage and cache
 
-`scripts/build_font_subsets.py` scans all site-owned text sources that can
-contribute rendered characters: `content/`, `data/`, `templates/`, `sass/`, the
-runtime JavaScript, `config.toml`, and the generated Chinese search index. HTML
-entities and canonically equivalent Unicode text are normalized before the CJK
-character set is collected.
+The generator scans `content/`, `data/`, `templates/`, `sass/`, runtime JavaScript,
+`config.toml`, and the Chinese search index. It normalizes HTML entities and
+Unicode. CJK faces include the Chinese characters in these sources; Latin faces
+include supported non-CJK characters plus printable ASCII for search input,
+dates, and dynamic numbers. Characters outside the generated coverage use the
+visitor's system fonts.
 
-The generated files are:
+Each run collects one character set and partitions it for each font family;
+generation, cache keys, and validation all use that same snapshot. The generated
+CSS and preload catalog share the font definitions in `FONT_TARGETS`. File writes
+use atomic replacement, and generated URLs always use web path separators.
 
-- `static/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2`
-- `static/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2`
-- `.font-subsets-manifest.json` (the local incremental-build manifest)
+Generated fonts, CSS, and a preload catalog live in `static/fonts/generated/`.
+This directory and `.font-subsets-manifest.json` are ignored by Git. The manifest
+checks source-font hashes, both character sets, the generator, FontTools version,
+and all output hashes before reusing a build. The CSS declares each face's actual
+Unicode range and gives its URL a content hash. Changes invalidate that font's
+browser cache; unchanged fonts retain their URL across pages and builds.
 
-These files are build artifacts and are intentionally excluded from Git. A new
-clone generates them on the first development or production build, which may
-take about a minute. Later runs reuse the manifest and skip font conversion
-whenever the source character set, source fonts, generator, and FontTools
-version are unchanged.
+The three upright Latin faces are preloaded. Chinese pages also preload the two
+CJK faces. Italics and CJK characters on English pages load only when CSS needs
+them. Font failures fall back to system text, so reading does not depend on a
+JavaScript reveal step. CSS and page scripts also use Zola's content-based
+`cachebust` URLs. HTTP caching owns asset reuse; localStorage only stores reader
+preferences, and no video or font blobs are persisted there.
 
-The normal workflow does not require a character list or a manual font step:
+## Entry points
 
-- `serve.sh` and `serve.ps1` generate the subsets before Zola starts and watch
-  for newly introduced characters while the development server runs.
-- `build.sh` and `build.ps1` generate and validate the subsets around every
-  production build;
-- the Pages workflow restores a cache of all three generated files and falls
-  back to the same cold generation path on a cache miss;
-- after Zola renders the site, CI checks the generated HTML, JSON, and XML to
-  ensure every rendered CJK character available in the Noto source fonts is
-  covered;
-- repository tests verify source coverage and the loading/fallback wiring.
+- `serve.sh` / `serve.ps1` generate fonts before startup and watch source text.
+- `build.sh` / `build.ps1` generate fonts, build Zola, and check rendered coverage.
+- GitHub Actions caches the generated directory and incremental manifest.
+- Tests check coverage, hashed URLs, incremental reuse, and deployment wiring.
 
-The generator records hashes of the character set, source fonts, generator
-script, FontTools version, generation format, and outputs in the ignored
-`.font-subsets-manifest.json`. When those inputs are unchanged, subsequent
-development-server starts and production builds skip the expensive font
-conversion and proceed immediately. A real rebuild prints a progress message
-before processing the large source fonts.
-
-The full Noto fonts remain behind the subsets in the CSS font stack as a
-defensive fallback. They are not preloaded or requested during a correctly
-generated build, but they prevent a missed or dynamically introduced character
-from becoming a missing glyph. Characters absent from the Noto source files
-(including their excluded full-width punctuation) continue through the stack
-to an installed system font.
-
-## Manual checks
-
-These commands are useful when debugging the pipeline itself:
+The script keeps its existing name and CLI for compatibility. After changing the
+generator itself, restart the development wrapper at the next normal startup so
+its watcher uses the new code; ordinary content edits are handled automatically.
 
 ```bash
 uv run --locked python scripts/build_font_subsets.py

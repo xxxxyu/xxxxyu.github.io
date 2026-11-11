@@ -9,9 +9,19 @@ build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 minify_html = false
+# Build-time font sources and old subsets are never part of the deployed site.
+ignored_static = [
+  "fonts/noto-*/*.woff2",
+  "fonts/libre-baskerville/*.woff2",
+  "fonts/source-sans-3/*.woff2",
+  "fonts/source-serif-4/*.woff2",
+  "fonts/generated/manifest.json",
+  "**/.DS_Store",
+]
+ignored_content = ["**/.DS_Store"]
 
 [search]
-index_format = "elasticlunr_json"
+index_format = "fuse_json"
 include_title = true
 include_description = true
 include_path = true
@@ -19,6 +29,7 @@ include_content = true
 
 [markdown]
 smart_punctuation = true
+lazy_async_image = true
 
 [markdown.highlighting]
 light_theme = "github-light-default"
@@ -96,7 +107,7 @@ build_search_index = false
 taxonomies = [{ name = "tags", feed = true }]
 
 [languages.zh.search]
-index_format = "elasticlunr_json"
+index_format = "fuse_json"
 include_title = true
 include_description = true
 include_path = true

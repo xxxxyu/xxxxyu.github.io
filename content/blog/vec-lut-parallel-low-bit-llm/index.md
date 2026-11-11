@@ -21,7 +21,7 @@ Today's ultra-low-bit LLMs (typically below 4 bits per weight) have small memory
 
 **Not automatically.** Fewer bits reduce memory footprint, but they only translate into speed when the underlying inference kernel matches the data representation and the workload. **Lookup-table (LUT)** kernels work well for single-token generation, yet lose much of that advantage when many tokens are processed in parallel. Vec-LUT addresses this parallel access pattern. Across five x86 and ARM devices, it delivers up to **4.2×** end-to-end prefilling speedup over baselines at similar bits per weight (BPW); on Snapdragon 8 Elite, its CPU implementation even outperforms the phone's NPU (llama.cpp's Hexagon backend) using only two CPU cores.
 
-{{ video(src="/videos/vec-lut-parallel-low-bit-llm/demo.mp4", autoplay=true, loop=true, max_width="80%", caption="Vec-LUT vs. llama.cpp: 3× end-to-end speedup for 32-way parallel decoding on one CPU core.") }}
+{{ video(src="/videos/vec-lut-parallel-low-bit-llm/demo.mp4", poster="/videos/vec-lut-parallel-low-bit-llm/poster.webp", autoplay=true, loop=true, max_width="80%", caption="Vec-LUT vs. llama.cpp: 3× end-to-end speedup for 32-way parallel decoding on one CPU core.") }}
 
 ---
 

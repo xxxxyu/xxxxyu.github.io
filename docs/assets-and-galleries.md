@@ -31,6 +31,24 @@ assets-src/
 Files under `static/` keep the same URL path in the built site. For example,
 `static/img/papers/example.webp` is served as `/img/papers/example.webp`.
 
+## Loading media
+
+Blog videos use a lightweight `poster` and default to `preload="none"`. Native
+controls can start playback immediately. Videos marked for autoplay wait for
+the page load and fonts, then play only while visible; reduced-motion and
+data-saving preferences leave playback manual. Leaving the viewport or hiding
+the tab pauses automatic playback. Native range requests preserve streaming
+and seeking without holding complete videos in JavaScript Blob buffers.
+
+Provide `poster="/videos/<post-slug>/poster.webp"` with the `video` shortcode.
+The poster should be a web-sized frame from the same video. Both Markdown
+images and the `image` shortcode use lazy loading and asynchronous decoding;
+the profile photo and the first Outside cover retain their eager loading.
+
+`static/js/blog-video.js` owns automatic playback and is included only on posts
+with videos. Article navigation stays in `blog-post.js`. Run
+`node --test tests/js/*.test.cjs` after changing playback or search behavior.
+
 ## Create an Outside photography collection
 
 Create a local source directory and install the image tooling once per machine:

@@ -22,7 +22,7 @@ In practice, on the single GPU a robot actually carries, the two outputs wait in
 
 <a id="demo-video"></a>
 
-{{ video(src="/videos/oxygen-mot-vla-inference/demo.mp4", autoplay=true, loop=true, max_width="100%", caption="OxyGen vs. the isolated openpi baseline on LIBERO: the robot keeps acting while textual memory streams in. The timeline uses measured model inference plus 1× simulator time.") }}
+{{ video(src="/videos/oxygen-mot-vla-inference/demo.mp4", poster="/videos/oxygen-mot-vla-inference/poster.webp", autoplay=true, loop=true, max_width="100%", caption="OxyGen vs. the isolated openpi baseline on LIBERO: the robot keeps acting while textual memory streams in. The timeline uses measured model inference plus 1× simulator time.") }}
 
 ---
 

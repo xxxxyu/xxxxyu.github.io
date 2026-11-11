@@ -26,7 +26,7 @@ ai_translation_effort = ""
 
 <a id="demo-video"></a>
 
-{{ video(src="/videos/oxygen-mot-vla-inference/demo.mp4", autoplay=true, loop=true, max_width="100%", caption="OxyGen 与 isolated 基线（openpi）在 LIBERO 上的对比：机器人在持续输出动作的同时流式生成文字记忆。时间线按「实测模型推理 + 1× 仿真时间」绘制。") }}
+{{ video(src="/videos/oxygen-mot-vla-inference/demo.mp4", poster="/videos/oxygen-mot-vla-inference/poster.webp", autoplay=true, loop=true, max_width="100%", caption="OxyGen 与 isolated 基线（openpi）在 LIBERO 上的对比：机器人在持续输出动作的同时流式生成文字记忆。时间线按「实测模型推理 + 1× 仿真时间」绘制。") }}
 
 ---
 

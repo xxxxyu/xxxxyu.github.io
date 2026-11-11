@@ -67,13 +67,14 @@
     })();
   </script>
 
-  <link rel="preload" href="/fonts/libre-baskerville/LibreBaskerville-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/source-serif-4/SourceSerif4Variable-Roman.ttf.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/source-serif-4/SourceSerif4Variable-Italic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/source-sans-3/SourceSans3VF-Upright.ttf.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/noto-serif-sc/NotoSerifSC-SiteSubset.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/noto-sans-sc/NotoSansSC-SiteSubset.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/style.css">
+  {% set font_data = load_data(path="static/fonts/generated/manifest.json") %}
+  {% for font in font_data.fonts %}
+  {% if font.style == "normal" and (not font.cjk or lang == "zh") %}
+  <link rel="preload" href="{{ font.url | safe }}" as="font" type="font/woff2" crossorigin>
+  {% endif %}
+  {% endfor %}
+  <link rel="stylesheet" href="{{ get_url(path='fonts/generated/fonts.css', cachebust=true) | safe }}">
+  <link rel="stylesheet" href="{{ get_url(path='style.css', cachebust=true) | safe }}">
 
   {% block head_extra %}{% endblock head_extra %}
 </head>
@@ -244,10 +245,10 @@
         }
     };
   </script>
-  <script defer src="{{ get_url(path='js/site-language.js') | safe }}"></script>
-  <script defer src="{{ get_url(path='js/theme.js') | safe }}"></script>
+  <script defer src="{{ get_url(path='js/site-language.js', cachebust=true) | safe }}"></script>
+  <script defer src="{{ get_url(path='js/theme.js', cachebust=true) | safe }}"></script>
   {% if config.build_search_index or lang == "zh" %}
-  <script defer src="{{ get_url(path='js/search.js') | safe }}"></script>
+  <script defer src="{{ get_url(path='js/search.js', cachebust=true) | safe }}"></script>
   {% endif %}
   {% block scripts %}{% endblock scripts %}
 </body>
