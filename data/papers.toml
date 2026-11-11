@@ -1,4 +1,16 @@
 [[papers]]
+title = 'SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering'
+gs_id = 'steerdistill'
+authors = 'Genming Cui*, Xiangyu Li*‡, Zixu Hao, Xin Ding, Yunxin Liu, Ting Cao'
+venue = 'ArXiv preprint'
+year = 2026
+notes = 'Project lead'
+paper_url = 'https://arxiv.org/abs/2611.13410'
+code_url = 'https://github.com/air-embodied-brain/SteerDistill'
+page_url = 'https://air-embodied-brain.github.io/SteerDistill'
+featured = true
+
+[[papers]]
 title = 'Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation'
 gs_id = 'patchwork'
 authors = 'Zixu Hao, Weijun Wang, Xiangyu Li, Liang Mi, Hao Wu, Yunxin Liu, Ting Cao'

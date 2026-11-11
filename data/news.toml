@@ -1,4 +1,13 @@
 [[news]]
+date = '2026/11'
+text = '*SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering* released.'
+links = [
+  { label = 'Paper', url = 'https://arxiv.org/abs/2611.13410' },
+  { label = 'Code', url = 'https://github.com/air-embodied-brain/SteerDistill' },
+  { label = 'Page', url = 'https://air-embodied-brain.github.io/SteerDistill' },
+]
+
+[[news]]
 date = '2026/10'
 text = '*Personal LLM Agents* (survey & position paper) has reached **500 citations** on Google Scholar! Congrats to [Prof. Yuanchun Li](https://yuanchun-li.github.io).'
 links = [

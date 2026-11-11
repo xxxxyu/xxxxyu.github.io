@@ -1,6 +1,26 @@
 # Authored thematic map with English taxonomy assignments.
 
 [[works]]
+id = "steerdistill"
+label = "SteerDistill"
+paper_url = "https://arxiv.org/abs/2611.13410"
+x = 330
+y = 400
+topics = ["systems", "agents"]
+role = "author"
+role_en = "Co-first author · project lead"
+role_zh = "共同第一作者 · 项目负责人"
+summary_en = "Closed-loop teacher steering distills verified corrections into quantized LLM agents for unassisted inference."
+summary_zh = "通过闭环教师指导生成并蒸馏经验证的行为修正，使量化 LLM 智能体无需教师即可独立推理。"
+primary_terms = ["Low-bit Inference", "Knowledge Distillation"]
+secondary_terms = []
+contexts = ["Large Language Models (LLMs)"]
+contribution_weight = 0.94
+author_rank = "2/6"
+term_ids = ["low-bit-inference", "knowledge-distillation"]
+node_radius = 10.4
+
+[[works]]
 id = "patchwork"
 label = "Patchwork"
 paper_url = "https://arxiv.org/abs/2610.33582"

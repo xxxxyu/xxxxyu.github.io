@@ -53,6 +53,12 @@ parent = "quantization"
 level = "keyword"
 
 [[terms]]
+id = "knowledge-distillation"
+label = "Knowledge Distillation"
+parent = "inference"
+level = "keyword"
+
+[[terms]]
 id = "kernel-optimization"
 label = "Kernel Optimization"
 parent = "inference"
@@ -261,6 +267,12 @@ location = "data/papers.toml"
 note = "Local titles and author metadata; no formal keyword fields."
 
 [[sources]]
+id = "steerdistill-project"
+kind = "project_page"
+location = "https://air-embodied-brain.github.io/SteerDistill/"
+note = "Closed-loop teacher steering uses execution feedback to obtain locally verified corrections, then distills them into quantized LLM agents for unassisted inference."
+
+[[sources]]
 id = "flexnn-repo"
 kind = "project_readme"
 location = "https://github.com/xxxxyu/FlexNN"
@@ -343,6 +355,15 @@ id = "length-paper"
 kind = "paper_abstract"
 location = "https://arxiv.org/abs/2504.14350"
 note = "Reasoning accuracy under output token budgets; test-time scaling and mappings to on-device latency."
+
+[[assignments]]
+work_id = "steerdistill"
+primary = ["low-bit-inference", "knowledge-distillation"]
+secondary = []
+contexts = ["llms"]
+sources = ["steerdistill-project"]
+evidence_status = "supported"
+note = "Low-bit agent inference and quantization-aware distillation are explicit in the project description. Teacher steering is used during training; the deployed student runs without guidance."
 
 [[assignments]]
 work_id = "flexnn"
