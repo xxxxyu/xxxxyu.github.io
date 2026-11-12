@@ -39,9 +39,10 @@ Make sure `zola.exe` is available on `PATH`, then run:
 .\serve.ps1
 ```
 
-Both scripts generate the site's web-font subsets, keep them synchronized as
-content changes, enable live reload, watch `data/` in addition to the normal
-Zola paths, and forward extra arguments to Zola. For example:
+Both scripts prepare the Chinese search index and then the site's web-font
+subsets. One watcher keeps both synchronized after content edits settle, writing
+only changed outputs. The wrappers enable live reload, watch `data/` in addition
+to the normal Zola paths, and forward extra arguments to Zola. For example:
 
 ```bash
 ./serve.sh --drafts
@@ -56,8 +57,9 @@ font cache. Later starts normally reuse it and proceed in under a second.
 
 Open the URL printed by Zola (normally `http://127.0.0.1:1111`). To create a
 production build, run `./build.sh` on Unix or `.\build.ps1` on Windows; generated
-output is written to `public/`. These wrappers also generate and validate the
-local web-font subsets used by the rendered site.
+output is written to `public/`. These wrappers use the same asset preparation
+step and validate font coverage in the rendered site. Search and font outputs
+are generated locally and in CI; do not commit them.
 
 ## Repository checks
 

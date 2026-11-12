@@ -36,15 +36,11 @@ jobs:
       - name: Install locked Python dependencies
         run: uv sync --locked
 
-      - name: Regenerate Chinese search index
-        run: uv run --locked python scripts/build_zh_search_index.py
-
-      - name: Verify Chinese search index is committed
-        run: git diff --exit-code -- static/search_index.zh.json
-
-      - name: Compute web-font cache key
+      - name: Prepare search index and compute web-font cache key
         id: web-font-cache
-        run: echo "key=$(uv run --locked python scripts/build_font_subsets.py --print-cache-key)" >> "$GITHUB_OUTPUT"
+        run: |
+          font_cache_key=$(uv run --locked python -m scripts.prepare_assets --print-font-cache-key)
+          echo "key=$font_cache_key" >> "$GITHUB_OUTPUT"
 
       - name: Restore generated web-font subsets
         uses: actions/cache@v4

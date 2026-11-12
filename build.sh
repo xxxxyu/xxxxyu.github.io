@@ -4,6 +4,6 @@ set -euo pipefail
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 cd "$repo_root"
 
-uv run --locked python scripts/build_font_subsets.py
+uv run --locked python -m scripts.prepare_assets
 zola build "$@"
 uv run --locked python scripts/build_font_subsets.py --check-rendered public

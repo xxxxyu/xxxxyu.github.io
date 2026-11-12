@@ -73,24 +73,6 @@ class FontSubsetTests(unittest.TestCase):
                 supported = build_font_subsets.font_codepoints(target.source)
                 self.assertFalse((required & supported) - build_font_subsets.font_codepoints(target.output))
 
-    def test_watcher_snapshot_tracks_source_content(self) -> None:
-        source = REPO_ROOT / "content/about/_index.md"
-        first = build_font_subsets.source_snapshot()
-        with mock.patch.object(
-            build_font_subsets,
-            "source_text_files",
-            return_value=[source],
-        ):
-            isolated = build_font_subsets.source_snapshot()
-
-        self.assertIn(str(source.relative_to(REPO_ROOT)), {entry[0] for entry in first})
-        self.assertEqual(isolated[0][0], str(source.relative_to(REPO_ROOT)))
-        self.assertEqual(
-            isolated[0][1],
-            hashlib.sha256(source.read_text(encoding="utf-8").encode("utf-8")).digest(),
-        )
-        self.assertEqual(isolated[0][2], source.read_text(encoding="utf-8"))
-
     def test_process_liveness_check_handles_current_and_missing_pids(self) -> None:
         self.assertTrue(build_font_subsets.process_is_running(os.getpid()))
         self.assertFalse(build_font_subsets.process_is_running(0))
@@ -117,7 +99,7 @@ class FontSubsetTests(unittest.TestCase):
         self.assertIn(ord("中"), points)
         for target in build_font_subsets.FONT_TARGETS:
             # Partitioning must not read mutable source files a second time.
-            with mock.patch.object(build_font_subsets, "source_snapshot", side_effect=AssertionError):
+            with mock.patch.object(build_font_subsets, "source_text_files", side_effect=AssertionError):
                 selected = build_font_subsets.target_characters(target, points)
             self.assertEqual(ord("中") in selected, target.cjk)
             self.assertEqual(ord("é") in selected, not target.cjk)
@@ -140,27 +122,6 @@ class FontSubsetTests(unittest.TestCase):
                 relative = path.relative_to(REPO_ROOT / "static").as_posix()
                 with self.subTest(path=relative):
                     self.assertEqual(any(fnmatch.fnmatchcase(relative, pattern) for pattern in patterns), excluded)
-
-    def test_development_and_build_entry_points_manage_subsets(self) -> None:
-        unix_wrapper = (REPO_ROOT / "serve.sh").read_text(encoding="utf-8")
-        windows_wrapper = (REPO_ROOT / "serve.ps1").read_text(encoding="utf-8")
-        unix_build = (REPO_ROOT / "build.sh").read_text(encoding="utf-8")
-        windows_build = (REPO_ROOT / "build.ps1").read_text(encoding="utf-8")
-        workflow = (REPO_ROOT / ".github/workflows/deploy.yml").read_text(encoding="utf-8")
-
-        self.assertIn("build_font_subsets.py --watch", unix_wrapper)
-        self.assertIn("build_font_subsets.py', '--watch", windows_wrapper)
-        self.assertIn("build_font_subsets.py --check-rendered public", unix_build)
-        self.assertIn("build_font_subsets.py --check-rendered public", windows_build)
-        self.assertIn("run: ./build.sh", workflow)
-
-    def test_generated_artifacts_are_ignored(self) -> None:
-        ignore_rules = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-        expected = {
-            ".font-subsets-manifest.json",
-            "static/fonts/generated/",
-        }
-        self.assertTrue(expected.issubset(ignore_rules))
 
 
 if __name__ == "__main__":

@@ -17,3 +17,4 @@ static/img/**/originals/
 static/img/**/*-original.*
 
 static/fonts/generated/
+static/search_index.zh.json

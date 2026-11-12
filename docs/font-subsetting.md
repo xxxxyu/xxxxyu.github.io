@@ -36,17 +36,19 @@ preferences, and no video or font blobs are persisted there.
 
 ## Entry points
 
-- `serve.sh` / `serve.ps1` generate fonts before startup and watch source text.
-- `build.sh` / `build.ps1` generate fonts, build Zola, and check rendered coverage.
+- `scripts.prepare_assets` generates the Chinese search index before fonts.
+- `serve.sh` / `serve.ps1` prepare assets before startup and use one source watcher.
+- `build.sh` / `build.ps1` prepare assets, build Zola, and check rendered coverage.
 - GitHub Actions caches the generated directory and incremental manifest.
 - Tests check coverage, hashed URLs, incremental reuse, and deployment wiring.
 
-The script keeps its existing name and CLI for compatibility. After changing the
-generator itself, restart the development wrapper at the next normal startup so
-its watcher uses the new code; ordinary content edits are handled automatically.
+The font generator retains its standalone generation and validation commands;
+watching is owned by `scripts.prepare_assets --watch`. After changing either
+script, restart the development wrapper at the next normal startup so its watcher
+uses the new code; ordinary content edits are handled automatically.
 
 ```bash
-uv run --locked python scripts/build_font_subsets.py
+uv run --locked python -m scripts.prepare_assets
 uv run --locked python scripts/build_font_subsets.py --check
 ./build.sh
 ```

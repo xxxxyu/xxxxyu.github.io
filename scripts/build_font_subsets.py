@@ -161,20 +161,6 @@ def source_text_files() -> list[Path]:
     return sorted(set(paths))
 
 
-def source_snapshot() -> tuple[tuple[str, bytes, str], ...]:
-    """Read source bytes once for change detection and character extraction."""
-    snapshot: list[tuple[str, bytes, str]] = []
-    for path in source_text_files():
-        try:
-            source = path.read_text(encoding="utf-8")
-        except FileNotFoundError:
-            # A live-editing rename may happen between discovery and reading.
-            continue
-        digest = hashlib.sha256(source.encode("utf-8")).digest()
-        snapshot.append((str(path.relative_to(REPO_ROOT)), digest, source))
-    return tuple(snapshot)
-
-
 def rendered_characters(root: Path) -> set[int]:
     return characters_in(textual_files(root, RENDERED_SUFFIXES))
 
@@ -483,36 +469,6 @@ def print_summary(required: set[int], changed: list[Path], *, cached: bool = Fal
     print(f"Web-font subsets {state}: {len(required)} characters; {sizes}", flush=True)
 
 
-def watch(interval: float) -> int:
-    previous_fingerprint: tuple[tuple[str, bytes], ...] | None = None
-    previous: frozenset[int] | None = None
-    last_error: str | None = None
-    print("Watching site sources for new characters…", flush=True)
-    try:
-        while True:
-            snapshot = source_snapshot()
-            fingerprint = tuple((path, digest) for path, digest, _ in snapshot)
-            if fingerprint == previous_fingerprint:
-                time.sleep(interval)
-                continue
-            try:
-                required = frozenset(characters_from_texts([source for _, _, source in snapshot]))
-                if required != previous:
-                    changed, cached = ensure_subsets(set(required))
-                    print_summary(set(required), changed, cached=cached)
-                previous = required
-                previous_fingerprint = fingerprint
-                last_error = None
-            except Exception as error:  # keep the development server alive and retry
-                message = str(error)
-                if message != last_error:
-                    print(f"Font subset update failed: {message}", file=sys.stderr, flush=True)
-                    last_error = message
-            time.sleep(interval)
-    except KeyboardInterrupt:
-        return 0
-
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="verify that generated subsets cover source text")
@@ -522,21 +478,16 @@ def main() -> int:
         metavar="DIRECTORY",
         help="verify that generated subsets cover the rendered site",
     )
-    parser.add_argument("--watch", action="store_true", help="regenerate when the source character set changes")
     parser.add_argument("--force", action="store_true", help="rebuild even when the incremental manifest is current")
     parser.add_argument(
         "--print-cache-key",
         action="store_true",
         help="print a stable cache key for the current subset inputs",
     )
-    parser.add_argument("--interval", type=float, default=0.75, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     logging.getLogger("fontTools.subset").setLevel(logging.WARNING)
     try:
-        if args.watch:
-            return watch(args.interval)
-
         required = source_characters()
         if args.print_cache_key:
             print(cache_key(required))

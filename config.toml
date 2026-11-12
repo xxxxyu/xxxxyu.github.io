@@ -1,6 +1,6 @@
 base_url = "https://xxxxyu.github.io"
 title = "Xiangyu Li"
-description = "Xiangyu Li is a Ph.D. candidate at AIR, Tsinghua University, working on on-device AI and embodied AI."
+description = "Xiangyu Li is a Ph.D. candidate at AIR, Tsinghua University, working on self-evolving physical AI and the systems that support it."
 default_language = "en"
 author = "Xiangyu Li"
 
@@ -100,7 +100,7 @@ ai_translated_from = "from"
 
 [languages.zh]
 title = "李翔宇"
-description = "李翔宇是清华大学智能产业研究院博士生，研究方向为端侧智能与具身智能。"
+description = "李翔宇是清华大学智能产业研究院博士生，研究自进化物理智能及其系统基础。"
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 build_search_index = false

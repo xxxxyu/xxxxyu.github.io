@@ -82,12 +82,40 @@ performs substring matching for it. Sitemap entries include both language URLs.
 Page and section templates emit a self canonical plus reciprocal `hreflang`
 links for available translations, with English as `x-default`.
 
+The Chinese index is an ignored build artifact at `static/search_index.zh.json`.
+`scripts.prepare_assets` generates it before collecting font characters, and is
+shared by the Unix/Windows build and development wrappers and GitHub Actions.
+CI prepares the index before computing the font cache key; it no longer requires
+a committed copy of the index.
+
+The search generator owns content selection and JSON output; the font generator
+owns font subsetting and coverage checks. `scripts.prepare_assets` owns ordering
+and watching. Keep those responsibilities separate when extending the workflow.
+
+The generator reads Markdown titles, descriptions, and bodies, preferring a
+published Chinese translation and otherwise using the English source. Drafts
+and pages excluded from search are not published in the index. Content added by
+templates, such as data-driven news and paper lists, is outside this source-based
+index. Each content file is parsed once per index build. Results are written by
+atomic replacement only when the JSON changes.
+
+Development uses one asset watcher. Two matching source snapshots, 0.75 seconds
+apart, coalesce rapid saves; invalid partial edits retain the previous index and
+are retried. Generated outputs do not trigger another preparation cycle. Restart
+the development wrapper at the next normal startup after changing the generator
+or watcher itself; content edits need no restart.
+
 After adding or changing a translation, run:
 
 ```bash
-uv run --locked python scripts/build_zh_search_index.py
 uv run --locked python -m unittest discover -s tests -v
 ./build.sh
 ```
 
 On Windows, use `.\build.ps1` for the final production-build check.
+
+Tests validate generated document coverage and the generator's translation
+fallback, exclusions, update behavior, and failure recovery without depending on
+a checked-in index. For a standalone refresh, run
+`uv run --locked python scripts/build_zh_search_index.py`; add `--check` to verify
+an existing output without changing it.

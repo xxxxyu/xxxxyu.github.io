@@ -22,13 +22,13 @@ try {
         throw 'uv was not found in PATH. Install uv and make it available in PATH.'
     }
 
-    & $uvCommand.Source run --locked python scripts/build_font_subsets.py
+    & $uvCommand.Source run --locked python -m scripts.prepare_assets
     if ($LASTEXITCODE -ne 0) {
-        throw "CJK font subset generation failed with exit code $LASTEXITCODE."
+        throw "Asset preparation failed with exit code $LASTEXITCODE."
     }
 
     $watcher = Start-Process -FilePath $uvCommand.Source `
-        -ArgumentList @('run', '--locked', 'python', 'scripts/build_font_subsets.py', '--watch') `
+        -ArgumentList @('run', '--locked', 'python', '-m', 'scripts.prepare_assets', '--watch') `
         -NoNewWindow -PassThru
 
     & $zolaCommand.Source serve --extra-watch-path data @ZolaArgs

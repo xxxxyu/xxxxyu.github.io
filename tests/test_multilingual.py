@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
-import json
 import re
-import subprocess
-import sys
 import tomllib
 import unittest
 from collections import Counter
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
+
+from scripts import build_zh_search_index
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -240,18 +239,10 @@ class MultilingualTests(unittest.TestCase):
         self.assertIn("localStorage.setItem('site-language', target)", language_script)
         self.assertIn("[data-set-site-language]", language_script)
 
-    def test_committed_chinese_search_index_is_current(self) -> None:
-        result = subprocess.run(
-            [sys.executable, str(REPO_ROOT / "scripts" / "build_zh_search_index.py"), "--check"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        self.assertEqual(result.returncode, 0, result.stderr)
-
-        index = json.loads((REPO_ROOT / "static" / "search_index.zh.json").read_text(encoding="utf-8"))
+    def test_chinese_search_index_covers_translated_content(self) -> None:
+        index = build_zh_search_index.build_index()
         documents = {document["path"]: document for document in index["documents"]}
+        self.assertEqual(len(documents), len(index["documents"]), "Duplicate search result paths")
         default_blog = [
             path for path in (CONTENT_ROOT / "blog").rglob("*.md")
             if not path.name.startswith("_index")
