@@ -4,11 +4,12 @@ gs_id = 'steerdistill'
 authors = 'Genming Cui*, Xiangyu Li*‡, Zixu Hao, Xin Ding, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
-notes = 'Project lead'
+notes = 'Project lead, [#2 Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/2026-11-12)'
 paper_url = 'https://arxiv.org/abs/2611.13410'
 code_url = 'https://github.com/air-embodied-brain/SteerDistill'
 page_url = 'https://air-embodied-brain.github.io/SteerDistill'
 featured = true
+highlight = true
 
 [[papers]]
 title = 'Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation'
@@ -44,7 +45,7 @@ year = 2026
 paper_url = 'https://arxiv.org/abs/2608.16590'
 code_url = 'https://github.com/air-embodied-brain/Zetta-Embodiment'
 page_url = 'https://AIR-embodied-brain.github.io/zetta'
-notes = '[Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/2026-08-20)'
+notes = '[#1 Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/2026-08-20)'
 press_links = [
   { label = '机器之心', url = 'https://mp.weixin.qq.com/s/dgrptmhUPzZwcubdwUAqFw' },
 ]
