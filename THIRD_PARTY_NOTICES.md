@@ -94,3 +94,12 @@ Bundled in `static/js/vendor/`: d3-force 3.0.0, d3-quadtree 3.0.1,
 d3-dispatch 3.0.1, and d3-timer 3.0.1. Copyright Mike Bostock;
 ISC licensed. Each module's full license is included alongside its script.
 Source: https://github.com/d3/d3-force and the corresponding d3 repositories.
+
+## Natural Earth land outlines
+
+File: `static/data/analytics-land.json`
+
+Derived from Natural Earth's public-domain 1:110m land polygons, projected to
+the analytics map's 1000 × 450 coordinate space and rounded to two decimals.
+Source: https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson
+Terms: https://www.naturalearthdata.com/about/terms-of-use/

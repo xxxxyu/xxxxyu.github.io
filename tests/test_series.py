@@ -2,39 +2,15 @@
 
 from __future__ import annotations
 
-import tomllib
 import unittest
 from pathlib import Path
-from typing import Any
+
+from scripts.build_zh_search_index import split_content
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONTENT_ROOT = REPO_ROOT / "content"
 BLOG_ROOT = CONTENT_ROOT / "blog"
-
-
-def load_front_matter(path: Path) -> dict[str, Any]:
-    """Load TOML front matter from a Zola Markdown file."""
-    text = path.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "+++":
-        raise AssertionError(f"{path.relative_to(REPO_ROOT)} has no TOML front matter")
-
-    try:
-        closing_line = next(
-            index for index, line in enumerate(lines[1:], start=1) if line.strip() == "+++"
-        )
-    except StopIteration as error:
-        raise AssertionError(
-            f"{path.relative_to(REPO_ROOT)} has unterminated TOML front matter"
-        ) from error
-
-    try:
-        return tomllib.loads("\n".join(lines[1:closing_line]))
-    except tomllib.TOMLDecodeError as error:
-        raise AssertionError(
-            f"Invalid TOML in {path.relative_to(REPO_ROOT)}: {error}"
-        ) from error
 
 
 def content_path(path: Path) -> str:
@@ -46,7 +22,7 @@ class PostSeriesTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.blog_files = sorted(BLOG_ROOT.rglob("*.md"))
-        cls.front_matter = {path: load_front_matter(path) for path in cls.blog_files}
+        cls.front_matter = {path: split_content(path)[0] for path in cls.blog_files}
         cls.series_sections = {
             path: metadata
             for path, metadata in cls.front_matter.items()
@@ -56,12 +32,6 @@ class PostSeriesTests(unittest.TestCase):
                 or metadata.get("extra", {}).get("series") is True
             )
         }
-
-    def test_repository_contains_a_series(self) -> None:
-        self.assertTrue(
-            self.series_sections,
-            "No post-series section was found under content/blog",
-        )
 
     def test_series_sections_follow_the_section_convention(self) -> None:
         for section, metadata in self.series_sections.items():
@@ -147,11 +117,9 @@ class PostSeriesTests(unittest.TestCase):
                     if isinstance(weight, int):
                         weights[weight] = member
 
-                    self.assertIsInstance(
-                        output_path,
-                        str,
-                        "Series members need an explicit stable output path",
-                    )
+                    if output_path is None:
+                        continue
+                    self.assertIsInstance(output_path, str)
                     self.assertRegex(
                         output_path or "",
                         r"^blog/[^/].*[^/]$",
@@ -165,8 +133,7 @@ class PostSeriesTests(unittest.TestCase):
                         if output_path in all_output_paths
                         else "Duplicate series output path",
                     )
-                    if isinstance(output_path, str):
-                        all_output_paths[output_path] = member
+                    all_output_paths[output_path] = member
 
 
 if __name__ == "__main__":

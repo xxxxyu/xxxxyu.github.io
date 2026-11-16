@@ -150,7 +150,7 @@
   {% endif %}
 
   <footer class="footer">
-    <p>&copy; {{ now() | date(format="%Y") }} <span data-i18n-text="author_name">{{ trans(key="author_name", lang=lang) }}</span><span class="bullet-separator" aria-hidden="true"></span><a data-i18n-text="licensing" data-href-en="/licensing/" data-href-zh="/licensing/" data-content-lang-zh="en" href="/licensing/"{% if lang == "zh" %} hreflang="en" lang="en"{% endif %}>{{ trans(key="licensing", lang=lang) }}</a><span class="bullet-separator" aria-hidden="true"></span><span data-i18n-text="built_with">{{ trans(key="built_with", lang=lang) }}</span> <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
+    <p>&copy; {{ now() | date(format="%Y") }} <span data-i18n-text="author_name">{{ trans(key="author_name", lang=lang) }}</span><span class="bullet-separator" aria-hidden="true"></span><a data-i18n-text="licensing" data-href-en="/licensing/" data-href-zh="/licensing/" data-content-lang-zh="en" href="/licensing/"{% if lang == "zh" %} hreflang="en" lang="en"{% endif %}>{{ trans(key="licensing", lang=lang) }}</a><span class="bullet-separator" aria-hidden="true"></span><a data-i18n-text="analytics" data-href-en="/analytics/" data-href-zh="/zh/analytics/" href="{% if lang == "zh" %}/zh/analytics/{% else %}/analytics/{% endif %}">{{ trans(key="analytics", lang=lang) }}</a><span class="bullet-separator" aria-hidden="true"></span><span data-i18n-text="built_with">{{ trans(key="built_with", lang=lang) }}</span> <a href="https://www.getzola.org" target="_blank" rel="noopener">Zola</a>.</p>
   </footer>
 
   <script>
@@ -176,6 +176,7 @@
           post_navigation: {{ trans(key="post_navigation", lang="en") | json_encode() | safe }},
           updated: {{ trans(key="updated", lang="en") | json_encode() | safe }},
           licensing: {{ trans(key="licensing", lang="en") | json_encode() | safe }},
+          analytics: {{ trans(key="analytics", lang="en") | json_encode() | safe }},
           built_with: {{ trans(key="built_with", lang="en") | json_encode() | safe }},
           language_switch: {{ trans(key="language_switch", lang="en") | json_encode() | safe }},
           language_switch_exact: {{ trans(key="language_switch_exact", lang="en") | json_encode() | safe }},
@@ -220,6 +221,7 @@
           post_navigation: {{ trans(key="post_navigation", lang="zh") | json_encode() | safe }},
           updated: {{ trans(key="updated", lang="zh") | json_encode() | safe }},
           licensing: {{ trans(key="licensing", lang="zh") | json_encode() | safe }},
+          analytics: {{ trans(key="analytics", lang="zh") | json_encode() | safe }},
           built_with: {{ trans(key="built_with", lang="zh") | json_encode() | safe }},
           language_switch: {{ trans(key="language_switch", lang="zh") | json_encode() | safe }},
           language_switch_exact: {{ trans(key="language_switch_exact", lang="zh") | json_encode() | safe }},
@@ -249,6 +251,9 @@
   <script defer src="{{ get_url(path='js/theme.js', cachebust=true) | safe }}"></script>
   {% if config.build_search_index or lang == "zh" %}
   <script defer src="{{ get_url(path='js/search.js', cachebust=true) | safe }}"></script>
+  {% endif %}
+  {% if config.extra.analytics_endpoint | default(value="") != "" %}
+  <script defer src="{{ get_url(path='js/analytics-track.js', cachebust=true) | safe }}" data-endpoint="{{ config.extra.analytics_endpoint }}" data-site-origin="{{ config.base_url }}"></script>
   {% endif %}
   {% block scripts %}{% endblock scripts %}
 </body>

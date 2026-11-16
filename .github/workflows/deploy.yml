@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "7 8 * * 1"
+    - cron: "17 0 * * *" # 08:17 Asia/Shanghai
   workflow_dispatch:
 
 permissions:
@@ -13,16 +13,21 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       ZOLA_VERSION: "0.22.1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -59,20 +64,34 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Check loading behavior
+      - name: Check frontend behavior
         run: node --test tests/js/*.test.cjs
 
-      - name: Install scholarly (fallback when SERPAPI_KEY absent)
-        if: github.event_name != 'push'
-        run: pip install scholarly
+      - name: Check analytics collector
+        run: npm --prefix analytics-worker test
 
       - name: Refresh Google Scholar stats (best-effort)
+        id: scholar
         if: github.event_name != 'push'
         continue-on-error: true
         timeout-minutes: 2
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
-        run: timeout 60 python -u scripts/update_scholar_stats.py || echo "Scholar fetch failed or timed out; using committed fallback values."
+        run: python -u scripts/update_scholar_stats.py
+
+      - name: Commit changed Scholar data
+        if: github.ref == 'refs/heads/main' && github.event_name != 'push' && steps.scholar.outcome == 'success'
+        run: |
+          git add -- data/scholar.json
+          if git diff --cached --quiet; then
+            echo "Scholar data unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh Google Scholar data"
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Install pinned Zola release
         run: |
@@ -88,6 +107,7 @@ jobs:
           path: public
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:

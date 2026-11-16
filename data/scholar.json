@@ -1,21 +1,295 @@
 {
-  "author_id": "IjoWeIMAAAAJ",
-  "papers": {
-    "actprobe": 8,
-    "chainstream": 4,
-    "dimmining": 90,
-    "doctoral-overview": 0,
-    "dwi": 0,
-    "embodied-cpp": 2,
-    "embodiskill": 22,
-    "flexnn": 78,
-    "length-constraint": 26,
-    "oxygen": 8,
-    "personal-llm-agents": 504,
-    "squeezer": 4,
-    "vec-lut": 5,
-    "zetta": 26,
-    "zeva": 7
+  "articles": {
+    "IjoWeIMAAAAJ:5awf1xo2G04C": {
+      "authors": "X Li",
+      "citation_id": "IjoWeIMAAAAJ:5awf1xo2G04C",
+      "cited_by": {
+        "value": 0
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:5awf1xo2G04C",
+      "publication": "Proceedings of the 24th Annual International Conference on Mobile Systems …, 2026",
+      "title": "Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:D_sINldO8mEC": {
+      "authors": "X Li, C Yin, W Wang, J Wei, T Cao, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:D_sINldO8mEC",
+      "cited_by": {
+        "cites_id": "10954692126537567943",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10954692126537567943",
+        "serpapi_link": "https://serpapi.com/search.json?cites=10954692126537567943&engine=google_scholar&hl=en",
+        "value": 6
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:D_sINldO8mEC",
+      "publication": "[Best Paper Award Runner-Up] Proceedings of the 24th Annual International …, 2026",
+      "title": "Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:Fu2w8maKXqMC": {
+      "authors": "G Cui, X Li, Z Hao, X Ding, Y Liu, T Cao",
+      "citation_id": "IjoWeIMAAAAJ:Fu2w8maKXqMC",
+      "cited_by": {
+        "value": 0
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:Fu2w8maKXqMC",
+      "publication": "arXiv preprint arXiv:2611.13410, 2026",
+      "title": "SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:JQOojiI6XY0C": {
+      "authors": "L Xu, B Li, H Wu, C Han, X Li, M Hua, S Jiang, T Cao, C Li, S Zhong, ...",
+      "citation_id": "IjoWeIMAAAAJ:JQOojiI6XY0C",
+      "cited_by": {
+        "cites_id": "6096907014502738668",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=6096907014502738668",
+        "serpapi_link": "https://serpapi.com/search.json?cites=6096907014502738668&engine=google_scholar&hl=en",
+        "value": 2
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:JQOojiI6XY0C",
+      "publication": "arXiv preprint arXiv:2607.02501, 2026",
+      "title": "Embodied. cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:TQgYirikUcIC": {
+      "authors": "J Liu, Y Li, L Li, Y Sun, H Wen, X Li, Y Guo, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:TQgYirikUcIC",
+      "cited_by": {
+        "cites_id": "9355939155078845944",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=9355939155078845944",
+        "serpapi_link": "https://serpapi.com/search.json?cites=9355939155078845944&engine=google_scholar&hl=en",
+        "value": 5
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:TQgYirikUcIC",
+      "publication": "arXiv preprint arXiv:2412.15240, 2024",
+      "title": "ChainStream: An LLM-based Framework for Unified Synthetic Sensing",
+      "year": "2024"
+    },
+    "IjoWeIMAAAAJ:UHK10RUVsp4C": {
+      "authors": "B Huang, X Li, X Wang, L Mi, Z Hao, W Wang, H Wu, K Li, Y Liu, T Cao",
+      "citation_id": "IjoWeIMAAAAJ:UHK10RUVsp4C",
+      "cited_by": {
+        "cites_id": "8537276468576283464",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=8537276468576283464",
+        "serpapi_link": "https://serpapi.com/search.json?cites=8537276468576283464&engine=google_scholar&hl=en",
+        "value": 11
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:UHK10RUVsp4C",
+      "publication": "arXiv preprint arXiv:2606.08508, 2026",
+      "title": "ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:W5xh706n7nkC": {
+      "authors": "Z Hao, W Wang, X Li, L Mi, H Wu, Y Liu, T Cao",
+      "citation_id": "IjoWeIMAAAAJ:W5xh706n7nkC",
+      "cited_by": {
+        "value": 0
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:W5xh706n7nkC",
+      "publication": "arXiv preprint arXiv:2610.33582, 2026",
+      "title": "Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:_Ybze24A_UAC": {
+      "authors": "F Chen, X Ding, B Huang, X Li, M Wang, J He, K Li, W Sun, Y Liu, H Wu, ...",
+      "citation_id": "IjoWeIMAAAAJ:_Ybze24A_UAC",
+      "cited_by": {
+        "cites_id": "6848535581213446533",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=6848535581213446533",
+        "serpapi_link": "https://serpapi.com/search.json?cites=6848535581213446533&engine=google_scholar&hl=en",
+        "value": 10
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:_Ybze24A_UAC",
+      "publication": "arXiv preprint arXiv:2608.30880, 2026",
+      "title": "Zeva: In-context causal learning for generalizable embodied manipulation",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:d1gkVwhDpl0C": {
+      "authors": "G Dai, Z Zhu, T Fu, C Wei, B Wang, X Li, Y Xie, H Yang, Y Wang",
+      "citation_id": "IjoWeIMAAAAJ:d1gkVwhDpl0C",
+      "cited_by": {
+        "cites_id": "10563871079539449701",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10563871079539449701",
+        "serpapi_link": "https://serpapi.com/search.json?cites=10563871079539449701&engine=google_scholar&hl=en",
+        "value": 91
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:d1gkVwhDpl0C",
+      "publication": "Proceedings of the 49th Annual International Symposium on Computer …, 2022",
+      "title": "DIMMining: Pruning-Efficient and Parallel Graph Mining on Near-Memory-Computing",
+      "year": "2022"
+    },
+    "IjoWeIMAAAAJ:dQ2og3OwTAUC": {
+      "authors": "W Chen, Y Deng, X Wang, Z Fu, X Li, T Cao, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:dQ2og3OwTAUC",
+      "cited_by": {
+        "value": 0
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:dQ2og3OwTAUC",
+      "publication": "IEEE Transactions on Mobile Computing, 2026",
+      "title": "DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:eq2jaN3J8jMC": {
+      "authors": "R Ju, X Wang, X Ding, Y Yang, H Wu, S Jiang, Q Zhang, H Wen, X Li, ...",
+      "citation_id": "IjoWeIMAAAAJ:eq2jaN3J8jMC",
+      "cited_by": {
+        "cites_id": "12200290515652207140",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=12200290515652207140",
+        "serpapi_link": "https://serpapi.com/search.json?cites=12200290515652207140&engine=google_scholar&hl=en",
+        "value": 31
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:eq2jaN3J8jMC",
+      "publication": "arXiv preprint arXiv:2605.10332, 2026",
+      "title": "EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:fPk4N6BV_jEC": {
+      "authors": "X Wang, L Ma, Z Fu, X Li, Y Li, J Ren, Y Zhang, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:fPk4N6BV_jEC",
+      "cited_by": {
+        "cites_id": "16695530953526167886",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=16695530953526167886",
+        "serpapi_link": "https://serpapi.com/search.json?cites=16695530953526167886&engine=google_scholar&hl=en",
+        "value": 5
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:fPk4N6BV_jEC",
+      "publication": "IEEE Transactions on Mobile Computing 24 (12), 13309-13321, 2025",
+      "title": "Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling",
+      "year": "2025"
+    },
+    "IjoWeIMAAAAJ:hkOj_22Ku90C": {
+      "authors": "X Li, H Tang, X Ding, W Wang, T Cao, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:hkOj_22Ku90C",
+      "cited_by": {
+        "cites_id": "10371337648411803327,4168979256511977186",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10371337648411803327,4168979256511977186",
+        "serpapi_link": "https://serpapi.com/search.json?cites=10371337648411803327%2C4168979256511977186&engine=google_scholar&hl=en",
+        "value": 9
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:hkOj_22Ku90C",
+      "publication": "arXiv preprint arXiv:2603.14371, 2026",
+      "title": "OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:u-x6o8ySG0sC": {
+      "authors": "X Li, Y Li, Y Li, T Cao, Y Liu",
+      "citation_id": "IjoWeIMAAAAJ:u-x6o8ySG0sC",
+      "cited_by": {
+        "cites_id": "8727976682675339018",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=8727976682675339018",
+        "serpapi_link": "https://serpapi.com/search.json?cites=8727976682675339018&engine=google_scholar&hl=en",
+        "value": 81
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:u-x6o8ySG0sC",
+      "publication": "Proceedings of the 30th Annual International Conference on Mobile Computing …, 2024",
+      "title": "FlexNN: Efficient and Adaptive DNN Inference on Memory-Constrained Edge Devices",
+      "year": "2024"
+    },
+    "IjoWeIMAAAAJ:u5HHmVD_uO8C": {
+      "authors": "Y Li, H Wen, W Wang, X Li, Y Yuan, G Liu, J Liu, W Xu, X Wang, Y Sun, ...",
+      "citation_id": "IjoWeIMAAAAJ:u5HHmVD_uO8C",
+      "cited_by": {
+        "cites_id": "341960020687636051",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=341960020687636051",
+        "serpapi_link": "https://serpapi.com/search.json?cites=341960020687636051&engine=google_scholar&hl=en",
+        "value": 514
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:u5HHmVD_uO8C",
+      "publication": "arXiv preprint arXiv:2401.05459, 2024",
+      "title": "Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security",
+      "year": "2024"
+    },
+    "IjoWeIMAAAAJ:uLbwQdceFCQC": {
+      "authors": "X Ding, L Mi, M Huang, Z Wang, C Zhang, Z Hao, F Chen, X Li, Y Zheng, ...",
+      "citation_id": "IjoWeIMAAAAJ:uLbwQdceFCQC",
+      "cited_by": {
+        "cites_id": "7941871506997289466",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
+        "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
+        "value": 37
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
+      "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
+      "title": "Zetta : An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence",
+      "year": "2026"
+    },
+    "IjoWeIMAAAAJ:zA6iFVUQeVQC": {
+      "authors": "Y Sun, H Wang, J Li, J Liu, X Li, H Wen, Y Yuan, H Zheng, Y Liang, Y Li, ...",
+      "citation_id": "IjoWeIMAAAAJ:zA6iFVUQeVQC",
+      "cited_by": {
+        "cites_id": "10975368475179327351",
+        "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10975368475179327351",
+        "serpapi_link": "https://serpapi.com/search.json?cites=10975368475179327351&engine=google_scholar&hl=en",
+        "value": 25
+      },
+      "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:zA6iFVUQeVQC",
+      "publication": "Proceedings of the 2025 Conference on Empirical Methods in Natural Language …, 2025",
+      "title": "An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint",
+      "year": "2025"
+    }
   },
-  "total": 784
+  "author": {
+    "affiliations": "Institute for AI Industry Research (AIR), Tsinghua University",
+    "email": "Verified email at mails.tsinghua.edu.cn",
+    "interests": [
+      {
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:agentic_robotics",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aagentic_robotics",
+        "title": "Agentic Robotics"
+      },
+      {
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:physical_self_improvement",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aphysical_self_improvement",
+        "title": "Physical Self-Improvement"
+      }
+    ],
+    "name": "Xiangyu Li",
+    "thumbnail": "https://scholar.googleusercontent.com/citations?view_op=view_photo&user=IjoWeIMAAAAJ&citpid=2",
+    "website": "https://xxxxyu.github.io/"
+  },
+  "author_id": "IjoWeIMAAAAJ",
+  "cited_by": {
+    "graph": [
+      {
+        "citations": 8,
+        "year": 2022
+      },
+      {
+        "citations": 19,
+        "year": 2023
+      },
+      {
+        "citations": 113,
+        "year": 2024
+      },
+      {
+        "citations": 293,
+        "year": 2025
+      },
+      {
+        "citations": 388,
+        "year": 2026
+      }
+    ],
+    "table": [
+      {
+        "citations": {
+          "all": 827,
+          "since_2021": 827
+        }
+      },
+      {
+        "h_index": {
+          "all": 9,
+          "since_2021": 9
+        }
+      },
+      {
+        "i10_index": {
+          "all": 8,
+          "since_2021": 8
+        }
+      }
+    ]
+  },
+  "total": 827
 }

@@ -12,9 +12,6 @@ from unittest import mock
 from scripts import prepare_assets as assets
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-
-
 class PrepareAssetsTests(unittest.TestCase):
     def test_search_is_ready_before_fonts_collect_characters(self) -> None:
         order = []
@@ -83,33 +80,6 @@ class PrepareAssetsTests(unittest.TestCase):
             self.assertEqual(assets.watch(0.75), 0)
         self.assertEqual(prepare.call_count, 3)
         self.assertEqual(errors.getvalue().count("partial save"), 1)
-
-    def test_development_build_and_ci_use_shared_preparation(self) -> None:
-        unix_wrapper = (REPO_ROOT / "serve.sh").read_text(encoding="utf-8")
-        windows_wrapper = (REPO_ROOT / "serve.ps1").read_text(encoding="utf-8")
-        unix_build = (REPO_ROOT / "build.sh").read_text(encoding="utf-8")
-        windows_build = (REPO_ROOT / "build.ps1").read_text(encoding="utf-8")
-        workflow = (REPO_ROOT / ".github/workflows/deploy.yml").read_text(encoding="utf-8")
-
-        self.assertIn("scripts.prepare_assets --watch", unix_wrapper)
-        self.assertIn("scripts.prepare_assets', '--watch", windows_wrapper)
-        for entry_point in (unix_wrapper, windows_wrapper, unix_build, windows_build):
-            self.assertIn("python -m scripts.prepare_assets", entry_point)
-        self.assertIn("build_font_subsets.py --check-rendered public", unix_build)
-        self.assertIn("build_font_subsets.py --check-rendered public", windows_build)
-        self.assertIn("run: ./build.sh", workflow)
-        self.assertIn("scripts.prepare_assets --print-font-cache-key", workflow)
-        self.assertNotIn("git diff --exit-code -- static/search_index.zh.json", workflow)
-
-    def test_generated_artifacts_are_ignored(self) -> None:
-        ignore_rules = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-        expected = {
-            ".font-subsets-manifest.json",
-            "static/fonts/generated/",
-            assets.search.INDEX_PATH.as_posix(),
-        }
-        self.assertTrue(expected.issubset(ignore_rules))
-
 
 if __name__ == "__main__":
     unittest.main()

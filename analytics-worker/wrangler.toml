@@ -1,0 +1,15 @@
+name = "xiangyu-site-analytics"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://xxxxyu.github.io"
+
+[[durable_objects.bindings]]
+name = "ANALYTICS"
+class_name = "AnalyticsStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AnalyticsStore"]

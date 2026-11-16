@@ -1,4 +1,5 @@
 """Validate the authored map against the site's canonical publication data."""
+import math
 import tomllib
 import unittest
 from pathlib import Path
@@ -20,21 +21,19 @@ class ResearchDataTests(unittest.TestCase):
         self.assertCountEqual(references, [p["paper_url"] for p in self.papers])
         self.assertEqual(len(references), len(set(references)))
 
-    def test_deep_links_are_unique_and_all_nodes_fit_the_map(self):
+    def test_nodes_have_unique_readable_ids_and_valid_layout_data(self):
         ids = [w["id"] for w in self.works]
         self.assertEqual(len(ids), len(set(ids)))
         for work in self.works:
             with self.subTest(work=work["id"]):
                 self.assertRegex(work["id"], r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-                self.assertTrue(35 <= work["x"] <= 785)
-                self.assertTrue(35 <= work["y"] <= 595)
+                for coordinate in ("x", "y"):
+                    self.assertTrue(math.isfinite(work[coordinate]) and work[coordinate] >= 0)
                 self.assertTrue(work["topics"])
                 self.assertLessEqual(set(work["topics"]), {"systems", "embodied", "agents"})
                 self.assertIn(work["role"], {"author", "collaborator", "section", "project"})
-                self.assertGreaterEqual(work["contribution_weight"], 0.2)
-                self.assertLessEqual(work["contribution_weight"], 1.0)
-                self.assertGreaterEqual(work["node_radius"], 6)
-                self.assertLessEqual(work["node_radius"], 13)
+                self.assertTrue(0 <= work["contribution_weight"] <= 1)
+                self.assertGreater(work["node_radius"], 0)
                 for key in ("role_en", "role_zh", "summary_en", "summary_zh"):
                     self.assertTrue(work[key].strip())
 

@@ -10,6 +10,7 @@ The site brings together:
 - technical writing on on-device AI, efficient inference, and embodied AI,
   including ordered post series;
 - an "Outside" section for photography, personal writing, and music;
+- visit statistics with geographic distribution and readership trends;
 - full-site search, light/dark/system themes, Atom feeds, and responsive layouts.
 
 The repository intentionally keeps the stack small: Markdown and TOML hold the
@@ -70,20 +71,21 @@ Run the lightweight content and feature checks through
 uv run --locked python -m unittest discover -s tests -v
 ```
 
-The checks validate multilingual content pairs, translated metadata, search
-indexes, content safety conventions, and ordered post-series structure. Run the
+The checks validate content references, translation metadata, post-series
+structure, search and font generation, and safe Scholar cache updates. Run the
 platform's `build` wrapper as a separate production rendering check when
 templates, styles, configuration, or content structure change.
 
-For changes to video loading or search, run the browser-behavior regression
-tests with Node.js 22+ (built-in test runner, no npm dependencies):
+For frontend and analytics changes, run the JavaScript checks with Node.js
+22.13+ (built-in test runner and SQLite, no npm dependencies):
 
 ```bash
 node --test tests/js/*.test.cjs
+npm --prefix analytics-worker test
 ```
 
-CI runs both suites. The JavaScript checks exercise delayed media events,
-reader preferences, search request ordering, and retry after network failure.
+CI runs these checks alongside the Python suite. They cover media loading,
+search request ordering, tracking preferences, and collector persistence.
 
 ## Project layout
 
@@ -114,11 +116,15 @@ generated automatically; its design and validation are documented in the
 
 Pushes to `main` are built and deployed to GitHub Pages by
 `.github/workflows/deploy.yml`. The same workflow refreshes Google Scholar data
-on its scheduled and manual runs, falling back to committed values if the
-external lookup is unavailable.
+daily at 08:17 Beijing time and on manual runs. It checks the SerpApi balance,
+caches the complete author listing with one search, and commits changed data
+directly to `main` before deployment. Failed lookups use the existing cache.
 
 See the [Scholar citation workflow](docs/scholar-stats.md) for cache updates
 and citation badge rules.
+
+See the [analytics setup](docs/analytics.md) for local preview, collector
+deployment, and counting rules.
 
 For a new fork, select **GitHub Actions** as the Pages source under
 **Settings > Pages**.

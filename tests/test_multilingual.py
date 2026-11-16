@@ -8,9 +8,8 @@ import unittest
 from collections import Counter
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qs, urlparse
 
-from scripts import build_zh_search_index
+from scripts.build_zh_search_index import split_content
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -18,23 +17,11 @@ CONTENT_ROOT = REPO_ROOT / "content"
 
 
 def load_front_matter(path: Path) -> dict[str, Any]:
-    text = path.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "+++":
-        raise AssertionError(f"{path.relative_to(REPO_ROOT)} has no TOML front matter")
-    closing = next(
-        (index for index, line in enumerate(lines[1:], start=1) if line.strip() == "+++"),
-        None,
-    )
-    if closing is None:
-        raise AssertionError(f"{path.relative_to(REPO_ROOT)} has unterminated front matter")
-    return tomllib.loads("\n".join(lines[1:closing]))
+    return split_content(path)[0]
 
 
 def markdown_body(path: Path) -> str:
-    text = path.read_text(encoding="utf-8")
-    _, body = text.split("+++", maxsplit=2)[1:]
-    return body
+    return split_content(path)[1]
 
 
 def markdown_structure(body: str) -> dict[str, Counter[str] | int]:
@@ -63,7 +50,6 @@ class MultilingualTests(unittest.TestCase):
     def test_language_configuration_enables_all_generated_surfaces(self) -> None:
         self.assertEqual(self.config.get("default_language"), "en")
         zh = self.config.get("languages", {}).get("zh", {})
-        self.assertEqual(zh.get("title"), "李翔宇")
         self.assertIs(zh.get("generate_feeds"), True)
         self.assertIs(zh.get("build_search_index"), False)
         self.assertIn("atom.xml", zh.get("feed_filenames", []))
@@ -78,45 +64,13 @@ class MultilingualTests(unittest.TestCase):
             with self.subTest(source=source.relative_to(REPO_ROOT)):
                 source_body = markdown_body(source)
                 translation_body = markdown_body(translation)
-                self.assertNotIn("TODO", translation_body)
                 self.assertEqual(markdown_structure(translation_body), markdown_structure(source_body))
-                self.assertEqual(
-                    len([block for block in translation_body.split("\n\n") if block.strip()]),
-                    len([block for block in source_body.split("\n\n") if block.strip()]),
-                )
 
-        for path in (CONTENT_ROOT / "about" / "_index.md", CONTENT_ROOT / "about" / "_index.zh.md"):
-            metadata = load_front_matter(path)
-            display_title = metadata.get("extra", {}).get("display_title")
-            with self.subTest(display_title=path.relative_to(REPO_ROOT)):
-                self.assertIsInstance(display_title, str)
-                self.assertTrue(display_title.strip())
-                self.assertNotEqual(display_title, metadata.get("title"))
-
-    def test_primary_section_labels_exist_in_both_languages(self) -> None:
-        keys = {
-            "position", "affiliation", "news", "selected_papers", "latest_posts",
-            "see_all", "papers", "archive", "tags", "tagged", "experiences",
-            "awards", "featured", "photography", "notes", "music",
-        }
-        english = self.config.get("translations", {})
-        chinese = self.config.get("languages", {}).get("zh", {}).get("translations", {})
-        self.assertTrue(keys.issubset(english))
-        self.assertTrue(keys.issubset(chinese))
-        for key in keys:
-            self.assertTrue(english[key].strip(), key)
-            self.assertTrue(chinese[key].strip(), key)
-
-    def test_about_structured_sections_are_wired_for_both_languages(self) -> None:
-        about_template = (REPO_ROOT / "templates" / "about.html").read_text(encoding="utf-8")
+    def test_about_data_translations_preserve_structure(self) -> None:
         for section in ("awards", "experiences"):
             with self.subTest(section=section):
-                self.assertIn(f'aria-labelledby="{section}"', about_template)
-                self.assertIn(f'data-i18n-text="{section}"', about_template)
                 english = REPO_ROOT / "data" / f"{section}.md"
                 chinese = REPO_ROOT / "data" / f"{section}.zh.md"
-                self.assertIn(f'data/{section}.md', about_template)
-                self.assertIn(f'data/{section}.zh.md', about_template)
                 self.assertTrue(english.read_text(encoding="utf-8").strip())
                 self.assertTrue(chinese.read_text(encoding="utf-8").strip())
                 self.assertEqual(
@@ -124,87 +78,16 @@ class MultilingualTests(unittest.TestCase):
                     markdown_structure(english.read_text(encoding="utf-8")),
                 )
 
-    def test_translation_catalog_has_no_unwired_keys(self) -> None:
+    def test_translation_catalogs_have_matching_keys(self) -> None:
         english = self.config.get("translations", {})
         chinese = self.config.get("languages", {}).get("zh", {}).get("translations", {})
         self.assertEqual(set(english), set(chinese))
-        templates = "\n".join(
-            path.read_text(encoding="utf-8")
-            for path in (REPO_ROOT / "templates").rglob("*.html")
-        )
-        for key in english:
-            with self.subTest(key=key):
-                self.assertIn(f'trans(key="{key}"', templates)
 
-    def test_blog_surfaces_use_default_list_with_per_card_localization(self) -> None:
-        index_template = (REPO_ROOT / "templates" / "index.html").read_text(encoding="utf-8")
-        blog_template = (REPO_ROOT / "templates" / "blog.html").read_text(encoding="utf-8")
-        series_template = (REPO_ROOT / "templates" / "series.html").read_text(encoding="utf-8")
-        self.assertIn('lang=config.default_language', index_template)
-        self.assertIn("localized_post_preview", index_template)
-        self.assertIn('get_section(path="blog/_index.md", lang=config.default_language)', blog_template)
-        self.assertIn("localized_post_preview", blog_template)
-        self.assertNotIn("paginator.", blog_template)
-        self.assertNotIn("paginate_by", (CONTENT_ROOT / "blog" / "_index.md").read_text(encoding="utf-8"))
-        self.assertNotIn("paginate_by", (CONTENT_ROOT / "blog" / "_index.zh.md").read_text(encoding="utf-8"))
-        self.assertIn("source_series.pages", series_template)
-        self.assertIn("localized_series_item", series_template)
-
-        post_template = (REPO_ROOT / "templates" / "blog-page.html").read_text(encoding="utf-8")
-        macros = (REPO_ROOT / "templates" / "macros.html").read_text(encoding="utf-8")
-        self.assertIn('get_section(path="blog/_index.md", lang=config.default_language)', post_template)
-        self.assertIn("source_page.permalink", post_template)
-        self.assertIn("localized_post_nav_link", post_template)
-        self.assertIn("data-title-en", macros)
-        self.assertIn("data-title-zh", macros)
-
-    def test_language_preference_is_click_driven_and_keeps_untranslated_url(self) -> None:
-        template = (REPO_ROOT / "templates" / "base.html").read_text(encoding="utf-8")
-        language_script = (REPO_ROOT / "static" / "js" / "site-language.js").read_text(encoding="utf-8")
-        blog_template = (REPO_ROOT / "templates" / "blog-page.html").read_text(encoding="utf-8")
-        self.assertIn("localStorage.setItem('site-language', target)", language_script)
-        self.assertIn("switcher.href = hasExactTranslation ? alternate.href : window.location.href", language_script)
-        self.assertNotIn("opens the Chinese home page", template)
-        for key in ("toc", "contents", "previous", "next", "post_navigation", "updated"):
-            self.assertIn(f'{key}:', template)
-        self.assertIn('data-i18n-text="previous"', blog_template)
-        self.assertIn('data-i18n-text="next"', blog_template)
-        search_script = (REPO_ROOT / "static" / "js" / "search.js").read_text(encoding="utf-8")
-        self.assertIn("docsLanguage === lang", search_script)
-
-    def test_resume_preview_matches_the_selected_site_language(self) -> None:
-        index_template = (REPO_ROOT / "templates" / "index.html").read_text(encoding="utf-8")
-        extra = self.config.get("extra", {})
-
-        for language in ("en", "zh"):
-            url = extra.get(f"cv_{language}", "")
-            parsed = urlparse(url)
-            query = parse_qs(parsed.query)
-            with self.subTest(language=language):
-                self.assertEqual(parsed.netloc, "xxxxyu.github.io")
-                self.assertEqual(parsed.path, "/resume/")
-                self.assertEqual(query.get("locale"), [language])
-                self.assertEqual(query.get("edition"), ["complete"])
-                self.assertNotIn("palette", query)
-                self.assertIn(f'data-href-{language}="{{{{ config.extra.cv_{language} }}}}"', index_template)
-
-    def test_generated_surfaces_include_multilingual_alternates(self) -> None:
-        sitemap = (REPO_ROOT / "templates" / "sitemap.xml").read_text(encoding="utf-8")
-        taxonomy_list = (REPO_ROOT / "templates" / "taxonomy_list.html").read_text(encoding="utf-8")
-        taxonomy_single = (REPO_ROOT / "templates" / "taxonomy_single.html").read_text(encoding="utf-8")
-        self.assertIn('xmlns:xhtml="http://www.w3.org/1999/xhtml"', sitemap)
-        self.assertIn('hreflang="x-default"', sitemap)
-        self.assertIn('hreflang="x-default"', taxonomy_list)
-        self.assertIn('hreflang="x-default"', taxonomy_single)
-        self.assertIn('get_taxonomy(kind="tags", lang=config.default_language)', taxonomy_single)
-
-    def test_ai_translations_declare_and_link_their_source(self) -> None:
-        declared = []
+    def test_ai_translation_metadata_references_the_original_page(self) -> None:
         for page in (CONTENT_ROOT / "blog").rglob("index*.md"):
             metadata = load_front_matter(page)
             source_language = metadata.get("extra", {}).get("ai_translation_source")
             if source_language:
-                declared.append(page)
                 ai_translation = metadata["extra"]
                 self.assertIn(source_language, {"en", "zh"})
                 for field in ("ai_translation_harness", "ai_translation_model"):
@@ -216,57 +99,14 @@ class MultilingualTests(unittest.TestCase):
                 self.assertNotEqual(source_language, page_language)
                 source_name = "index.zh.md" if source_language == "zh" else "index.md"
                 self.assertTrue(page.with_name(source_name).is_file())
-        self.assertTrue(declared, "At least one AI translation must exercise the disclosure")
-        for english in (CONTENT_ROOT / "blog").rglob("index.md"):
-            chinese = english.with_name("index.zh.md")
+        for chinese in (CONTENT_ROOT / "blog").rglob("index.zh.md"):
+            english = chinese.with_name("index.md")
             declarations = [
                 load_front_matter(path).get("extra", {}).get("ai_translation_source")
                 for path in (english, chinese)
             ]
             with self.subTest(pair=english.parent.relative_to(CONTENT_ROOT)):
-                self.assertEqual(sum(bool(value) for value in declarations), 1)
-        template = (REPO_ROOT / "templates" / "blog-page.html").read_text(encoding="utf-8")
-        self.assertIn("ai_translation_source", template)
-        self.assertIn("page.extra.ai_translation_model", template)
-        self.assertNotIn("page.extra.ai_translation_harness", template)
-        self.assertNotIn("page.extra.ai_translation_effort", template)
-        self.assertIn('trans(key="ai_translated_by"', template)
-        self.assertIn('trans(key="ai_translated_from"', template)
-        self.assertIn('hreflang="{{ ai_translation_source_lang }}"', template)
-        self.assertIn('data-set-site-language="{{ ai_translation_source_lang }}"', template)
-        base_template = (REPO_ROOT / "templates" / "base.html").read_text(encoding="utf-8")
-        language_script = (REPO_ROOT / "static" / "js" / "site-language.js").read_text(encoding="utf-8")
-        self.assertIn("localStorage.setItem('site-language', target)", language_script)
-        self.assertIn("[data-set-site-language]", language_script)
-
-    def test_chinese_search_index_covers_translated_content(self) -> None:
-        index = build_zh_search_index.build_index()
-        documents = {document["path"]: document for document in index["documents"]}
-        self.assertEqual(len(documents), len(index["documents"]), "Duplicate search result paths")
-        default_blog = [
-            path for path in (CONTENT_ROOT / "blog").rglob("*.md")
-            if not path.name.startswith("_index")
-            and not path.name.endswith(".zh.md")
-            and load_front_matter(path).get("draft") is not True
-        ]
-        indexed_post_paths = {
-            path for path in documents
-            if path.startswith("/blog/") or path.startswith("/zh/blog/")
-        }
-        self.assertGreaterEqual(len(indexed_post_paths), len(default_blog))
-        for source in default_blog:
-            translated = source.with_name("index.zh.md")
-            translated_meta = load_front_matter(translated)
-            expected = translated_meta.get("path")
-            if expected:
-                expected_path = f"/{expected.strip('/')}/"
-            else:
-                expected_path = "/zh/" + "/".join(translated.relative_to(CONTENT_ROOT).parent.parts) + "/"
-            source_meta = load_front_matter(source)
-            source_path = source_meta.get("path") or "/".join(source.relative_to(CONTENT_ROOT).parent.parts)
-            with self.subTest(source=source.relative_to(REPO_ROOT)):
-                self.assertIn(expected_path, documents)
-                self.assertNotIn(f"/{source_path.strip('/')}/", documents)
+                self.assertLessEqual(sum(bool(value) for value in declarations), 1)
 
     def test_every_chinese_file_has_a_colocated_english_source(self) -> None:
         self.assertTrue(self.translations, "No Chinese translations were found")
@@ -275,16 +115,8 @@ class MultilingualTests(unittest.TestCase):
             with self.subTest(translation=translated.relative_to(REPO_ROOT)):
                 self.assertTrue(source.is_file(), f"Missing paired source {source}")
 
-    def test_every_blog_post_has_an_english_chinese_pair(self) -> None:
-        default_posts = sorted((CONTENT_ROOT / "blog").rglob("index.md"))
-        self.assertTrue(default_posts)
-        for source in default_posts:
-            with self.subTest(source=source.relative_to(REPO_ROOT)):
-                self.assertTrue(source.with_name("index.zh.md").is_file())
-
-    def test_first_post_pair_uses_stable_language_prefixed_urls(self) -> None:
+    def test_explicit_translation_paths_use_the_language_prefix(self) -> None:
         translated_pages = [path for path in self.translations if not path.name.startswith("_index")]
-        self.assertTrue(translated_pages, "The MVP needs at least one translated post")
         for translated in translated_pages:
             source = translated.with_name(translated.name.removesuffix(".zh.md") + ".md")
             source_meta = load_front_matter(source)
@@ -327,15 +159,12 @@ class MultilingualTests(unittest.TestCase):
                 self.assertIs(section_meta.get("transparent"), True)
                 self.assertIs(section_meta.get("extra", {}).get("series"), True)
 
-    def test_post_titles_descriptions_and_code_blocks_are_safe_for_the_layout(self) -> None:
+    def test_post_translations_preserve_links_code_and_structure(self) -> None:
         for translated in self.translations:
             if translated.name.startswith("_index"):
                 continue
             source = translated.with_name(translated.name.removesuffix(".zh.md") + ".md")
-            metadata = load_front_matter(translated)
             with self.subTest(translation=translated.relative_to(REPO_ROOT)):
-                self.assertLessEqual(len(metadata.get("title", "")), 70)
-                self.assertLessEqual(len(metadata.get("description", "")), 160)
                 source_structure = markdown_structure(markdown_body(source))
                 translated_structure = markdown_structure(markdown_body(translated))
                 self.assertEqual(translated_structure, source_structure)

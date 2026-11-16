@@ -1,0 +1,102 @@
+{% extends "page.html" %}
+
+{% block robots %}noindex,follow{% endblock robots %}
+{% block main_class %}content content--wide content--analytics{% endblock main_class %}
+
+{% block head_extra %}
+<link rel="modulepreload" href="{{ get_url(path='js/analytics.js', cachebust=true) | safe }}">
+{% endblock head_extra %}
+
+{% block content %}
+{% set catalog = load_data(path="data/analytics.toml") %}
+{% if lang == "zh" %}{% set copy = catalog.zh %}{% else %}{% set copy = catalog.en %}{% endif %}
+<article class="analytics" id="analytics" data-state="loading" data-endpoint="{{ config.extra.analytics_endpoint | default(value='') }}" data-map="{{ get_url(path='data/analytics-land.json', cachebust=true) | safe }}">
+  <header class="analytics__header">
+    <div>
+      <h1>{{ page.title }}</h1>
+      <div class="analytics__status" role="status" aria-live="polite">
+        <span id="analytics-status"></span>
+        <button id="analytics-retry" class="analytics__retry" type="button" hidden>{{ copy.retry }}</button>
+      </div>
+    </div>
+    <div class="analytics__ranges" role="group" aria-label="{{ copy.range }}">
+      <button type="button" data-days="30" aria-pressed="true">{{ copy.range_30 }}</button>
+      <button type="button" data-days="90" aria-pressed="false">{{ copy.range_90 }}</button>
+    </div>
+  </header>
+
+  <div id="analytics-results" class="analytics__results" aria-busy="true">
+    <div class="analytics__overview" aria-label="{{ copy.period }}">
+      <dl class="analytics__readership">
+        <div><dt>{{ copy.views_unit }}</dt><dd data-metric="views">—</dd></div>
+        <div><dt>{{ copy.visitors_unit }}</dt><dd data-metric="visitors">—</dd></div>
+      </dl>
+      <dl class="analytics__context">
+        <div><dt>{{ copy.countries }}</dt><dd data-metric="countries">—</dd></div>
+        <div><dt>{{ copy.today }}</dt><dd data-metric="today">—</dd></div>
+      </dl>
+    </div>
+
+    <section class="analytics__section" aria-labelledby="analytics-geography">
+      <div class="analytics__section-head">
+        <h2 id="analytics-geography">{{ copy.geography }}</h2>
+        <span>{{ copy.locations_note }}</span>
+      </div>
+      <div class="analytics__geography">
+        <div class="analytics__map-wrap">
+          <svg class="analytics__map" id="analytics-map" viewBox="0 0 1000 450" role="img" aria-label="{{ copy.map_label }}">
+            <defs>
+              <radialGradient id="analytics-glow"><stop offset="0" stop-color="currentColor" stop-opacity="0.30"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient>
+              <clipPath id="analytics-map-clip"><rect width="1000" height="450"/></clipPath>
+            </defs>
+            <g clip-path="url(#analytics-map-clip)">
+              <g class="analytics__graticule" aria-hidden="true"><path d="M0 109H1000M0 264H1000M0 419H1000M167 0V450M333 0V450M500 0V450M667 0V450M833 0V450"/></g>
+              <g id="analytics-land" class="analytics__land" aria-hidden="true"></g>
+              <g id="analytics-points" class="analytics__points"></g>
+            </g>
+          </svg>
+          <p id="analytics-map-empty" class="analytics__map-empty" hidden>{{ copy.no_locations }}</p>
+        </div>
+        <div class="analytics__locations">
+          <div class="analytics__tabs" role="group" aria-label="{{ copy.geography }}">
+            <button type="button" data-location="countries" aria-pressed="true">{{ copy.country_tab }}</button>
+            <button type="button" data-location="cities" aria-pressed="false">{{ copy.city_tab }}</button>
+          </div>
+          <ol id="analytics-locations" class="analytics__ranking"></ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="analytics__section" aria-labelledby="analytics-traffic">
+      <div class="analytics__section-head">
+        <h2 id="analytics-traffic">{{ copy.traffic }}</h2>
+        <div class="analytics__legend"><span>{{ copy.views }}</span><span>{{ copy.visitors }}</span></div>
+      </div>
+      <div class="analytics__chart-wrap">
+        <svg id="analytics-chart" class="analytics__chart" viewBox="0 0 1000 200" role="img" aria-label="{{ copy.chart_label }}"></svg>
+        <p id="analytics-chart-empty" class="analytics__chart-empty" hidden>{{ copy.empty }}</p>
+      </div>
+      <div class="analytics__chart-caption"><span id="analytics-dates"></span><span>{{ copy.utc }}</span></div>
+    </section>
+
+    <div class="analytics__breakdowns">
+      <section class="analytics__section" aria-labelledby="analytics-pages-heading">
+        <div class="analytics__section-head"><h2 id="analytics-pages-heading">{{ copy.pages }}</h2><span>{{ copy.views }}</span></div>
+        <ol id="analytics-pages" class="analytics__ranking analytics__ranking--pages"></ol>
+      </section>
+      <section class="analytics__section" aria-labelledby="analytics-referrers-heading">
+        <div class="analytics__section-head"><h2 id="analytics-referrers-heading">{{ copy.referrers }}</h2><span>{{ copy.views }}</span></div>
+        <ol id="analytics-referrers" class="analytics__ranking"></ol>
+      </section>
+    </div>
+    <p id="analytics-lifetime" class="analytics__lifetime"></p>
+  </div>
+
+  <noscript><p>{{ copy.unconfigured }}</p></noscript>
+</article>
+<script type="application/json" id="analytics-copy">{{ copy | json_encode() | safe }}</script>
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="{{ get_url(path='js/analytics.js', cachebust=true) | safe }}"></script>
+{% endblock scripts %}
