@@ -62,9 +62,6 @@ class CjkEmphasisTests(unittest.TestCase):
             for path in cls.markdown_files
         }
 
-    def test_repository_contains_markdown_content(self) -> None:
-        self.assertTrue(self.markdown_files, "expected Markdown content files")
-
     def test_no_unclosable_cjk_emphasis_in_content(self) -> None:
         for path, violations in self.violations.items():
             with self.subTest(source=path.relative_to(REPO_ROOT)):

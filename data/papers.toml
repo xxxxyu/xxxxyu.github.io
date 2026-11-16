@@ -1,6 +1,6 @@
 [[papers]]
 title = 'SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering'
-gs_id = 'steerdistill'
+citation_id = 'IjoWeIMAAAAJ:Fu2w8maKXqMC'
 authors = 'Genming Cui*, Xiangyu Li*‡, Zixu Hao, Xin Ding, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -13,7 +13,7 @@ highlight = true
 
 [[papers]]
 title = 'Replicate What Varies: Resource Sharing for Domain-Randomized Embodied Simulation'
-gs_id = 'patchwork'
+citation_id = 'IjoWeIMAAAAJ:W5xh706n7nkC'
 authors = 'Zixu Hao, Weijun Wang, Xiangyu Li, Liang Mi, Hao Wu, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -22,7 +22,7 @@ featured = false
 
 [[papers]]
 title = 'Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation'
-gs_id = 'zeva'
+citation_id = 'IjoWeIMAAAAJ:_Ybze24A_UAC'
 authors = 'Fu Chen*, Xin Ding*, Bingjia Huang, Xiangyu Li, Mingju Wang, Jiawei He, Kun Li, Wei Sun, Yunxin Liu, Hao Wu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -37,8 +37,7 @@ highlight = true
 
 [[papers]]
 title = 'Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
-gs_id = 'zetta'
-gs_title = 'Zetta : An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence'
+citation_id = 'IjoWeIMAAAAJ:uLbwQdceFCQC'
 authors = 'Xin Ding*, Liang Mi*, Mingzhe Huang*, Zixuan Wang*, Chao Zhang*, Zixu Hao*, Fu Chen, Xiangyu Li, Yikai Zheng, Yaoyu Guo, Weijun Wang, Kun Li, Hao Wu, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -54,7 +53,7 @@ highlight = true
 
 [[papers]]
 title = 'Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots'
-gs_id = 'embodied-cpp'
+citation_id = 'IjoWeIMAAAAJ:JQOojiI6XY0C'
 authors = 'Ling Xu, Borui Li†, Hao Wu†, Chuyu Han, Xiangyu Li, Mohan Hua, Shiqi Jiang, Ting Cao, Chuanyou Li, Sheng Zhong, Shuai Wang'
 venue = 'ArXiv preprint'
 year = 2026
@@ -64,7 +63,7 @@ featured = false
 
 [[papers]]
 title = 'DWI: Efficient On-Device LLM Decoding Through Dynamic Width Selection on Nested Models'
-gs_id = 'dwi'
+citation_id = 'IjoWeIMAAAAJ:dQ2og3OwTAUC'
 authors = 'Weining Chen, Yongheng Deng, Xiang Wang, Ziyan Fu, Xiangyu Li, Ting Cao'
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2026
@@ -73,7 +72,7 @@ featured = false
 
 [[papers]]
 title = 'Building Efficient Inference Systems for Resource-Constrained Edge AI Deployment'
-gs_id = 'doctoral-overview'
+citation_id = 'IjoWeIMAAAAJ:5awf1xo2G04C'
 authors = 'Xiangyu Li'
 venue = 'ACM MobiSys Companion 2026'
 year = 2026
@@ -82,7 +81,7 @@ featured = false
 
 [[papers]]
 title = 'ActProbe: Action-Space Probe for Early Failure Detection of Generative Robot Policies'
-gs_id = 'actprobe'
+citation_id = 'IjoWeIMAAAAJ:UHK10RUVsp4C'
 authors = 'Bingjia Huang*, Xiangyu Li*, Xiang Wang, Liang Mi, Zixu Hao, Weijun Wang, Hao Wu, Kun Li, Yunxin Liu, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -94,7 +93,7 @@ highlight = true
 
 [[papers]]
 title = 'EmbodiSkill: Skill-Aware Reflection for Self-Evolving Embodied Agents'
-gs_id = 'embodiskill'
+citation_id = 'IjoWeIMAAAAJ:eq2jaN3J8jMC'
 authors = 'Ruofei Ju*, Xinrui Wang*, Xin Ding, Yifan Yang, Hao Wu, Shiqi Jiang, Qianxi Zhang, Hao Wen, Xiangyu Li, Weijun Wang, Kun Li, Yunxin Liu, Haipeng Dai, Wei Wang, Ting Cao'
 venue = 'ArXiv preprint'
 year = 2026
@@ -105,7 +104,7 @@ highlight = true
 
 [[papers]]
 title = 'OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism'
-gs_id = 'oxygen'
+citation_id = 'IjoWeIMAAAAJ:hkOj_22Ku90C'
 authors = 'Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu'
 venue = 'NeurIPS 2026'
 year = 2026
@@ -119,7 +118,7 @@ highlight = true
 
 [[papers]]
 title = 'Vec-LUT: Vector Table Lookup for Parallel Ultra-Low-Bit LLM Inference on Edge Devices'
-gs_id = 'vec-lut'
+citation_id = 'IjoWeIMAAAAJ:D_sINldO8mEC'
 authors = 'Xiangyu Li*, Chengyu Yin*, Weijun Wang, Jianyu Wei, Ting Cao, Yunxin Liu'
 venue = 'ACM MobiSys 2026'
 year = 2026
@@ -133,7 +132,7 @@ highlight = true
 
 [[papers]]
 title = 'An Empirical Study of LLM Reasoning Ability Under Strict Output Length Constraint'
-gs_id = 'length-constraint'
+citation_id = 'IjoWeIMAAAAJ:zA6iFVUQeVQC'
 authors = 'Yi Sun, Han Wang, Jiaqiang Li, Jiacheng Liu, Xiangyu Li, Hao Wen, Yizhen Yuan, Huiwen Zheng, Yan Liang, Yuanchun Li, Yunxin Liu'
 venue = 'EMNLP 2025'
 year = 2025
@@ -143,7 +142,7 @@ page_url = 'https://time-is-up.github.io'
 
 [[papers]]
 title = 'Squeezer: Efficient Multi-DNN Inference for Edge Video Analytics via Cross-Model Scheduling'
-gs_id = 'squeezer'
+citation_id = 'IjoWeIMAAAAJ:fPk4N6BV_jEC'
 authors = 'Xiang Wang, Lingxiao Ma, Ziyan Fu, Xiangyu Li, Yuanchun Li, Ju Ren, Yaoxue Zhang, Yunxin Liu'
 venue = 'IEEE Transactions on Mobile Computing (TMC)'
 year = 2025
@@ -151,7 +150,7 @@ paper_url = 'https://ieeexplore.ieee.org/abstract/document/11096018'
 
 [[papers]]
 title = 'ChainStream: An LLM-based Framework for Unified Synthetic Sensing'
-gs_id = 'chainstream'
+citation_id = 'IjoWeIMAAAAJ:TQgYirikUcIC'
 authors = 'Jiacheng Liu, Yuanchun Li, Liangyan Li, Yi Sun, Hao Wen, Xiangyu Li, Yao Guo, Yunxin Liu'
 venue = 'ArXiv preprint'
 year = 2024
@@ -167,7 +166,7 @@ year = 2024
 paper_url = 'https://dl.acm.org/doi/10.1145/3636534.3649391'
 slides_url = 'https://github.com/xxxxyu/FlexNN/blob/main/assets/FlexNN-MobiCom.pdf'
 code_url = 'https://github.com/xxxxyu/FlexNN'
-gs_id = 'flexnn'
+citation_id = 'IjoWeIMAAAAJ:u-x6o8ySG0sC'
 notes = '[Results Replicated @AE](https://www.acm.org/%70%75%62%6c%69%63%61%74%69%6f%6e%73/policies/artifact-review-and-badging-current)'
 # image = '/img/papers/flexnn.png'
 featured = true
@@ -179,7 +178,7 @@ venue = 'ArXiv preprint'
 year = 2024
 paper_url = 'https://arxiv.org/abs/2401.05459'
 code_url = 'https://github.com/MobileLLM/Personal_LLM_Agents_Survey'
-gs_id = 'personal-llm-agents'
+citation_id = 'IjoWeIMAAAAJ:u5HHmVD_uO8C'
 notes = 'Survey & Position, "Efficiency" Section Lead'
 press_links = [
   { label = '机器之心', url = 'https://mp.weixin.qq.com/s/JYB4BzsXhWF8pEUUkvn_GQ' },
@@ -193,4 +192,4 @@ authors = 'Guohao Dai, Zhenhua Zhu, Tianyu Fu, Chiyue Wei, Bangyan Wang, Xiangyu
 venue = 'ISCA 2022'
 year = 2022
 paper_url = 'https://dl.acm.org/doi/10.1145/3470496.3527388'
-gs_id = 'dimmining'
+citation_id = 'IjoWeIMAAAAJ:d1gkVwhDpl0C'
