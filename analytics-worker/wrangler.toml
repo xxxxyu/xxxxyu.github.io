@@ -1,0 +1,30 @@
+name = "xiangyu-site-analytics"
+account_id = "d410a2f036d95b146d4a5496baef5fe6"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+preview_urls = false
+
+# analytics.xxxxyu.com is bound in the Cloudflare dashboard (Production only).
+# Omit routes so code deployments do not require zone-management permissions.
+
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
+[observability]
+enabled = true
+redact_query_string = true
+
+[observability.logs]
+invocation_logs = false
+
+[vars]
+ALLOWED_ORIGINS = "https://xxxxyu.github.io"
+
+[[durable_objects.bindings]]
+name = "ANALYTICS"
+class_name = "AnalyticsStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AnalyticsStore"]

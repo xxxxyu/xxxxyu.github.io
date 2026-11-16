@@ -3,37 +3,89 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
     - cron: "17 0 * * *" # 08:17 Asia/Shanghai
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  scholar:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     permissions:
       contents: write
-    env:
-      ZOLA_VERSION: "0.22.1"
+    outputs:
+      revision: ${{ steps.source.outputs.revision }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.11'
 
-      - uses: astral-sh/setup-uv@v8.3.2
+      - name: Refresh Google Scholar stats (best-effort)
+        id: scholar
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+        run: python -u scripts/update_scholar_stats.py
+
+      - name: Commit changed Scholar data
+        if: steps.scholar.outcome == 'success'
+        run: |
+          git add -- data/scholar.json
+          if git diff --cached --quiet; then
+            echo "Scholar data unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh Google Scholar data"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+      - name: Select source revision
+        id: source
+        run: |
+          echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: scholar
+    if: ${{ !cancelled() && (needs.scholar.result == 'success' || needs.scholar.result == 'skipped') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      ZOLA_VERSION: "0.22.1"
+      ZOLA_SHA256: "0ca09aa40376aaa9ddfb512ff9ad963262ef95edb0d0f2d5ec6961b6f5cf22ef"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.scholar.outputs.revision || github.sha }}
+          persist-credentials: false
+
+      - name: Record source revision
+        run: |
+          echo "Website source: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.11'
+
+      - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -48,7 +100,7 @@ jobs:
           echo "key=$font_cache_key" >> "$GITHUB_OUTPUT"
 
       - name: Restore generated web-font subsets
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
             .font-subsets-manifest.json
@@ -60,57 +112,44 @@ jobs:
       - name: Run repository tests
         run: uv run --locked python -m unittest discover -s tests -v
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
+          package-manager-cache: false
 
       - name: Check frontend behavior
         run: node --test tests/js/*.test.cjs
 
-      - name: Refresh Google Scholar stats (best-effort)
-        id: scholar
-        if: github.event_name != 'push'
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
-        run: python -u scripts/update_scholar_stats.py
-
-      - name: Commit changed Scholar data
-        if: github.ref == 'refs/heads/main' && github.event_name != 'push' && steps.scholar.outcome == 'success'
-        run: |
-          git add -- data/scholar.json
-          if git diff --cached --quiet; then
-            echo "Scholar data unchanged."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: refresh Google Scholar data"
-          git pull --rebase origin main
-          git push origin HEAD:main
-
       - name: Install pinned Zola release
         run: |
-          curl -fsSL "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" | tar xz -C /usr/local/bin
+          curl --fail --silent --show-error --location --retry 3 \
+            "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            --output "$RUNNER_TEMP/zola.tar.gz"
+          echo "$ZOLA_SHA256  $RUNNER_TEMP/zola.tar.gz" | sha256sum --check
+          tar xzf "$RUNNER_TEMP/zola.tar.gz" -C /usr/local/bin
           zola --version
 
       - name: Build
         run: ./build.sh
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: public
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' && needs.build.result == 'success' }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5

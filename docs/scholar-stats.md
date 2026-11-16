@@ -53,9 +53,9 @@ response through `parse_snapshot` independently of network access.
 
 ## Automation and Git history
 
-`.github/workflows/deploy.yml` is the single automation entry point. Its daily
+`.github/workflows/deploy.yml` is the Scholar automation entry point. Its daily
 schedule is 08:17 Asia/Shanghai, expressed as `17 0 * * *` in UTC. GitHub may delay
-scheduled runs. Manual workflow runs use the same refresh process. Push-triggered
+scheduled runs. Manual runs on `main` use the same refresh process. Push-triggered
 deployments build from the committed cache.
 
 A successful refresh writes the snapshot atomically. JSON keys have stable
@@ -64,14 +64,13 @@ Actions Summary. Content changes produce one ordinary
 `chore: refresh Google Scholar data` commit on `main`. Identical snapshots leave
 the cache file untouched and produce an empty Git diff.
 
-Manual runs on a feature branch validate that branch's tests, build and Scholar
-refresh. Cache commits and Pages deployment run on `main`.
-
-The workflow checks out the latest requested branch, serializes runs per branch and rebases its
-data commit onto concurrent changes before a normal push. A merge conflict or
-rejected push fails the job. The same workflow then builds and deploys the
-committed snapshot. The `GITHUB_TOKEN` data push is followed by the remaining
-steps of that run, so deployment continues within the current workflow.
+Only the Scholar job receives repository write permission. It starts from the
+triggering commit, rebases changed data onto concurrent commits, and pushes
+normally; a conflict or rejected push fails the job. Its final commit SHA is
+passed to the read-only build job, which tests and builds that exact revision.
+Pushes, pull requests and manual runs on other branches build the committed
+cache without refreshing Scholar. Only `main` publishes Pages. The bot's data
+push does not trigger another workflow; the current run completes deployment.
 
 The initial ID migration and cache snapshot were verified against the
 [public Scholar profile](https://scholar.google.com/citations?user=IjoWeIMAAAAJ)

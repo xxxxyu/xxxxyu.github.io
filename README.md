@@ -10,6 +10,7 @@ The site brings together:
 - technical writing on on-device AI, efficient inference, and embodied AI,
   including ordered post series;
 - an "Outside" section for photography, personal writing, and music;
+- visit statistics with geographic distribution and readership trends;
 - full-site search, light/dark/system themes, Atom feeds, and responsive layouts.
 
 The repository intentionally keeps the stack small: Markdown and TOML hold the
@@ -75,15 +76,17 @@ structure, search and font generation, and safe Scholar cache updates. Run the
 platform's `build` wrapper as a separate production rendering check when
 templates, styles, configuration, or content structure change.
 
-For changes to video loading or search, run the browser-behavior regression
-tests with Node.js 22+ (built-in test runner, no npm dependencies):
+For frontend and analytics changes, run the JavaScript checks with Node.js
+22.13+ (built-in test runner and SQLite, no npm dependencies):
 
 ```bash
 node --test tests/js/*.test.cjs
+npm --prefix analytics-worker test
 ```
 
-CI runs both suites. The JavaScript checks exercise delayed media events,
-reader preferences, search request ordering, and retry after network failure.
+These checks cover media loading, search, tracking preferences and collector
+persistence. See [analytics verification](docs/analytics.md#verification) for
+the Workers runtime integration test and deployment checks.
 
 ## Project layout
 
@@ -94,6 +97,7 @@ templates/     Zola Tera templates and shortcodes
 sass/          Site styles
 static/        Files copied directly into the built site
 scripts/       Content and asset maintenance utilities
+analytics-worker/ Cloudflare collector, persistent store and backend tests
 tests/         Extensible repository and content checks
 docs/          Maintainer documentation
 config.toml    Zola and site-wide configuration
@@ -112,14 +116,16 @@ generated automatically; its design and validation are documented in the
 
 ## Deployment
 
-Pushes to `main` are built and deployed to GitHub Pages by
-`.github/workflows/deploy.yml`. The same workflow refreshes Google Scholar data
-daily at 08:17 Beijing time and on manual runs. It checks the SerpApi balance,
-caches the complete author listing with one search, and commits changed data
-directly to `main` before deployment. Failed lookups use the existing cache.
+`.github/workflows/deploy.yml` tests and builds pull requests and publishes
+GitHub Pages on `main`. Daily runs at 08:17 Beijing time and manual runs on
+`main` first refresh [Scholar data](docs/scholar-stats.md) in a separate job.
+The build tests and publishes the selected source revision with read-only
+repository permissions.
 
-See the [Scholar citation workflow](docs/scholar-stats.md) for cache updates
-and citation badge rules.
+`.github/workflows/analytics.yml` independently checks and deploys the collector
+when backend files change. See [analytics](docs/analytics.md) for triggers,
+credentials, local development and production verification. Actions are pinned
+to commit SHAs; version comments identify the release to update.
 
 For a new fork, select **GitHub Actions** as the Pages source under
 **Settings > Pages**.
