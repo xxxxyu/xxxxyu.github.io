@@ -43,11 +43,11 @@
         "cites_id": "6096907014502738668",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=6096907014502738668",
         "serpapi_link": "https://serpapi.com/search.json?cites=6096907014502738668&engine=google_scholar&hl=en",
-        "value": 2
+        "value": 3
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:JQOojiI6XY0C",
       "publication": "arXiv preprint arXiv:2607.02501, 2026",
-      "title": "Embodied. cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots",
+      "title": "Embodied. cpp: A portable inference runtime of embodied AI models on heterogeneous robots",
       "year": "2026"
     },
     "IjoWeIMAAAAJ:TQgYirikUcIC": {
@@ -96,7 +96,7 @@
         "cites_id": "6848535581213446533",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=6848535581213446533",
         "serpapi_link": "https://serpapi.com/search.json?cites=6848535581213446533&engine=google_scholar&hl=en",
-        "value": 10
+        "value": 11
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:_Ybze24A_UAC",
       "publication": "arXiv preprint arXiv:2608.30880, 2026",
@@ -191,7 +191,7 @@
         "cites_id": "341960020687636051",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=341960020687636051",
         "serpapi_link": "https://serpapi.com/search.json?cites=341960020687636051&engine=google_scholar&hl=en",
-        "value": 514
+        "value": 515
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:u5HHmVD_uO8C",
       "publication": "arXiv preprint arXiv:2401.05459, 2024",
@@ -205,7 +205,7 @@
         "cites_id": "7941871506997289466",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
         "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
-        "value": 37
+        "value": 38
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
       "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
@@ -266,15 +266,15 @@
         "year": 2025
       },
       {
-        "citations": 388,
+        "citations": 392,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 827,
-          "since_2021": 827
+          "all": 831,
+          "since_2021": 831
         }
       },
       {
@@ -291,5 +291,5 @@
       }
     ]
   },
-  "total": 827
+  "total": 831
 }
