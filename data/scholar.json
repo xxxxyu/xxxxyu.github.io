@@ -18,7 +18,7 @@
         "cites_id": "10954692126537567943",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10954692126537567943",
         "serpapi_link": "https://serpapi.com/search.json?cites=10954692126537567943&engine=google_scholar&hl=en",
-        "value": 6
+        "value": 5
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:D_sINldO8mEC",
       "publication": "[Best Paper Award Runner-Up] Proceedings of the 24th Annual International …, 2026",
@@ -135,7 +135,7 @@
         "cites_id": "12200290515652207140",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=12200290515652207140",
         "serpapi_link": "https://serpapi.com/search.json?cites=12200290515652207140&engine=google_scholar&hl=en",
-        "value": 31
+        "value": 32
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:eq2jaN3J8jMC",
       "publication": "arXiv preprint arXiv:2605.10332, 2026",
@@ -191,7 +191,7 @@
         "cites_id": "341960020687636051",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=341960020687636051",
         "serpapi_link": "https://serpapi.com/search.json?cites=341960020687636051&engine=google_scholar&hl=en",
-        "value": 515
+        "value": 516
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:u5HHmVD_uO8C",
       "publication": "arXiv preprint arXiv:2401.05459, 2024",
@@ -205,7 +205,7 @@
         "cites_id": "7941871506997289466",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
         "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
-        "value": 38
+        "value": 39
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
       "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
@@ -266,15 +266,15 @@
         "year": 2025
       },
       {
-        "citations": 392,
+        "citations": 394,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 831,
-          "since_2021": 831
+          "all": 833,
+          "since_2021": 833
         }
       },
       {
@@ -291,5 +291,5 @@
       }
     ]
   },
-  "total": 831
+  "total": 833
 }
