@@ -3,18 +3,29 @@ const DAY_MS = 86_400_000;
 const RETENTION_DAYS = 400;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const BOT = /bot\b|crawler|spider|headless|preview|facebookexternalhit|curl|wget/i;
+const PERSONAL_SITE = { id: "personal", store: "site-v1" };
+const PROJECT_ORIGIN = "https://air-embodied-brain.github.io";
+const PROJECTS = [
+  { id: "oxygen", store: "oxygen-v1", path: "/OxyGen/" },
+  { id: "steerdistill", store: "steerdistill-v1", path: "/SteerDistill/" },
+];
 
 function dateAt(time) {
   return new Date(time).toISOString().slice(0, 10);
 }
 
-function allowedOrigins(env) {
+function personalOrigins(env) {
   const origins = (env.ALLOWED_ORIGINS || "")
     .split(",").map(value => value.trim()).filter(Boolean);
   if (env.ALLOW_LOCALHOST === "true") {
     origins.push("http://127.0.0.1:1111", "http://localhost:1111");
   }
   return origins;
+}
+
+function eventSite(origin, path) {
+  if (origin !== PROJECT_ORIGIN) return PERSONAL_SITE;
+  return PROJECTS.find(site => path === site.path.slice(0, -1) || path.startsWith(site.path));
 }
 
 function normalizePath(raw, origin) {
@@ -99,8 +110,8 @@ export default {
   async fetch(request, env, context) {
     const url = new URL(request.url);
     const origin = request.headers.get("Origin");
-    const origins = allowedOrigins(env);
-    if (origin && !origins.includes(origin)) return new Response("Forbidden", { status: 403 });
+    const origins = personalOrigins(env);
+    if (origin && origin !== PROJECT_ORIGIN && !origins.includes(origin)) return new Response("Forbidden", { status: 403 });
     const respond = response => cors(response, origin, env.CF_VERSION_METADATA?.tag);
     if (request.method === "OPTIONS") return respond(new Response(null, { status: 204 }));
     if (url.pathname === "/" && request.method === "GET") {
@@ -108,7 +119,6 @@ export default {
     }
     let operation = "store-binding";
     try {
-      const store = env.ANALYTICS.getByName("site-v1");
       if (url.pathname === "/api/events" && request.method === "POST") {
         operation = "track";
         if (!origin) return respond(new Response(null, { status: 403 }));
@@ -121,6 +131,9 @@ export default {
         if (!path || ![payload?.visitorId, payload?.eventId].every(id => typeof id === "string" && UUID.test(id))) {
           return respond(Response.json({ error: "invalid-event" }, { status: 400 }));
         }
+        const site = eventSite(origin, path);
+        if (!site) return respond(Response.json({ error: "invalid-site-path" }, { status: 400 }));
+        const store = env.ANALYTICS.getByName(site.store);
         const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(payload.visitorId));
         const visitor = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
         return respond(await store.fetch("https://store/events", {
@@ -129,20 +142,24 @@ export default {
             eventId: payload.eventId,
             visitor,
             path,
-            referrer: referrerHost(payload.referrer, origins),
+            referrer: referrerHost(payload.referrer, site === PERSONAL_SITE ? origins : [origin]),
             ...geography(request.cf),
           }),
         }));
       }
       if (url.pathname === "/api/summary" && request.method === "GET") {
         operation = "summary";
+        const id = url.searchParams.get("site") ?? PERSONAL_SITE.id;
+        const site = id === PERSONAL_SITE.id ? PERSONAL_SITE : PROJECTS.find(project => project.id === id);
+        if (!site) return respond(Response.json({ error: "invalid-site" }, { status: 400 }));
         const days = Number(url.searchParams.get("days") || 30);
         if (![7, 30, 90].includes(days)) return respond(Response.json({ error: "invalid-range" }, { status: 400 }));
-        const key = new Request(`${url.origin}/api/summary?days=${days}&version=${encodeURIComponent(env.CF_VERSION_METADATA?.id || "local")}`);
+        const key = new Request(`${url.origin}/api/summary?site=${site.id}&days=${days}&version=${encodeURIComponent(env.CF_VERSION_METADATA?.id || "local")}`);
         const cache = globalThis.caches?.default;
         const refresh = url.searchParams.get("refresh") === "1";
         let response = refresh ? null : await cache?.match(key);
         if (!response) {
+          const store = env.ANALYTICS.getByName(site.store);
           response = await store.fetch(`https://store/summary?days=${days}`);
           if (response.ok && cache) {
             context.waitUntil(cache.put(key, response.clone()).catch(error => reportError(error, "cache-write", env)));

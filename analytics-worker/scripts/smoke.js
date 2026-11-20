@@ -27,15 +27,19 @@ async function main() {
   const [endpoint, revision] = process.argv.slice(2);
   assert.ok(endpoint, 'Usage: npm run smoke -- <collector-origin> [expected-commit]');
   const origin = process.env.ANALYTICS_SITE_ORIGIN || 'https://xxxxyu.github.io';
+  const sites = ['', 'oxygen', 'steerdistill'];
   // Allow the previous deployment's 60-second responses to expire at the edge.
   const attempts = 15;
   for (const days of [30, 90]) {
-    const url = new URL('/api/summary', endpoint);
-    url.searchParams.set('days', days);
     for (let attempt = 1; attempt <= attempts; attempt++) {
       try {
-        const response = await fetch(url, { headers: { Origin: origin }, signal: AbortSignal.timeout(10000) });
-        await checkSummary(response, days, { origin, revision });
+        await Promise.all(sites.map(async site => {
+          const url = new URL('/api/summary', endpoint);
+          url.searchParams.set('days', days);
+          if (site) url.searchParams.set('site', site);
+          const response = await fetch(url, { headers: { Origin: origin }, signal: AbortSignal.timeout(10000) });
+          await checkSummary(response, days, { origin, revision });
+        }));
         console.log(`${days}-day summary: OK${revision ? ` (${revision})` : ''}`);
         break;
       } catch (error) {

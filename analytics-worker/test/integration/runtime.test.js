@@ -39,6 +39,28 @@ test('the configured Workers runtime stores events, deduplicates delivery, and p
   assert.equal(data.period.visitors, 1);
   assert.deepEqual(data.pages, [{ path: '/integration/', views: 2 }]);
 
+  const projectOrigin = 'https://air-embodied-brain.github.io';
+  const trackProject = path => server.fetch('/api/events', {
+    method: 'POST',
+    headers: { ...headers, Origin: projectOrigin },
+    body: JSON.stringify({ ...event, path }),
+  });
+  const projectSummaries = async site => checkSummary(
+    await server.fetch(`/api/summary?days=30&site=${site}`, { headers: { Origin: origin } }),
+    30, { origin },
+  );
+  assert.equal((await trackProject('/OxyGen/')).status, 204);
+  assert.equal((await trackProject('/SteerDistill/article/?lang=zh')).status, 204);
+  assert.equal((await trackProject('/OxyGen-unrelated/')).status, 400);
+  assert.equal((await trackProject('/unrelated/')).status, 400);
+  assert.deepEqual((await projectSummaries('oxygen')).pages, [{ path: '/OxyGen/', views: 1 }]);
+  assert.deepEqual((await projectSummaries('steerdistill')).pages, [{ path: '/SteerDistill/article/', views: 1 }]);
+  assert.deepEqual((await projectSummaries('personal')).pages, data.pages);
+  assert.equal((await server.fetch('/api/summary?site=unknown')).status, 400);
+  const preflight = await server.fetch('/api/events', { method: 'OPTIONS', headers: { Origin: projectOrigin } });
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get('access-control-allow-origin'), projectOrigin);
+
   const refreshed = await server.fetch('/api/summary?days=30&refresh=1', { headers: { Origin: origin } });
   assert.equal(refreshed.headers.get('Cache-Control'), 'no-store');
   assert.deepEqual((await checkSummary(refreshed, 30, { origin })).lifetime, data.lifetime);
