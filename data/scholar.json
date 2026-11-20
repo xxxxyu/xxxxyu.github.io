@@ -18,7 +18,7 @@
         "cites_id": "10954692126537567943",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10954692126537567943",
         "serpapi_link": "https://serpapi.com/search.json?cites=10954692126537567943&engine=google_scholar&hl=en",
-        "value": 5
+        "value": 6
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:D_sINldO8mEC",
       "publication": "[Best Paper Award Runner-Up] Proceedings of the 24th Annual International …, 2026",
@@ -110,7 +110,7 @@
         "cites_id": "10563871079539449701",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10563871079539449701",
         "serpapi_link": "https://serpapi.com/search.json?cites=10563871079539449701&engine=google_scholar&hl=en",
-        "value": 91
+        "value": 92
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:d1gkVwhDpl0C",
       "publication": "Proceedings of the 49th Annual International Symposium on Computer …, 2022",
@@ -219,7 +219,7 @@
         "cites_id": "10975368475179327351",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10975368475179327351",
         "serpapi_link": "https://serpapi.com/search.json?cites=10975368475179327351&engine=google_scholar&hl=en",
-        "value": 25
+        "value": 26
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:zA6iFVUQeVQC",
       "publication": "Proceedings of the 2025 Conference on Empirical Methods in Natural Language …, 2025",
@@ -262,19 +262,19 @@
         "year": 2024
       },
       {
-        "citations": 293,
+        "citations": 292,
         "year": 2025
       },
       {
-        "citations": 394,
+        "citations": 398,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 833,
-          "since_2021": 833
+          "all": 836,
+          "since_2021": 836
         }
       },
       {
@@ -291,5 +291,5 @@
       }
     ]
   },
-  "total": 833
+  "total": 836
 }
