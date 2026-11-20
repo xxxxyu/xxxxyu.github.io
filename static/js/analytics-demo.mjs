@@ -10,7 +10,14 @@ function distribute(total, weights) {
   return counts;
 }
 
-export function sampleAnalytics(dayCount, now = Date.now()) {
+const demoSites = {
+  oxygen: { scale: 0.6, pages: [['/OxyGen/', 1]] },
+  steerdistill: { scale: 0.8, pages: [['/SteerDistill/', 0.54], ['/SteerDistill/article/', 0.3], ['/SteerDistill/cases/', 0.12], ['/SteerDistill/records/', 0.04]] },
+  personal: { scale: 1, pages: [['/', 0.31], ['/research/', 0.19], ['/blog/vla-models-review/', 0.15], ['/papers/', 0.13], ['/blog/oxygen-mot-vla-inference/', 0.10], ['/about/', 0.07], ['/outside/', 0.05]] },
+};
+
+export function sampleAnalytics(dayCount, now = Date.now(), site = 'personal') {
+  const { scale, pages } = demoSites[site];
   // Recent readership favors East Asia. Earlier visits include a larger
   // European readership and additional locations in the southern hemisphere.
   const places = [
@@ -28,7 +35,7 @@ export function sampleAnalytics(dayCount, now = Date.now()) {
   const locationViews = places.map(() => 0);
   const days = Array.from({ length: dayCount }, (_, index) => {
     const offset = dayCount - 1 - index;
-    const views = Math.round(86 + (90 - offset) * 1.3 + Math.sin(offset * 1.7) * 39 + (offset % 13 === 2 ? 190 : 0));
+    const views = Math.round((86 + (90 - offset) * 1.3 + Math.sin(offset * 1.7) * 39 + (offset % 13 === 2 ? 190 : 0)) * scale);
     const counts = distribute(views, places.map(place => place[offset < 30 ? 4 : 5]));
     counts.forEach((count, place) => { locationViews[place] += count; });
     return {
@@ -50,13 +57,13 @@ export function sampleAnalytics(dayCount, now = Date.now()) {
     generatedAt: new Date(now).toISOString(),
     startedAt: new Date(now - 180 * 86400000).toISOString(),
     period: { days: dayCount, from: days[0].date, to: days.at(-1).date, views, visitors: Math.round(views * 0.43), countries: countries.size },
-    lifetime: { views: 32418, visitors: 12703 },
+    lifetime: { views: Math.round(32418 * scale), visitors: Math.round(12703 * scale) },
     today: days.at(-1),
     days,
     countries: Array.from(countries, ([code, count]) => ({ code, views: count })).sort((a, b) => b.views - a.views),
     cities: points.map(({ city, country, views }) => ({ city, country, views })).sort((a, b) => b.views - a.views),
     points,
-    pages: allocate([['/', 0.31], ['/research/', 0.19], ['/blog/vla-models-review/', 0.15], ['/papers/', 0.13], ['/blog/oxygen-mot-vla-inference/', 0.10], ['/about/', 0.07], ['/outside/', 0.05]], 'path'),
+    pages: allocate(pages, 'path'),
     referrers: allocate([['', 0.39], ['google.com', 0.27], ['github.com', 0.16], ['scholar.google.com', 0.09], ['zhihu.com', 0.05], ['bing.com', 0.04]], 'host'),
   };
 }

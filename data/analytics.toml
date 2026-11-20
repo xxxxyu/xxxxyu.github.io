@@ -1,4 +1,6 @@
 [en]
+sites_label = "Website"
+personal_site = "Personal site"
 range = "Date range"
 range_30 = "30 days"
 range_90 = "90 days"
@@ -36,6 +38,8 @@ map_label = "World map of approximate visitor locations"
 chart_label = "Daily page views and visitors"
 
 [zh]
+sites_label = "网站"
+personal_site = "个人站"
 range = "统计时段"
 range_30 = "近 30 天"
 range_90 = "近 90 天"
@@ -71,3 +75,16 @@ credit_before = "设计灵感来自 "
 credit_after = " 的访问统计页。"
 map_label = "访客大致位置的世界地图"
 chart_label = "每日页面浏览量与访客数"
+
+[[sites]]
+id = "personal"
+
+[[sites]]
+id = "oxygen"
+name = "OxyGen"
+origin = "https://air-embodied-brain.github.io"
+
+[[sites]]
+id = "steerdistill"
+name = "SteerDistill"
+origin = "https://air-embodied-brain.github.io"

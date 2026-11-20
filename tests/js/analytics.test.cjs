@@ -8,12 +8,13 @@ const vm = require('node:vm');
 const source = fs.readFileSync(path.resolve(__dirname, '../../static/js/analytics-track.js'), 'utf8');
 
 function browser(options = {}) {
-  const values = new Map(Object.entries(options.storage || {}));
+  const values = options.values || new Map(Object.entries(options.storage || {}));
+  const origin = options.origin || 'https://xxxxyu.github.io';
   const requests = [];
   const context = {
-    window: {},
-    location: { hostname: options.hostname || 'xxxxyu.github.io', origin: 'https://xxxxyu.github.io', pathname: options.pathname || '/' },
-    document: { currentScript: { dataset: { endpoint: 'https://stats.example', siteOrigin: 'https://xxxxyu.github.io' } }, referrer: 'https://google.com/search?q=private' },
+    window: { performance: { getEntriesByType: () => options.entrance ? [{ name: options.entrance }] : [] } },
+    location: { hostname: options.hostname || new URL(origin).hostname, origin, pathname: options.pathname || '/' },
+    document: { currentScript: { dataset: { endpoint: 'https://stats.example', siteOrigin: origin, siteUrl: options.siteUrl } }, referrer: 'https://google.com/search?q=private' },
     navigator: options.navigator || {},
     localStorage: { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value) },
     sessionStorage: { getItem: () => null, setItem() {} },
@@ -34,6 +35,24 @@ test('tracking sends one event without cookies or query strings', () => {
   assert.equal(payload.referrer, 'https://google.com');
   assert.equal(payload.path, '/');
   assert.equal(app.requests[0].credentials, 'omit');
+});
+
+test('same-origin projects get separate identities and report the original document path', () => {
+  const origin = 'https://air-embodied-brain.github.io';
+  const values = new Map();
+  const run = (base, pathname, entrance) => {
+    const app = browser({ origin, values, siteUrl: origin + base, pathname, entrance });
+    app.run();
+    return app.requests.map(request => JSON.parse(request.body));
+  };
+  const [oxygen] = run('/OxyGen/', '/OxyGen/');
+  const [steerdistill] = run('/SteerDistill/', '/SteerDistill/article/', origin + '/SteerDistill/?lang=zh#demo');
+  const [returning] = run('/SteerDistill/', '/SteerDistill/cases/');
+  assert.equal(oxygen.path, '/OxyGen/');
+  assert.equal(steerdistill.path, '/SteerDistill/');
+  assert.notEqual(oxygen.visitorId, steerdistill.visitorId);
+  assert.equal(returning.visitorId, steerdistill.visitorId);
+  assert.deepEqual(run('/OxyGen/', '/OxyGen-unrelated/'), []);
 });
 
 test('local previews, dashboard views, opt-out, DNT, and GPC never create an identity', () => {

@@ -1,5 +1,6 @@
 {% extends "page.html" %}
 
+{% block html_attributes %} data-preserve-language-query{% endblock html_attributes %}
 {% block robots %}noindex,follow{% endblock robots %}
 {% block main_class %}content content--wide content--analytics{% endblock main_class %}
 
@@ -21,9 +22,16 @@
         </button>
       </div>
     </div>
-    <div class="analytics__ranges" role="group" aria-label="{{ copy.range }}">
-      <button type="button" data-days="30" aria-pressed="true">{{ copy.range_30 }}</button>
-      <button type="button" data-days="90" aria-pressed="false">{{ copy.range_90 }}</button>
+    <div class="analytics__controls">
+      <nav class="analytics__sites" aria-label="{{ copy.sites_label }}">
+        {% for site in catalog.sites %}
+        <a data-analytics-site="{{ site.id }}"{% if site.origin %} data-origin="{{ site.origin }}"{% endif %} href="{{ current_path }}{% if not loop.first %}?site={{ site.id }}{% endif %}">{{ site.name | default(value=copy.personal_site) }}</a>
+        {% endfor %}
+      </nav>
+      <div class="analytics__ranges" role="group" aria-label="{{ copy.range }}">
+        <button type="button" data-days="30" aria-pressed="true">{{ copy.range_30 }}</button>
+        <button type="button" data-days="90" aria-pressed="false">{{ copy.range_90 }}</button>
+      </div>
     </div>
   </header>
 

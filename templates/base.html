@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang | default(value=config.default_language) }}">
+<html lang="{{ lang | default(value=config.default_language) }}"{% block html_attributes %}{% endblock html_attributes %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,8 +16,10 @@
         var contentLanguage = document.documentElement.lang;
         if ((preference === 'en' || preference === 'zh') && preference !== contentLanguage) {
           var alternate = document.querySelector('link[rel="alternate"][hreflang="' + preference + '"]');
-          if (alternate && alternate.href !== window.location.href) {
-            window.location.replace(alternate.href);
+          if (alternate) {
+            var target = new URL(alternate.href);
+            if (document.documentElement.hasAttribute('data-preserve-language-query')) target.search = window.location.search;
+            if (target.href !== window.location.href) window.location.replace(target.href);
           }
         }
       } catch (error) {

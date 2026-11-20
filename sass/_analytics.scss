@@ -8,17 +8,22 @@
   font-size: var(--fs-sm);
 
   &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--sp-4);
-    margin-bottom: var(--sp-2);
+    margin-bottom: var(--sp-3);
 
     h1 { margin-bottom: var(--sp-2); }
   }
 
-  button {
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-4);
+    margin-top: var(--sp-3);
+  }
+
+  &__sites a, button {
+    display: inline-flex;
+    align-items: center;
     font: inherit;
     cursor: pointer;
     color: var(--c-text-muted);
@@ -27,18 +32,18 @@
     border-radius: var(--radius);
     min-height: 34px;
     padding: var(--sp-1) var(--sp-3);
+    text-decoration: none;
     transition: color var(--transition), background var(--transition);
 
     &:hover { color: var(--c-accent); }
-    &[aria-pressed="true"] { background: var(--c-bg-alt); color: var(--c-text); }
+    &[aria-current="page"], &[aria-pressed="true"] { background: var(--c-bg-alt); color: var(--c-text); }
     &:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 3px; }
   }
 
-  &__ranges {
+  &__sites, &__ranges {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--sp-1);
-    align-self: flex-start;
-    margin-top: var(--sp-2);
   }
 
   &__status {
@@ -223,9 +228,8 @@
   }
 
   @media (max-width: 460px) {
-    &__header { gap: var(--sp-2); margin-bottom: var(--sp-4); }
+    &__header { margin-bottom: var(--sp-4); }
     &__header h1 { font-size: 2rem; }
-    &__ranges { margin-top: var(--sp-1); }
     &__readership { gap: var(--sp-4); font-size: var(--fs-sm); }
     &__readership > div { gap: var(--sp-1); }
     &__readership dd { font-size: 1.625rem; }

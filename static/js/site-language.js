@@ -12,8 +12,12 @@
     }
   }
 
-  function alternateFor(language) {
-    return document.querySelector('link[rel="alternate"][hreflang="' + language + '"]');
+  function alternateHref(language) {
+    var alternate = document.querySelector('link[rel="alternate"][hreflang="' + language + '"]');
+    if (!alternate) return null;
+    var target = new URL(alternate.href);
+    if (document.documentElement.hasAttribute('data-preserve-language-query')) target.search = window.location.search;
+    return target.href;
   }
 
   function apply(language) {
@@ -51,10 +55,10 @@
     });
 
     var target = language === 'zh' ? 'en' : 'zh';
-    var alternate = alternateFor(target);
-    var hasExactTranslation = alternate && alternate.href !== window.location.href;
+    var alternate = alternateHref(target);
+    var hasExactTranslation = alternate && alternate !== window.location.href;
     var label = hasExactTranslation ? copy.language_switch_exact : copy.language_switch;
-    switcher.href = hasExactTranslation ? alternate.href : window.location.href;
+    switcher.href = hasExactTranslation ? alternate : window.location.href;
     switcher.textContent = target === 'zh' ? '中' : 'EN';
     switcher.setAttribute('lang', target);
     switcher.setAttribute('hreflang', target);
@@ -71,9 +75,9 @@
     } catch (error) {
       // The current interaction still applies even if storage is unavailable.
     }
-    var alternate = alternateFor(target);
-    if (alternate && alternate.href !== window.location.href) {
-      window.location.assign(alternate.href);
+    var alternate = alternateHref(target);
+    if (alternate && alternate !== window.location.href) {
+      window.location.assign(alternate);
     } else {
       apply(target);
     }

@@ -1,13 +1,14 @@
 # Website analytics
 
-GitHub Pages serves the site; the browser sends page views to a Cloudflare
-Worker backed by one SQLite Durable Object. Public summaries appear at
+GitHub Pages serves the personal site, OxyGen, and SteerDistill. Each sends page
+views to the same Cloudflare Worker, which stores each site's events in its own
+SQLite Durable Object. A shared dashboard displays public summaries at
 `/analytics/` and `/zh/analytics/`.
 
-The service lives at `https://analytics.xxxxyu.com`: `POST /api/events` accepts
-visits, `GET /api/summary?days=30` returns aggregates (also supporting 90 days),
-and `GET /` redirects to the website's analytics dashboard. Old API paths are
-not supported; the `workers.dev` and preview URLs are disabled.
+The service at `https://analytics.xxxxyu.com` accepts visits at `POST /api/events`.
+`GET /api/summary?days=30` returns personal-site aggregates by default. Append
+`&site=oxygen` or `&site=steerdistill` to select a project. `GET /` redirects to
+the dashboard. The `workers.dev` and preview URLs are disabled.
 
 ```mermaid
 flowchart LR
@@ -21,9 +22,10 @@ flowchart LR
 | Resource | Source of truth |
 | --- | --- |
 | Public endpoint | `extra.analytics_endpoint` in `config.toml` |
-| Worker, account, origins and storage binding | `analytics-worker/wrangler.toml` |
+| Worker, account, personal origins and storage binding | `analytics-worker/wrangler.toml` |
 | Custom domain binding | Cloudflare dashboard > Worker > Domains |
-| Persistent object | `site-v1` in `analytics-worker/src/index.js` |
+| Project paths and persistent objects | `analytics-worker/src/index.js` |
+| Dashboard labels, site IDs and page-link origins | `data/analytics.toml` |
 | Deployment credential | Repository secret `CLOUDFLARE_API_TOKEN` |
 
 Keep the Worker, class, namespace and object identity stable to preserve history.
@@ -38,7 +40,16 @@ dashboard. Cloudflare manages its DNS record and certificate. Wrangler omits
 `route`/`routes` so CI preserves this binding instead of rewriting it; the
 deployment token needs no zone-management permission. Domain changes are an
 owner operation requiring Workers Routes Write for the `xxxxyu.com` zone.
-The website's origin remains `https://xxxxyu.github.io` in the CORS allowlist.
+The collector accepts project events from `https://air-embodied-brain.github.io`
+using the `/OxyGen/` and `/SteerDistill/` path boundaries. The personal site uses
+the `site-v1` object, and projects use `oxygen-v1` and `steerdistill-v1`.
+
+Both projects load `https://xxxxyu.github.io/js/analytics-track.js` asynchronously.
+Each provides its HTTPS base URL as `data-site-url` and the Worker origin as
+`data-endpoint`. The OxyGen integration lives in its Astro base layout. The
+SteerDistill integration lives in its common HTML generator and footer template.
+Project footer links select the project with `?site=`. Add `days=90` to share a
+90-day view. Website and language changes carry the selected range.
 
 ## Development
 
@@ -57,8 +68,9 @@ and analytics pages, so viewing either preview does not create visits.
 
 The UI is in `templates/analytics.html`, `static/js/analytics.js` and
 `sass/_analytics.scss`; labels are in `data/analytics.toml`. The tracker is the
-separate `static/js/analytics-track.js`. Summaries and map data are cached in
-sessionStorage. Returning to the page refreshes summaries older than 60 seconds;
+separate `static/js/analytics-track.js`. The dashboard caches summaries per
+website in sessionStorage and reuses the same base map. Returning to the page
+refreshes summaries older than 60 seconds;
 there is no background polling. The icon beside the update time refreshes on
 demand. Refresh requests use `GET /api/summary?days=30&refresh=1` to bypass cached
 results, update the same edge cache entry and return a `no-store` response.
@@ -79,7 +91,8 @@ npm --prefix analytics-worker run check
 Unit tests use Node's SQLite without npm dependencies. Integration tests use
 Wrangler's installed test harness and production configuration with isolated
 local storage. They cover concurrent delivery, duplicate events, object eviction
-and the deployment check command. No Cloudflare login is needed. The bundle
+project path validation, storage isolation, and the deployment check command.
+No Cloudflare login is needed. The bundle
 check builds without publishing; website checks are listed in the README.
 
 ## Deployment and troubleshooting
@@ -98,8 +111,8 @@ backend changes before frontend code that requires them.
 Use **Analytics collector > Run workflow > main** to retry independently of
 Pages. Actions Summary records the commit, deployment, verification and endpoint.
 The read-only check retries across the previous version's 60-second cache window
-and validates both 30/90-day responses,
-CORS and `X-Analytics-Revision`. Each Worker version has its own edge cache key.
+and validates both 30/90-day responses for each site, CORS and
+`X-Analytics-Revision`. Edge cache keys include the site, range and Worker version.
 To repeat it locally, optionally appending an expected commit SHA:
 
 ```sh
@@ -120,10 +133,10 @@ needs verification on the networks readers use.
 
 ## Measurement and retention
 
-- One event per page load; event UUIDs prevent duplicate delivery. A random
-  first-party browser ID lasts 365 days without renewal; its SHA-256 hash
-  deduplicates visitors across the selected period. Clearing storage or changing
-  browsers creates a new visitor.
+- One event per document load. Event UUIDs prevent duplicate delivery. A random
+  first-party browser ID lasts 365 days without renewal and is scoped to the
+  website's base path. Its SHA-256 hash deduplicates visitors across the selected
+  period. Clearing storage or changing browsers creates a new visitor.
 - Collection respects DNT, GPC and saved exclusion preferences. The backend
   validates origins, event IDs and paths, and filters common bot user agents.
 - Stored fields are pathname, referring hostname, country, city and rounded 1°

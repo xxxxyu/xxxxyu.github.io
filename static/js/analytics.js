@@ -6,8 +6,14 @@ const locale = document.documentElement.lang === 'zh' ? 'zh-CN' : 'en-GB';
 const numbers = new Intl.NumberFormat(locale);
 const regions = new Intl.DisplayNames([locale], { type: 'region' });
 const dates = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+const search = new URLSearchParams(location.search);
+const siteLinks = Array.from(root.querySelectorAll('[data-analytics-site]'));
+const defaultSite = siteLinks[0];
+const selectedSite = siteLinks.find(link => link.dataset.analyticsSite === search.get('site')) || defaultSite;
+const siteOrigin = selectedSite.dataset.origin || location.origin;
+selectedSite.setAttribute('aria-current', 'page');
 const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
-const localCollector = isLocal && new URLSearchParams(location.search).get('source') === 'local';
+const localCollector = isLocal && search.get('source') === 'local';
 const endpoint = localCollector ? 'http://127.0.0.1:8787' : root.dataset.endpoint;
 const isDemo = isLocal && !localCollector;
 const status = document.getElementById('analytics-status');
@@ -15,7 +21,7 @@ const results = document.getElementById('analytics-results');
 const refresh = document.getElementById('analytics-refresh');
 const chart = document.getElementById('analytics-chart');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const cacheKey = `site-analytics-v3:${isDemo ? 'demo' : endpoint}`;
+const cacheKey = `site-analytics-v4:${isDemo ? 'demo' : endpoint}:${selectedSite.dataset.analyticsSite}`;
 const landCacheKey = `site-analytics-land:${root.dataset.map}`;
 const dataCache = new Map();
 const SUMMARY_MAX_AGE = 60000;
@@ -24,7 +30,7 @@ const axisLayer = svgElement('g');
 const barsLayer = svgElement('g');
 const ticksLayer = svgElement('g');
 chart.append(axisLayer, barsLayer, ticksLayer);
-let selectedDays = 30;
+let selectedDays = search.get('days') === '90' ? 90 : 30;
 let locationTab = 'countries';
 let summary = null;
 let controller;
@@ -68,7 +74,6 @@ function writeSession(key, value) {
 function restoreSnapshot() {
   const cached = readSession(cacheKey);
   if (!cached) return;
-  if ([30, 90].includes(cached.range)) selectedDays = cached.range;
   for (const entry of Array.isArray(cached.entries) ? cached.entries : []) {
     if (validSummary(entry?.data) && Number.isFinite(entry.receivedAt) && Date.now() - entry.receivedAt < 86400000) {
       dataCache.set(entry.data.period.days, entry);
@@ -81,6 +86,20 @@ function restoreSnapshot() {
 }
 
 function updateRanges() {
+  const url = new URL(location.href);
+  if (selectedDays === 90) url.searchParams.set('days', '90');
+  else url.searchParams.delete('days');
+  if (url.href !== location.href) history.replaceState(history.state, '', url);
+
+  for (const link of siteLinks) {
+    const target = new URL(url);
+    if (link === defaultSite) target.searchParams.delete('site');
+    else target.searchParams.set('site', link.dataset.analyticsSite);
+    link.href = target.href;
+  }
+  const language = document.getElementById('language-switch');
+  if (language) language.search = url.search;
+
   root.querySelectorAll('[data-days]').forEach(button => {
     button.setAttribute('aria-pressed', String(Number(button.dataset.days) === selectedDays));
   });
@@ -176,8 +195,9 @@ function renderRanking(id, rows, type) {
     } else {
       text = type === 'pages' ? row.path : row.host || copy.direct;
     }
-    const canLink = type === 'pages' && /^\/(?!\/)/.test(text);
-    label.append(element(canLink ? 'a' : 'span', canLink ? { href: text, title: text } : { title: text }, text));
+    const pageUrl = type === 'pages' && /^\/(?!\/)/.test(text) ? new URL(text, siteOrigin) : null;
+    const canLink = pageUrl?.origin === siteOrigin;
+    label.append(element(canLink ? 'a' : 'span', canLink ? { href: pageUrl.href, title: text } : { title: text }, text));
     item.append(label, element('span', { class: 'analytics__ranking-count' }, numbers.format(row.views)));
     items.push(item);
   }
@@ -360,14 +380,15 @@ async function readSummary(range, { force, signal }) {
   let data;
   if (isDemo) {
     const { sampleAnalytics } = await import('./analytics-demo.mjs');
-    data = sampleAnalytics(range);
+    data = sampleAnalytics(range, Date.now(), selectedSite.dataset.analyticsSite);
   } else {
     const url = new URL('/api/summary', endpoint);
     url.searchParams.set('days', range);
+    if (selectedSite !== defaultSite) url.searchParams.set('site', selectedSite.dataset.analyticsSite);
     if (force) url.searchParams.set('refresh', '1');
     data = await fetchJSON(url, { signal });
   }
-  if (!validSummary(data)) throw new Error('Invalid statistics');
+  if (!validSummary(data) || data.period.days !== range) throw new Error('Invalid statistics');
   return { data, receivedAt: Date.now() };
 }
 
@@ -400,7 +421,7 @@ async function load({ force = false } = {}) {
     if (version !== requestVersion) return;
     dataCache.set(range, entry);
     render(entry.data);
-    writeSession(cacheKey, { range: selectedDays, entries: Array.from(dataCache.values()), digits: metricDigits });
+    writeSession(cacheKey, { entries: Array.from(dataCache.values()), digits: metricDigits });
   } catch {
     if (version !== requestVersion) return;
     requestController.abort();
