@@ -32,7 +32,7 @@
         "value": 0
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:Fu2w8maKXqMC",
-      "publication": "arXiv preprint arXiv:2611.13410, 2026",
+      "publication": "[Hugging Face #2 Paper of the Day] arXiv preprint arXiv:2611.13410, 2026",
       "title": "SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering",
       "year": "2026"
     },
@@ -166,7 +166,7 @@
         "value": 9
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:hkOj_22Ku90C",
-      "publication": "arXiv preprint arXiv:2603.14371, 2026",
+      "publication": "[NeurIPS 2026] arXiv preprint arXiv:2603.14371, 2026",
       "title": "OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism",
       "year": "2026"
     },
