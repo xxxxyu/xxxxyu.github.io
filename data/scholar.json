@@ -163,7 +163,7 @@
         "cites_id": "10371337648411803327,4168979256511977186",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10371337648411803327,4168979256511977186",
         "serpapi_link": "https://serpapi.com/search.json?cites=10371337648411803327%2C4168979256511977186&engine=google_scholar&hl=en",
-        "value": 9
+        "value": 10
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:hkOj_22Ku90C",
       "publication": "[NeurIPS 2026] arXiv preprint arXiv:2603.14371, 2026",
@@ -205,7 +205,7 @@
         "cites_id": "7941871506997289466",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
         "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
-        "value": 39
+        "value": 41
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
       "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
@@ -232,14 +232,24 @@
     "email": "Verified email at mails.tsinghua.edu.cn",
     "interests": [
       {
-        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:agentic_robotics",
-        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aagentic_robotics",
-        "title": "Agentic Robotics"
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:on_device_ai",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aon_device_ai",
+        "title": "On-Device AI"
       },
       {
-        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:physical_self_improvement",
-        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aphysical_self_improvement",
-        "title": "Physical Self-Improvement"
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:physical_ai",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aphysical_ai",
+        "title": "Physical AI"
+      },
+      {
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:agentic_ai",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aagentic_ai",
+        "title": "Agentic AI"
+      },
+      {
+        "link": "https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors=label:machine_learning_systems",
+        "serpapi_link": "https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Amachine_learning_systems",
+        "title": "Machine Learning Systems"
       }
     ],
     "name": "Xiangyu Li",
@@ -266,15 +276,15 @@
         "year": 2025
       },
       {
-        "citations": 398,
+        "citations": 401,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 836,
-          "since_2021": 836
+          "all": 839,
+          "since_2021": 839
         }
       },
       {
@@ -285,11 +295,11 @@
       },
       {
         "i10_index": {
-          "all": 8,
-          "since_2021": 8
+          "all": 9,
+          "since_2021": 9
         }
       }
     ]
   },
-  "total": 836
+  "total": 839
 }
