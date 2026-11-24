@@ -96,7 +96,7 @@
         "cites_id": "6848535581213446533",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=6848535581213446533",
         "serpapi_link": "https://serpapi.com/search.json?cites=6848535581213446533&engine=google_scholar&hl=en",
-        "value": 11
+        "value": 12
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:_Ybze24A_UAC",
       "publication": "arXiv preprint arXiv:2608.30880, 2026",
@@ -163,7 +163,7 @@
         "cites_id": "10371337648411803327,4168979256511977186",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=10371337648411803327,4168979256511977186",
         "serpapi_link": "https://serpapi.com/search.json?cites=10371337648411803327%2C4168979256511977186&engine=google_scholar&hl=en",
-        "value": 10
+        "value": 11
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:hkOj_22Ku90C",
       "publication": "[NeurIPS 2026] arXiv preprint arXiv:2603.14371, 2026",
@@ -191,7 +191,7 @@
         "cites_id": "341960020687636051",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=341960020687636051",
         "serpapi_link": "https://serpapi.com/search.json?cites=341960020687636051&engine=google_scholar&hl=en",
-        "value": 516
+        "value": 519
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:u5HHmVD_uO8C",
       "publication": "arXiv preprint arXiv:2401.05459, 2024",
@@ -205,7 +205,7 @@
         "cites_id": "7941871506997289466",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
         "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
-        "value": 41
+        "value": 42
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
       "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
@@ -276,15 +276,15 @@
         "year": 2025
       },
       {
-        "citations": 401,
+        "citations": 407,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 839,
-          "since_2021": 839
+          "all": 845,
+          "since_2021": 845
         }
       },
       {
@@ -301,5 +301,5 @@
       }
     ]
   },
-  "total": 839
+  "total": 845
 }
