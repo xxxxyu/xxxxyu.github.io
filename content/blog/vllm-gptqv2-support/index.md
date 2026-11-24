@@ -72,7 +72,7 @@ Most GPTQ implementations use 4-bit symmetric quantization. At lower bit widths,
 
 GPTQ[^1] is one of the most popular post-training **quantization methods** for generative transformers (mainly LLMs and VLMs).
 It utilizes approximate second-order information (inverse layer Hessian) to reduce quantization errors.
-GPTQ can also refer to the **checkpoint format** used by GPTQ-quantized models, such as those produced by [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ). Daniël de Kok's [GPTQ Checkpoint Format](https://danieldk.eu/GPTQ-Checkpoint-Format) explains this representation in detail.
+GPTQ can also refer to the **checkpoint format** used by GPTQ-quantized models, such as those produced by [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ)[^2].
 
 The GPTQ ecosystem includes quantization libraries that implement the method or export its checkpoint format, as well as kernels and inference frameworks that execute those checkpoints.
 
@@ -96,8 +96,8 @@ LLM inference frameworks such as [vLLM](https://github.com/vllm-project/vllm) in
 
 The name GPTQv2 is used for changes to both the quantization method and the checkpoint format:
 
-- Quantization method: GPTQv2 (also called GPTAQ) introduces asymmetric calibration to reduce quantization error propagated from earlier layers[^2]. It was first implemented in [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ), then integrated into [GPTQModel](https://github.com/ModelCloud/GPTQModel) behind `v2=True`.
-- Checkpoint format: GPTQv2 stores zero points differently from GPTQv1. GPTQv1 stores $\mathrm{clamp}(zero - 1)$ and adds $1$ before runtime dequantization[^3]. GPTQv2 stores the exact $zero$ value and needs no adjustment. GPTQModel enables this format with `format="gptq_v2"`.
+- Quantization method: GPTQv2 (also called GPTAQ) introduces asymmetric calibration to reduce quantization error propagated from earlier layers[^3]. It was first implemented in [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ), then integrated into [GPTQModel](https://github.com/ModelCloud/GPTQModel) behind `v2=True`.
+- Checkpoint format: GPTQv2 stores zero points differently from GPTQv1. GPTQv1 stores $\mathrm{clamp}(zero - 1)$ and adds $1$ before runtime dequantization[^2]. GPTQv2 stores the exact $zero$ value and needs no adjustment. GPTQModel enables this format with `format="gptq_v2"`.
 
 Just like GPTQv1, the quantization method and checkpoint format are not coupled. So you can:
 
@@ -275,6 +275,6 @@ Questions and discussion are welcome.
 
 [^1]: Elias Frantar et al., ["GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers"](https://arxiv.org/abs/2210.17323), ICLR, 2023.
 
-[^2]: Yuhang Li et al., ["GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration"](https://arxiv.org/abs/2504.02692), arXiv, 2025.
+[^2]: Daniël de Kok, ["GPTQ Checkpoint Format"](https://danieldk.eu/GPTQ-Checkpoint-Format), Daniël's Website, 2024.
 
-[^3]: Daniël de Kok, ["GPTQ Checkpoint Format"](https://danieldk.eu/GPTQ-Checkpoint-Format), Daniël's Website, 2024.
+[^3]: Yuhang Li et al., ["GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration"](https://arxiv.org/abs/2504.02692), arXiv, 2025.

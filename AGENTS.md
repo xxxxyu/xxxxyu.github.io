@@ -25,6 +25,13 @@ responsive styling, and light/dark/system themes.
 - Preserve copyright, license, and third-party attribution notices. See
   `LICENSE.md` before adding or reusing content or assets.
 
+## Task guides
+
+- Blog authoring and editing: [writing guidelines](docs/blog-writing.md).
+- Translation metadata and routes: [multilingual content](docs/multilingual.md).
+- Ordered post collections: [post series](docs/post-series.md).
+- Media preparation: [assets and galleries](docs/assets-and-galleries.md).
+
 ## Agent debugging server lifecycle
 
 Before browser or live-reload debugging, check for an existing Zola server

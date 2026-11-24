@@ -3,6 +3,7 @@ date = '2026/11'
 text = '*SteerDistill: Quantizing LLM Agents via Closed-Loop Teacher Steering* released.'
 links = [
   { label = 'Paper', url = 'https://arxiv.org/abs/2611.13410' },
+  { label = 'Blog', url = '/blog/steerdistill-agent-quantization/' },
   { label = 'Code', url = 'https://github.com/air-embodied-brain/SteerDistill' },
   { label = 'Page', url = 'https://air-embodied-brain.github.io/SteerDistill' },
 ]

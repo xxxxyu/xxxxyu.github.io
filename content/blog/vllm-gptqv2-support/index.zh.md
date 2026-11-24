@@ -76,7 +76,7 @@ ai_translation_effort = ""
 
 GPTQ[^1] 是生成式 Transformer（主要是 LLM 和 VLM）最常用的训练后**量化方法**之一。
 它利用近似二阶信息（层 Hessian 的逆）来减小量化误差。
-GPTQ 也可以指 GPTQ 量化模型所使用的 **checkpoint 格式**，例如 [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ) 生成的格式。Daniël de Kok 的 [GPTQ Checkpoint Format](https://danieldk.eu/GPTQ-Checkpoint-Format) 对这种表示方式有详细说明。
+GPTQ 也可以指 GPTQ 量化模型所使用的 **checkpoint 格式**，例如 [AutoGPTQ](https://github.com/AutoGPTQ/AutoGPTQ) 生成的格式[^2]。
 
 GPTQ 生态既包括实现该量化方法或导出相应 checkpoint 格式的量化库，也包括执行这些 checkpoint 的内核与推理框架。
 
@@ -100,8 +100,8 @@ GPTQ 生态既包括实现该量化方法或导出相应 checkpoint 格式的量
 
 GPTQv2 这一名称同时用于指代量化方法和 checkpoint 格式的改动：
 
-- 量化方法：GPTQv2（也称 GPTAQ）引入非对称校准，以减小从前面各层传播而来的量化误差[^2]。它最早在 [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ) 中实现，之后集成进 [GPTQModel](https://github.com/ModelCloud/GPTQModel)，可通过 `v2=True` 启用。
-- Checkpoint 格式：GPTQv2 与 GPTQv1 存储零点的方式不同。GPTQv1 存储 $\mathrm{clamp}(zero - 1)$，并在运行时反量化前加 $1$[^3]；GPTQv2 则直接存储准确的 $zero$ 值，无需调整。在 GPTQModel 中可通过 `format="gptq_v2"` 启用这一格式。
+- 量化方法：GPTQv2（也称 GPTAQ）引入非对称校准，以减小从前面各层传播而来的量化误差[^3]。它最早在 [GPTAQ](https://github.com/Intelligent-Computing-Lab-Panda/GPTAQ) 中实现，之后集成进 [GPTQModel](https://github.com/ModelCloud/GPTQModel)，可通过 `v2=True` 启用。
+- Checkpoint 格式：GPTQv2 与 GPTQv1 存储零点的方式不同。GPTQv1 存储 $\mathrm{clamp}(zero - 1)$，并在运行时反量化前加 $1$[^2]；GPTQv2 则直接存储准确的 $zero$ 值，无需调整。在 GPTQModel 中可通过 `format="gptq_v2"` 启用这一格式。
 
 与 GPTQv1 一样，量化方法和 checkpoint 格式之间并不绑定。因此，可以：
 
@@ -279,6 +279,6 @@ dequant_2bit_16(load_int4.w, dq[3], size_n, zeros[3] + zero_offset);
 
 [^1]: Elias Frantar 等，[“GPTQ: Accurate Post-Training Quantization for Generative Pre-Trained Transformers”](https://arxiv.org/abs/2210.17323)，ICLR，2023。
 
-[^2]: Yuhang Li 等，[“GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration”](https://arxiv.org/abs/2504.02692)，arXiv，2025。
+[^2]: Daniël de Kok，[“GPTQ Checkpoint Format”](https://danieldk.eu/GPTQ-Checkpoint-Format)，Daniël's Website，2024。
 
-[^3]: Daniël de Kok，[“GPTQ Checkpoint Format”](https://danieldk.eu/GPTQ-Checkpoint-Format)，Daniël's Website，2024。
+[^3]: Yuhang Li 等，[“GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration”](https://arxiv.org/abs/2504.02692)，arXiv，2025。

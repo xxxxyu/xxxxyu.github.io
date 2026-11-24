@@ -69,8 +69,8 @@ The pretrained VLM provides **semantic understanding and generalization** from i
 
 Similarly, NVIDIA Isaac trained GR00T N1(.5)[^6], which combines a pretrained Eagle-2 VLM with a diffusion-based action head as a foundation model for generalist humanoid robots. In both $\pi_0$ and GR00T, the VLM backbone and action expert communicate through attention modules, conditioning generated actions on the VLM hidden states (i.e., KV). There are two technical differences:
 
-- **Attention mechanism**: $\pi_0$ concatenates the VL and action KV and conducts masked self-attention (a [blog](https://huggingface.co/blog/pi0) illustrates this clearly); GR00T directly conducts cross-attention between the two parts.
-- **Number of VLM layers involved**: $\pi_0$ aligns the number of layers in the action expert to the VLM backbone, and conducts self-attention in each layer (MoE-like); GR00T only keeps the hidden states of the last layer in the VLM[^7], and conducts cross-attention with it for each layer.
+- **Attention mechanism**: $\pi_0$ concatenates the VL and action KV and conducts masked self-attention[^7]; GR00T directly conducts cross-attention between the two parts.
+- **Number of VLM layers involved**: $\pi_0$ aligns the number of layers in the action expert to the VLM backbone, and conducts self-attention in each layer (MoE-like); GR00T only keeps the hidden states of the last layer in the VLM[^8], and conducts cross-attention with it for each layer.
 
 ### Dual-System VLA
 
@@ -81,9 +81,9 @@ The VLA learns to **predict subtasks directly from user instructions**, improvin
 
 {{ image(src="/img/blog/vla-models-review/pi05.png", dimmable=true, caption="π₀.₅ extends π₀ with high-level subtask prediction for dual-system planning and control.") }}
 
-$\pi_{0.5}$[^8], trained by Physical Intelligence, is the first model in this category. Compared with $\pi_0$, its training data also includes object detection, instructions, subtask commands, and discrete actions.
+$\pi_{0.5}$[^9], trained by Physical Intelligence, is the first model in this category. Compared with $\pi_0$, its training data also includes object detection, instructions, subtask commands, and discrete actions.
 At inference time, its VLM first predicts a subtask from the high-level prompt (system 2), then the VLM and action expert execute that subtask (system 1).
-Recent VLAs such as Galaxea's G0[^9] and X Square Robot's WALL-OSS[^10] follow this training recipe and inference scheme.
+Recent VLAs such as Galaxea's G0[^10] and X Square Robot's WALL-OSS[^11] follow this training recipe and inference scheme.
 While most of these models are continuous VLAs, WALL-OSS also includes a discrete version with FAST tokenization ([WALL-OSS-FAST](https://huggingface.co/x-square-robot/wall-oss-fast)).
 
 Their repositories and open-source status:
@@ -112,10 +112,12 @@ I am currently working on this *multi-expert foundation model* for native multit
 
 [^6]: Johan Bjorck et al., ["GR00T N1: An Open Foundation Model for Generalist Humanoid Robots"](https://arxiv.org/abs/2503.14734), arXiv, 2025.
 
-[^7]: Specifically, the language backbone of the VLM in GR00T N1.5 is fine-tuned from the first 14 layers of the pre-trained [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B) (28 layers in total), according to my test of similarity between the weights.
+[^7]: Hugging Face's [π₀ introduction](https://huggingface.co/blog/pi0) illustrates this attention structure.
 
-[^8]: Physical Intelligence et al., ["$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization"](https://arxiv.org/abs/2504.16054), arXiv, 2025.
+[^8]: Specifically, the language backbone of the VLM in GR00T N1.5 is fine-tuned from the first 14 layers of the pre-trained [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B) (28 layers in total), according to my test of similarity between the weights.
 
-[^9]: Tao Jiang et al., ["Galaxea Open-World Dataset and G0 Dual-System VLA Model"](https://arxiv.org/abs/2509.00576), arXiv, 2025.
+[^9]: Physical Intelligence et al., ["$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization"](https://arxiv.org/abs/2504.16054), arXiv, 2025.
 
-[^10]: X Square Robot, ["WALL-OSS: Igniting VLMs toward the Embodied Space"](https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf), white paper, 2025.
+[^10]: Tao Jiang et al., ["Galaxea Open-World Dataset and G0 Dual-System VLA Model"](https://arxiv.org/abs/2509.00576), arXiv, 2025.
+
+[^11]: X Square Robot, ["WALL-OSS: Igniting VLMs toward the Embodied Space"](https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf), white paper, 2025.

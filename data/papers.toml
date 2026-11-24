@@ -6,6 +6,7 @@ venue = 'ArXiv preprint'
 year = 2026
 notes = 'Project lead, [#2 Paper of the Day (Hugging Face)](https://huggingface.co/papers/date/2026-11-12)'
 paper_url = 'https://arxiv.org/abs/2611.13410'
+blog_url = '/blog/steerdistill-agent-quantization/'
 code_url = 'https://github.com/air-embodied-brain/SteerDistill'
 page_url = 'https://air-embodied-brain.github.io/SteerDistill'
 featured = true

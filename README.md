@@ -107,7 +107,8 @@ build.sh       Unix production-build entry point
 build.ps1      Windows production-build entry point
 ```
 
-See the [post series convention](docs/post-series.md) before creating or
+Follow the [Blog writing guidelines](docs/blog-writing.md) when authoring or
+editing posts. See the [post series convention](docs/post-series.md) before creating or
 reordering a series, and the
 [asset and gallery workflow](docs/assets-and-galleries.md) before adding large
 files or publishing an Outside photography collection. Web-font coverage is

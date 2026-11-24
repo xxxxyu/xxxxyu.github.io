@@ -21,20 +21,20 @@ og_image_alt = "Side-by-side closed-loop rollout comparison of Edge BF16 and Edg
 > 代码：[cosmos-lite v0.3.0](https://github.com/xxxxyu/cosmos-lite) \
 > 模型：[Nano GenW8A8](https://huggingface.co/XXXXyu/Cosmos3-Nano-Policy-DROID-GenW8A8) · [Edge GenW8A8](https://huggingface.co/XXXXyu/Cosmos3-Edge-Policy-DROID-GenW8A8)
 
-NVIDIA 的 Cosmos 3[^1] 带来了在 DROID[^2] 上训练的机器人策略。不过想自己把它跑起来并不容易：16B 的 Nano 策略光是加载就要约 33 GB 显存，[官方工作流](https://github.com/NVIDIA/Cosmos-Framework)也默认你有 A100 或 H100 这样的数据中心 GPU。单张 RTX 4090 之前完全跑不动。
+NVIDIA 的 Cosmos 3[^1] 带来了在 DROID[^2] 上训练的机器人策略。不过想自己把它跑起来并不容易：16B 的 Nano 策略光是加载就要约 33 GB 显存，官方工作流也默认你有 A100 或 H100 这样的数据中心 GPU[^3]。单张 RTX 4090 之前完全跑不动。
 
 [Cosmos Lite](https://github.com/xxxxyu/cosmos-lite) 就是为此做的。它构建在 [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework) 之上，是一个面向 Cosmos 3 策略的高效推理 runtime，覆盖两类用法：一是**本地部署**，以 batch-one 方式提供策略推理，可直接对接真机；二是**并行 rollout**，由一个共享的推理服务同时驱动多个仿真环境，并把 rollout 轨迹导出用于后续训练。一台 8 卡主机上，最快的 profile 跑完全部 1,200 个 RoboLab episode 不到五小时。
 
 {{ video(src="/videos/cosmos-lite-v030/demo.mp4", poster="/videos/cosmos-lite-v030/poster.webp", max_width="100%", caption="Edge BF16（官方默认配置）对比 Edge GenW8A8（优化 runtime），在 RoboLab 中闭环 rollout。") }}
 
-评测覆盖 RoboLab[^3] 全部 120 个任务，每任务 10 个 episode；所有 profile 用同一组采样参数（guidance 3、两步 UniPC 去噪、shift 5）。延迟统计的是单张 RTX 4090 上每个动作请求的耗时。
+评测覆盖 RoboLab[^4] 全部 120 个任务，每任务 10 个 episode；所有 profile 用同一组采样参数（guidance 3、两步 UniPC 去噪、shift 5）。延迟统计的是单张 RTX 4090 上每个动作请求的耗时。
 
 | 模型     | 产物        | 显存 (GB) | 请求 p50 (ms) | SR (%)    |
 | ------- | ----------- | --------: | ------------: | ---------: |
-| Edge 4B | BF16（NVIDIA 报告[^4]） | — | — | 22.90 |
+| Edge 4B | BF16（NVIDIA 报告[^5]） | — | — | 22.90 |
 | Edge 4B | BF16        |      9.20 |         582.0 | 20.92     |
 | Edge 4B | **GenW8A8** |      8.79 |     **331.4** | 19.25     |
-| Nano 16B | BF16（NVIDIA 报告[^4]） | — | — | 36.80 |
+| Nano 16B | BF16（NVIDIA 报告[^5]） | — | — | 36.80 |
 | Nano 16B | W8A16       |     21.42 |       2,403.0 | 31.50     |
 | Nano 16B | **GenW8A8** | **15.51** |     **958.5** | **31.67** |
 
@@ -49,12 +49,12 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 | 产物               | MoT linears                     | 校准                 | 峰值显存 (GB) |
 | ------------------ | ------------------------------- | -------------------- | ------------- |
 | Nano 16B BF16      | BF16（上游基线）                | —                    | ~33（放不下） |
-| Nano 16B W8A16     | 全部 W8A16（Marlin[^5]）        | 无                   | 21.42         |
+| Nano 16B W8A16     | 全部 W8A16（Marlin[^6]）        | 无                   | 21.42         |
 | Nano 16B GenW8A8   | 生成分支 FP8 W8A8，其余 W4A16   | 128 个 DROID episode | 15.51         |
 | Edge 4B BF16       | BF16（上游基线）                | —                    | 9.20          |
 | Edge 4B GenW8A8    | 生成分支 FP8 W8A8，其余 W4A16   | 128 个 DROID episode | 8.79          |
 
-在测过的所有方案里，混合式的 GenW8A8 tradeoff 最好。全模型 W8A8 我同样构建并评测过：Nano 上它只比 GenW8A8 快约 10 ms，显存却多占 3.5 GB；Edge 上干脆更慢。道理不复杂：大 GEMM 集中在生成分支，那正是 FP8 tensor core 的用武之地；理解分支用 128 个训练 episode 做过 AWQ 式校准[^6]之后，W4A16 的精度就够用了。
+在测过的所有方案里，混合式的 GenW8A8 tradeoff 最好。全模型 W8A8 我同样构建并评测过：Nano 上它只比 GenW8A8 快约 10 ms，显存却多占 3.5 GB；Edge 上干脆更慢。道理不复杂：大 GEMM 集中在生成分支，那正是 FP8 tensor core 的用武之地；理解分支用 128 个训练 episode 做过 AWQ 式校准[^7]之后，W4A16 的精度就够用了。
 
 这一阶段还有条经验值得单独记下：**开环动作误差预测不了闭环成功率**。按 replay 误差挑出的最优产物，在配对 rollout 里反而比一个更简单的方案低了 12 个百分点；校准能改善误差分布，但压不掉偶发的动作尖峰。因此发布里的每一个精度决策，最终标准都是 rollout 成功率。
 
@@ -62,7 +62,7 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 
 ## 用采样器调优少算一点
 
-显存解决之后，下一个杠杆是每个请求的计算量。上游 RoboLab 服务器的默认采样配置是 guidance 3 加四步 UniPC[^7]，[v0.1.0](https://github.com/xxxxyu/cosmos-lite/releases/tag/v0.1.0) 作为第一个可部署版本沿用了它。把去噪步数从四改成二，改的只是一个 YAML 覆盖项，每个请求的去噪器前向就少了一半。
+显存解决之后，下一个杠杆是每个请求的计算量。上游 RoboLab 服务器的默认采样配置是 guidance 3 加四步 UniPC[^8]，v0.1.0 作为第一个可部署版本沿用了它[^9]。把去噪步数从四改成二，改的只是一个 YAML 覆盖项，每个请求的去噪器前向就少了一半。
 
 | Guidance / steps | 请求 p50 (ms) | BananaOnPlate SR |
 | ---------------- | ------------: | ---------------: |
@@ -73,7 +73,7 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 
 两步把 Nano 的请求延迟降低 41%，而在上面的配对 rollout 里，两个模型的成功率持平甚至更好。这件事没那么反直觉：UniPC 是数值求解器，步数多意味着积分更细，不意味着策略更好。学出的向量场与推理 schedule 只要有一点错配，多算的求解步就可能把动作推离好的轨迹。Edge 表现一致，从四步到两步，成功率从 21/50 涨到 34/50。
 
-表格同时回答了 guidance 为什么留在 3：降到 1 能省掉 CFG[^8] 的双份前向，延迟上看似白赚，闭环成功率却损失过大，过不了 gate。当然，这些都是单任务上的配对 gate；全量评测自带统计不确定性，换一个环境或机器人，最优设置未必相同。
+表格同时回答了 guidance 为什么留在 3：降到 1 能省掉 CFG[^10] 的双份前向，延迟上看似白赚，闭环成功率却损失过大，过不了 gate。当然，这些都是单任务上的配对 gate；全量评测自带统计不确定性，换一个环境或机器人，最优设置未必相同。
 
 ---
 
@@ -83,10 +83,10 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 
 | 改动                                                              | 实测效果                                      |
 | ----------------------------------------------------------------- | --------------------------------------------- |
-| 生成分支上的 CUTLASS[^9] FP8 W8A8 GEMM                            | Nano −20%、Edge −12% request p50（vs. W8A16） |
+| 生成分支上的 CUTLASS[^11] FP8 W8A8 GEMM                            | Nano −20%、Edge −12% request p50（vs. W8A16） |
 | 整个 language block 级别的 `torch.compile`                        | Nano −14.5%、Edge −12.2% request p50          |
 | Q/K/V 与 gate/up 共享 FP8 激活量化                                | −2%，动作逐位一致                            |
-| 按形状选 attention：长序列生成 attention 用 SageAttention[^10]，其余用 FlashAttention2；条件 K/V cache | Nano 约 −12%；cache 仅 Nano 启用 |
+| 按形状选 attention：长序列生成 attention 用 SageAttention[^12]，其余用 FlashAttention2；条件 K/V cache | Nano 约 −12%；cache 仅 Nano 启用 |
 | Edge SM89 形状专属 Triton FP8 GEMM                                | 仅 Edge：−8.4%；Nano 上被否（见下）           |
 | 稀疏输入变换（只 resize 观测帧，其余零填充）                      | sample build 约 37 ms → 2 ms                  |
 
@@ -96,9 +96,9 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 
 ## 用 rollout 拓扑和录制扩展到整个评测
 
-前面三个杠杆都作用在单个请求内部，而一次 RoboLab-120 全量评测是 1,200 个闭环 rollout，仿真时间不会因为模型变快就消失：量化、采样器、kernel 全部做完之后，策略推理在 lane 总时间里还是只占一小部分[^11]。所以最后的杠杆不在模型里，而在一台多卡主机上，仿真和策略服务各用哪几张卡。
+前面三个杠杆都作用在单个请求内部，而一次 RoboLab-120 全量评测是 1,200 个闭环 rollout，仿真时间不会因为模型变快就消失：量化、采样器、kernel 全部做完之后，策略推理在 lane 总时间里还是只占一小部分[^13]。所以最后的杠杆不在模型里，而在一台多卡主机上，仿真和策略服务各用哪几张卡。
 
-实际布局是 2 张卡跑策略服务、6 张卡跑仿真 lane，各 profile 的具体分配见[基准报告](https://github.com/xxxxyu/cosmos-lite/blob/main/docs/benchmarks/robolab.md)。每条 lane 是一个 Isaac Sim 进程，内部向量化 10 个环境，一个任务的 10 个 episode 因此是同时跑的，仅这一项就把单卡吞吐从 3.51 提到 18.24 environment steps/s。此外，同一个 scene 的任务会在同一条 lane 里连续执行，因为跨 scene 重建要约 100 秒，同 scene 切换只要约 10 秒，差着一个数量级。
+实际布局是 2 张卡跑策略服务、6 张卡跑仿真 lane[^14]。每条 lane 是一个 Isaac Sim 进程，内部向量化 10 个环境，一个任务的 10 个 episode 因此是同时跑的，仅这一项就把单卡吞吐从 3.51 提到 18.24 environment steps/s。此外，同一个 scene 的任务会在同一条 lane 里连续执行，因为跨 scene 重建要约 100 秒，同 scene 切换只要约 10 秒，差着一个数量级。
 
 布局固定之后，前面推理侧的收益就能一路叠加到全量评测上——采样器、量化、kernel 全用上，一个完整 profile 从 **9 小时 21 分降到 4 小时 51 分（1.93×）**：
 
@@ -108,13 +108,13 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 | Edge BF16, g3/s2      |    5 h 35 m |      44.7 |          1.67× |
 | **Edge GenW8A8, g3/s2** | **4 h 51 m** | **38.8** |      **1.93×** |
 
-评测跑完还要变成训练数据：成功的 episode 会导出成 LeRobot v3 数据集（[数据生成指南](https://github.com/xxxxyu/cosmos-lite/blob/main/examples/robolab_quant/DATA_GENERATION.md)）。这里有个现实的坑：直接录 10 路并行 rollout 会把显存撑爆，因为上游录制栈把每一步的相机 tensor 都留在 GPU 上[^12]，显存随 episode 长度线性增长，一个 600 步的 episode 自己就要约 19 GB。发布版 recorder 的做法是把数据及时移到有界的 CPU 侧缓冲，配合分块 HDF5 落盘和流式 H.264 编码，10 路并行 rollout 就能稳定落在 24 GB 显存之内，代价是相对不录制**多 11.0%** 的 wall time。
+评测跑完还要变成训练数据：成功的 episode 会导出成 LeRobot v3 数据集（[数据生成指南](https://github.com/xxxxyu/cosmos-lite/blob/main/examples/robolab_quant/DATA_GENERATION.md)）。这里有个现实的坑：直接录 10 路并行 rollout 会把显存撑爆，因为上游录制栈把每一步的相机 tensor 都留在 GPU 上[^15]，显存随 episode 长度线性增长，一个 600 步的 episode 自己就要约 19 GB。发布版 recorder 的做法是把数据及时移到有界的 CPU 侧缓冲，配合分块 HDF5 落盘和流式 H.264 编码，10 路并行 rollout 就能稳定落在 24 GB 显存之内，代价是相对不录制**多 11.0%** 的 wall time。
 
 ---
 
 ## 哪些没成
 
-这轮探索大部分由 coding agent 驱动，失败尝试来得便宜，死胡同也就攒了一长串，值得记下来。按失败发生在哪一层分组：
+这轮探索大部分由 coding agent 驱动，失败尝试来得便宜，死胡同也就攒了一长串，值得记下来。按失败发生在哪一层分组[^16]：
 
 *倒在算子或端到端层面：*
 
@@ -137,8 +137,6 @@ Nano 这两行能出现，靠的是量化：BF16 装不进 24 GB 显卡。GenW8A
 
 - TensorRT-LLM：方案本身可信，但要把 MoT、vision、VAE 整体导出，工程量是另一个量级。
 
-完整的决策地图，以及每项否决背后的测量数据，都在仓库的[优化报告](https://github.com/xxxxyu/cosmos-lite/blob/main/docs/cosmos_lite_optimization_report.md)里。
-
 ---
 
 ## 接下来
@@ -153,13 +151,17 @@ v0.3.0 是第一个完成完整测量的版本，RTX 4090 是目前的主要测�
 
 [^1]: NVIDIA, ["Cosmos 3 Technical Report"](https://research.nvidia.com/labs/cosmos-lab/cosmos3/), 2026.
 [^2]: Alexander Khazatsky et al., ["DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset"](https://arxiv.org/abs/2403.12945), arXiv, 2024.
-[^3]: NVIDIA, ["RoboLab"](https://github.com/NVlabs/RoboLab), GitHub, 2026.
-[^4]: NVIDIA 报告的 RoboLab-120 default-instruction 成功率，来源为技术报告 Tab. 19 与模型卡。
-[^5]: Elias Frantar et al., ["MARLIN: Mixed-Precision Auto-Regressive Parallel Inference on Large Language Models"](https://arxiv.org/abs/2408.11743), arXiv, 2024.
-[^6]: Ji Lin et al., ["AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration"](https://arxiv.org/abs/2306.00978), MLSys, 2024.
-[^7]: Wenliang Zhao et al., ["UniPC: A Unified Predictor-Corrector Framework for Fast Sampling of Diffusion Models"](https://arxiv.org/abs/2302.04867), arXiv, 2023.
-[^8]: Jonathan Ho and Tim Salimans, ["Classifier-Free Diffusion Guidance"](https://arxiv.org/abs/2207.12598), arXiv, 2022.
-[^9]: vLLM, ["FP8 Quantization"](https://docs.vllm.ai/en/latest/features/quantization/fp8/), documentation.
-[^10]: Jinnian Zhang et al., ["SageAttention: Accurate 8-Bit Attention for Plug-and-Play Inference Acceleration"](https://arxiv.org/abs/2410.02367), arXiv, 2024.
-[^11]: Edge GenW8A8 g3/s2 全量运行中，策略推理合计 7.80 lane-hours，环境步进合计 19.72 lane-hours。
-[^12]: IsaacLab 的 [EpisodeData](https://github.com/isaac-sim/IsaacLab/blob/main/source/isaaclab/isaaclab/utils/datasets/episode_data.py) 在导出前一直把已录制的 tensor 留在 GPU 上；RoboLab 的 [recorder](https://github.com/NVlabs/RoboLab/blob/main/robolab/core/logging/recorder_manager.py) 继承了这条路径。截至 RoboLab v0.3.1，上游没有相关 issue 或修复。
+[^3]: NVIDIA 的官方工作流见 [Cosmos Framework](https://github.com/NVIDIA/Cosmos-Framework)。
+[^4]: NVIDIA, ["RoboLab"](https://github.com/NVlabs/RoboLab), GitHub, 2026.
+[^5]: NVIDIA 报告的 RoboLab-120 default-instruction 成功率，来源为技术报告 Tab. 19 与模型卡。
+[^6]: Elias Frantar et al., ["MARLIN: Mixed-Precision Auto-Regressive Parallel Inference on Large Language Models"](https://arxiv.org/abs/2408.11743), arXiv, 2024.
+[^7]: Ji Lin et al., ["AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration"](https://arxiv.org/abs/2306.00978), MLSys, 2024.
+[^8]: Wenliang Zhao et al., ["UniPC: A Unified Predictor-Corrector Framework for Fast Sampling of Diffusion Models"](https://arxiv.org/abs/2302.04867), arXiv, 2023.
+[^9]: 首个可部署版本见 [v0.1.0 发布记录](https://github.com/xxxxyu/cosmos-lite/releases/tag/v0.1.0)。
+[^10]: Jonathan Ho and Tim Salimans, ["Classifier-Free Diffusion Guidance"](https://arxiv.org/abs/2207.12598), arXiv, 2022.
+[^11]: vLLM, ["FP8 Quantization"](https://docs.vllm.ai/en/latest/features/quantization/fp8/), documentation.
+[^12]: Jinnian Zhang et al., ["SageAttention: Accurate 8-Bit Attention for Plug-and-Play Inference Acceleration"](https://arxiv.org/abs/2410.02367), arXiv, 2024.
+[^13]: Edge GenW8A8 g3/s2 全量运行中，策略推理合计 7.80 lane-hours，环境步进合计 19.72 lane-hours。
+[^14]: 各 profile 的具体分配见[基准报告](https://github.com/xxxxyu/cosmos-lite/blob/main/docs/benchmarks/robolab.md)。
+[^15]: IsaacLab 的 [EpisodeData](https://github.com/isaac-sim/IsaacLab/blob/main/source/isaaclab/isaaclab/utils/datasets/episode_data.py) 在导出前一直把已录制的 tensor 留在 GPU 上；RoboLab 的 [recorder](https://github.com/NVlabs/RoboLab/blob/main/robolab/core/logging/recorder_manager.py) 继承了这条路径。截至 RoboLab v0.3.1，上游没有相关 issue 或修复。
+[^16]: 完整的决策地图，以及每项否决背后的测量数据，都在仓库的[优化报告](https://github.com/xxxxyu/cosmos-lite/blob/main/docs/cosmos_lite_optimization_report.md)里。

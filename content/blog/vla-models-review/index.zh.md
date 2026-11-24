@@ -73,8 +73,8 @@ Physical Intelligence 的做法是在预训练 VLM 上加入一个*流匹配动�
 
 类似地，NVIDIA Isaac 训练了 GR00T N1(.5)[^6]。它将预训练 Eagle-2 VLM 与基于扩散模型的动作头相结合，作为通用人形机器人的基础模型。在 $\pi_0$ 和 GR00T 中，VLM 主干与动作专家通过注意力模块交互，使生成的动作以 VLM 的隐状态（即 KV）为条件。二者在技术上有两点区别：
 
-- **注意力机制**：$\pi_0$ 将视觉—语言部分与动作部分的 KV 拼接起来，再进行掩码自注意力计算（这篇[博文](https://huggingface.co/blog/pi0)给出了很清楚的图示）；GR00T 则直接在两部分之间进行交叉注意力计算。
-- **参与计算的 VLM 层数**：$\pi_0$ 让动作专家的层数与 VLM 主干对齐，并在每一层进行自注意力计算（类似 MoE）；GR00T 只保留 VLM 最后一层的隐状态[^7]，动作专家的每一层都与它进行交叉注意力计算。
+- **注意力机制**：$\pi_0$ 将视觉—语言部分与动作部分的 KV 拼接起来，再进行掩码自注意力计算[^7]；GR00T 则直接在两部分之间进行交叉注意力计算。
+- **参与计算的 VLM 层数**：$\pi_0$ 让动作专家的层数与 VLM 主干对齐，并在每一层进行自注意力计算（类似 MoE）；GR00T 只保留 VLM 最后一层的隐状态[^8]，动作专家的每一层都与它进行交叉注意力计算。
 
 ### 双系统 VLA
 
@@ -85,9 +85,9 @@ VLA 学习**直接根据用户指令预测子任务**，由此提升开放世界
 
 {{ image(src="/img/blog/vla-models-review/pi05.png", dimmable=true, caption="π₀.₅ 在 π₀ 的基础上加入高层子任务预测，实现双系统规划与控制。") }}
 
-Physical Intelligence 训练的 $\pi_{0.5}$[^8] 是这一类别中的首个模型。与 $\pi_0$ 相比，它的训练数据还包括目标检测、指令、子任务命令和离散动作。
+Physical Intelligence 训练的 $\pi_{0.5}$[^9] 是这一类别中的首个模型。与 $\pi_0$ 相比，它的训练数据还包括目标检测、指令、子任务命令和离散动作。
 推理时，其 VLM 先根据高层提示预测一个子任务（系统 2），随后由 VLM 和动作专家执行该子任务（系统 1）。
-近期的 VLA，如 Galaxea 的 G0[^9] 和 X Square Robot 的 WALL-OSS[^10]，都沿用了这一训练方法和推理流程。
+近期的 VLA，如 Galaxea 的 G0[^10] 和 X Square Robot 的 WALL-OSS[^11]，都沿用了这一训练方法和推理流程。
 这类模型大多采用连续 VLA，但 WALL-OSS 也提供了使用 FAST tokenization 的离散版本（[WALL-OSS-FAST](https://huggingface.co/x-square-robot/wall-oss-fast)）。
 
 各模型的仓库和开源情况如下：
@@ -116,10 +116,12 @@ Physical Intelligence 训练的 $\pi_{0.5}$[^8] 是这一类别中的首个模�
 
 [^6]: Johan Bjorck et al., ["GR00T N1: An Open Foundation Model for Generalist Humanoid Robots"](https://arxiv.org/abs/2503.14734), arXiv, 2025.
 
-[^7]: 具体而言，根据我对权重相似度的测试，GR00T N1.5 的 VLM 语言主干由预训练 [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B)（共 28 层）的前 14 层微调而来。
+[^7]: Hugging Face 的 [π₀ 介绍](https://huggingface.co/blog/pi0)给出了这一注意力结构的图示。
 
-[^8]: Physical Intelligence et al., ["$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization"](https://arxiv.org/abs/2504.16054), arXiv, 2025.
+[^8]: 具体而言，根据我对权重相似度的测试，GR00T N1.5 的 VLM 语言主干由预训练 [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B)（共 28 层）的前 14 层微调而来。
 
-[^9]: Tao Jiang et al., ["Galaxea Open-World Dataset and G0 Dual-System VLA Model"](https://arxiv.org/abs/2509.00576), arXiv, 2025.
+[^9]: Physical Intelligence et al., ["$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization"](https://arxiv.org/abs/2504.16054), arXiv, 2025.
 
-[^10]: X Square Robot, ["WALL-OSS: Igniting VLMs toward the Embodied Space"](https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf), white paper, 2025.
+[^10]: Tao Jiang et al., ["Galaxea Open-World Dataset and G0 Dual-System VLA Model"](https://arxiv.org/abs/2509.00576), arXiv, 2025.
+
+[^11]: X Square Robot, ["WALL-OSS: Igniting VLMs toward the Embodied Space"](https://x2robot.cn-wlcb.ufileos.com/wall_oss.pdf), white paper, 2025.
