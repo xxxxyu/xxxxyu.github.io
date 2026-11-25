@@ -192,8 +192,6 @@ github = "https://github.com/xxxxyu"
 xiaohongshu = "https://xhslink.cn/o/1QepIgBQMqT"
 zhihu = "https://www.zhihu.com/people/xiangyuli"
 google_scholar = "https://scholar.google.com/citations?user=IjoWeIMAAAAJ"
-cv_en = "https://xxxxyu.github.io/resume/?locale=en&edition=complete"
-cv_zh = "https://xxxxyu.github.io/resume/?locale=zh&edition=complete"
 content_license_url = "https://creativecommons.org/licenses/by/4.0/"
 # Public analytics collector origin.
 analytics_endpoint = "https://analytics.xxxxyu.com"
