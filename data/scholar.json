@@ -135,7 +135,7 @@
         "cites_id": "12200290515652207140",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=12200290515652207140",
         "serpapi_link": "https://serpapi.com/search.json?cites=12200290515652207140&engine=google_scholar&hl=en",
-        "value": 32
+        "value": 37
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:eq2jaN3J8jMC",
       "publication": "arXiv preprint arXiv:2605.10332, 2026",
@@ -205,7 +205,7 @@
         "cites_id": "7941871506997289466",
         "link": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=7941871506997289466",
         "serpapi_link": "https://serpapi.com/search.json?cites=7941871506997289466&engine=google_scholar&hl=en",
-        "value": 42
+        "value": 44
       },
       "link": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=IjoWeIMAAAAJ&pagesize=100&citation_for_view=IjoWeIMAAAAJ:uLbwQdceFCQC",
       "publication": "[Hugging Face #1 Paper of the Day] arXiv preprint arXiv:2608.16590, 2026",
@@ -276,15 +276,15 @@
         "year": 2025
       },
       {
-        "citations": 408,
+        "citations": 413,
         "year": 2026
       }
     ],
     "table": [
       {
         "citations": {
-          "all": 845,
-          "since_2021": 845
+          "all": 852,
+          "since_2021": 852
         }
       },
       {
@@ -301,5 +301,5 @@
       }
     ]
   },
-  "total": 845
+  "total": 852
 }
